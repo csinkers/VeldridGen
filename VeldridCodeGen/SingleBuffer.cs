@@ -1,0 +1,72 @@
+﻿using System.Runtime.CompilerServices;
+using UAlbion.Core.SpriteBatch;
+using Veldrid;
+
+namespace UAlbion.Core
+{
+    public class SingleBuffer<T> : Component where T : struct // GPU buffer containing a single instance of T
+    {
+        readonly BufferUsage _usage;
+        string _name;
+        T _instance;
+
+        public DeviceBuffer DeviceBuffer { get; private set; }
+
+        public T Data
+        {
+            get => _instance;
+            set
+            {
+                _instance = value;
+                Dirty();
+            }
+        }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                if (DeviceBuffer != null)
+                    DeviceBuffer.Name = _name;
+            }
+        }
+
+        public SingleBuffer(in T data, BufferUsage usage, string name = null)
+        {
+            _instance = data;
+            _usage = usage;
+            _name = name;
+
+            On<DestroyDeviceObjectsEvent>(_ => Destroy());
+            Dirty();
+        }
+
+        protected override void Subscribed() => Dirty();
+        protected override void Unsubscribed() => Destroy();
+        void Dirty() => On<PrepareFrameResourcesEvent>(Update);
+
+        void Update(IVeldridInitEvent e)
+        {
+            var size = (uint)Unsafe.SizeOf<T>();
+            if (DeviceBuffer != null && DeviceBuffer.SizeInBytes != size)
+                Destroy();
+
+            if (DeviceBuffer == null)
+            {
+                DeviceBuffer = e.Device.ResourceFactory.CreateBuffer(new BufferDescription(size, _usage));
+                DeviceBuffer.Name = _name;
+            }
+
+            e.CommandList.UpdateBuffer(DeviceBuffer, 0, _instance);
+            Off<PrepareFrameResourcesEvent>();
+        }
+
+        void Destroy()
+        {
+            DeviceBuffer?.Dispose();
+            DeviceBuffer = null;
+        }
+    }
+}
