@@ -11,7 +11,7 @@ namespace UAlbion.Core
         readonly string _vertexShaderName;
         readonly string _fragmentShaderName;
         readonly VertexLayoutDescription[] _vertexLayouts;
-        readonly ResourceLayoutDescription[] _resourceLayouts;
+        readonly Type[] _resourceLayouts;
 
         Veldrid.Pipeline _pipeline;
         Shader[] _shaders;
@@ -26,14 +26,14 @@ namespace UAlbion.Core
         BlendStateDescription _alphaBlend = BlendStateDescription.SingleAlphaBlend;
         DepthStencilStateDescription _depthStencilMode = DepthStencilStateDescription.DepthOnlyLessEqual;
 
-        public Pipeline(string vertexShaderName, string fragmentShaderName, VertexLayoutDescription[] vertexLayouts, ResourceLayoutDescription[] resourceLayouts)
+        public Pipeline(string vertexShaderName, string fragmentShaderName, VertexLayoutDescription[] vertexLayouts, Type[] resourceLayouts)
         {
             _vertexShaderName = vertexShaderName ?? throw new ArgumentNullException(nameof(vertexShaderName));
             _fragmentShaderName = fragmentShaderName ?? throw new ArgumentNullException(nameof(fragmentShaderName));
             _vertexLayouts = vertexLayouts ?? throw new ArgumentNullException(nameof(vertexLayouts));
             _resourceLayouts = resourceLayouts ?? throw new ArgumentNullException(nameof(resourceLayouts));
 
-            On<CreateDeviceObjectsEvent>(e => Dirty());
+            On<DeviceCreatedEvent>(e => Dirty());
             On<DestroyDeviceObjectsEvent>(e => Dispose());
             Dirty();
         }
@@ -98,7 +98,7 @@ namespace UAlbion.Core
                     new RasterizerStateDescription(CullMode, FillMode, Winding, UseDepthTest, UseScissorTest),
                     Topology,
                     shaderSetDescription,
-                    _resourceLayouts.Select(layoutSource.Get).ToArray(),
+                    _resourceLayouts.Select(x => layoutSource.Get(x, device)).ToArray(),
                     OutputDescription ?? device.SwapchainFramebuffer.OutputDescription);
 
                 _pipeline = device.ResourceFactory.CreateGraphicsPipeline(ref pipelineDescription);

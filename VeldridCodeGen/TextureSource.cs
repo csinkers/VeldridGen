@@ -12,7 +12,7 @@ namespace UAlbion.Core
         {
             if (!_simple.TryGetValue(texture, out var holder))
             {
-                holder = new Texture2DHolder(texture);
+                holder = AttachChild(new Texture2DHolder(texture));
                 _simple[texture] = holder;
             }
             return holder;
@@ -22,7 +22,7 @@ namespace UAlbion.Core
         {
             if (!_array.TryGetValue(texture, out var holder))
             {
-                holder = new Texture2DArrayHolder(texture);
+                holder = AttachChild(new Texture2DArrayHolder(texture));
                 _array[texture] = holder;
             }
             return holder;

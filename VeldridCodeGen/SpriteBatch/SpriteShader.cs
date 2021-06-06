@@ -20,7 +20,7 @@ namespace UAlbion.Core.SpriteBatch
     {
         void Init()
         {
-            On<CreateDeviceObjectsEvent>(e => Dirty());
+            On<DeviceCreatedEvent>(e => Dirty());
         }
 
         protected override void Subscribed() => Dirty();

@@ -110,7 +110,17 @@ namespace UAlbion.Core
             }
 
             while (!_done)
+            {
+                GraphicsBackend backend = _newBackend ?? GraphicsDevice.BackendType;
+                using (PerfTracker.InfrequentEvent($"change backend to {backend}"))
+                    ChangeBackend(backend);
+                _newBackend = null;
+
                 InnerLoop();
+
+                DestroyAllObjects();
+                GraphicsDevice.Dispose();
+            }
 
             PerfTracker.StartupEvent("Startup done, rendering first frame");
             Resolve<IShaderCache>()?.CleanupOldFiles();
@@ -119,6 +129,9 @@ namespace UAlbion.Core
 
         void InnerLoop()
         {
+            if (GraphicsDevice == null)
+                throw new InvalidOperationException("GraphicsDevice not initialised");
+
             var frameCounter = Stopwatch.StartNew();
             while (!_done && _newBackend == null)
             {
@@ -148,9 +161,6 @@ namespace UAlbion.Core
                     CoreTrace.Log.Info("Engine", "Draw complete");
                 }
             }
-
-            DestroyAllObjects();
-            GraphicsDevice.Dispose();
         }
 
         void Draw()
@@ -180,54 +190,51 @@ namespace UAlbion.Core
             }
         }
 
-        public void ChangeBackend()
+        void ChangeBackend(GraphicsBackend backend)
         {
-            if (_newBackend == null) return;
-            var backend = _newBackend.Value;
-            _newBackend = null;
-
-            using (PerfTracker.InfrequentEvent($"change backend to {backend}"))
+            if (GraphicsDevice != null)
             {
-                if (GraphicsDevice != null)
-                {
-                    DestroyAllObjects();
-                    if (GraphicsDevice.BackendType != backend)
-                        Resolve<IShaderCache>().DestroyAllDeviceObjects();
-                    GraphicsDevice.Dispose();
-                }
-
-                if (_useRenderDoc)
-                {
-                    using (PerfTracker.InfrequentEvent("Loading renderdoc"))
-                    {
-                        if (!RenderDoc.Load(out _renderDoc))
-                            throw new InvalidOperationException("Failed to load renderdoc");
-                    }
-
-                    _renderDoc.APIValidation = true;
-                }
-
-                _windowManager.CreateWindow(_defaultX, _defaultY, _defaultWidth, _defaultHeight);
-                GraphicsDeviceOptions gdOptions = new GraphicsDeviceOptions(
-                    _renderDoc != null, PixelFormat.R32_Float, false,
-                    ResourceBindingModel.Improved, true,
-                    true, false)
-                {
-                    SyncToVerticalBlank = _vsync,
-#if DEBUG
-                    Debug = true
-#endif
-                };
-
-                // Currently this field only exists in my local build of veldrid, so set it via reflection.
-                var singleThreadedProperty = typeof(GraphicsDeviceOptions).GetField("SingleThreaded");
-                if (singleThreadedProperty != null)
-                    singleThreadedProperty.SetValueDirect(__makeref(gdOptions), true);
-
-                GraphicsDevice = VeldridStartup.CreateGraphicsDevice(_windowManager.Window, gdOptions, backend);
-                GraphicsDevice.WaitForIdle();
-                // Raise(new BackendChangedEvent());
+                DestroyAllObjects();
+                if (GraphicsDevice.BackendType != backend)
+                    Resolve<IShaderCache>().DestroyAllDeviceObjects();
+                GraphicsDevice.Dispose();
             }
+
+            if (_useRenderDoc)
+            {
+                using (PerfTracker.InfrequentEvent("Loading renderdoc"))
+                {
+                    if (!RenderDoc.Load(out _renderDoc))
+                        throw new InvalidOperationException("Failed to load renderdoc");
+                }
+
+                _renderDoc.APIValidation = true;
+            }
+
+            _windowManager.CreateWindow(_defaultX, _defaultY, _defaultWidth, _defaultHeight);
+            GraphicsDeviceOptions gdOptions = new GraphicsDeviceOptions(
+                _renderDoc != null, PixelFormat.R32_Float, false,
+                ResourceBindingModel.Improved, true,
+                true, false)
+            {
+                SyncToVerticalBlank = _vsync,
+#if DEBUG
+                Debug = true
+#endif
+            };
+
+            // Currently this field only exists in my local build of veldrid, so set it via reflection.
+            var singleThreadedProperty = typeof(GraphicsDeviceOptions).GetField("SingleThreaded");
+            if (singleThreadedProperty != null)
+                singleThreadedProperty.SetValueDirect(__makeref(gdOptions), true);
+
+            GraphicsDevice = VeldridStartup.CreateGraphicsDevice(_windowManager.Window, gdOptions, backend);
+            GraphicsDevice.WaitForIdle();
+
+            _frameCommands = GraphicsDevice.ResourceFactory.CreateCommandList();
+            _frameCommands.Name = "Frame Commands List";
+
+            Raise(new DeviceCreatedEvent());
         }
 
         void DestroyAllObjects()
@@ -235,11 +242,11 @@ namespace UAlbion.Core
             using (PerfTracker.InfrequentEvent("Destroying objects"))
             {
                 Raise(new DestroyDeviceObjectsEvent());
-                GraphicsDevice.WaitForIdle();
+                GraphicsDevice?.WaitForIdle();
                 _frameCommands?.Dispose();
                 _frameCommands = null;
 
-                GraphicsDevice.WaitForIdle();
+                GraphicsDevice?.WaitForIdle();
             }
         }
     }

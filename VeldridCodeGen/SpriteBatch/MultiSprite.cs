@@ -28,7 +28,7 @@ namespace UAlbion.Core.SpriteBatch
                 TextureHeight = key.Texture.Height
             }, BufferUsage.UniformBuffer, $"B_SpriteUniform:{Name}");
 
-            ResourceSet = new SpriteSet
+            ResourceSet = new SpriteArraySet
             {
                 Name = $"RS_Sprite:{Key.Texture.Name}",
                 Texture = Resolve<ITextureSource>().GetArrayTexture(Key.Texture),
@@ -43,7 +43,7 @@ namespace UAlbion.Core.SpriteBatch
         public int ActiveInstances { get; private set; }
         public MultiBuffer<SpriteInstanceData> Instances { get; }
         public SingleBuffer<SpriteUniform> Uniform { get; }
-        public SpriteSet ResourceSet { get; }
+        public SpriteArraySet ResourceSet { get; }
 
         internal SpriteLease Grow(int length, object caller)
         {

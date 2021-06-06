@@ -27,7 +27,7 @@ namespace UAlbion.Core
 
         public CommonSet()
         {
-            On<CreateDeviceObjectsEvent>(_ => Dirty());
+            On<DeviceCreatedEvent>(_ => Dirty());
             On<DestroyDeviceObjectsEvent>(_ => Dispose());
         }
 
@@ -116,7 +116,7 @@ namespace UAlbion.Core
 
             var layoutSource = Resolve<IResourceLayoutSource>();
             _resourceSet = e.Device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
-                layoutSource.Get(Layout),
+                layoutSource.Get(GetType(), e.Device),
                 _globalInfo.DeviceBuffer,
                 _projection.DeviceBuffer,
                 _view.DeviceBuffer,

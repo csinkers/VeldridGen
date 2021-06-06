@@ -15,9 +15,9 @@ namespace UAlbion.Core
         CommonSet _commonSet;
         SpriteManager _spriteManager;
 
-        public SpriteScene(ICamera camera, ITexture palette, FramebufferHolder framebuffer)
+        public SpriteScene(ITexture palette, FramebufferHolder framebuffer)
         {
-            _camera = camera ?? throw new ArgumentNullException(nameof(camera));
+            _camera = AttachChild(new PerspectiveCamera());
             _palette = palette ?? throw new ArgumentNullException(nameof(palette));
             _framebuffer = framebuffer ?? throw new ArgumentNullException(nameof(framebuffer));
             _spriteRenderer = AttachChild(new SpriteRenderer());

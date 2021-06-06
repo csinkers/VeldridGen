@@ -24,7 +24,7 @@ namespace UAlbion.Core.SpriteBatch
                 "SpriteSV.vert",
                 "SpriteSF.frag",
                 new [] { Vertex2DTextured.Layout, SpriteInstanceData.Layout },
-                new[] { SpriteSet.Layout, CommonSet.Layout })
+                new[] { typeof(SpriteArraySet), typeof(CommonSet) })
             {
                 Name = "P:Sprite",
                 UseDepthTest = true,

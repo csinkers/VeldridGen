@@ -8,8 +8,8 @@ namespace UAlbion.Core
 {
     public class PerspectiveCamera : Component, ICamera
     {
-        readonly SingleBuffer<ViewMatrix> _viewMatrix = new(new ViewMatrix(), BufferUsage.UniformBuffer, "M_View");
-        readonly SingleBuffer<ProjectionMatrix> _projectionMatrix = new(new ProjectionMatrix(), BufferUsage.UniformBuffer, "M_Projection");
+        readonly SingleBuffer<ViewMatrix> _viewMatrix;
+        readonly SingleBuffer<ProjectionMatrix> _projectionMatrix;
 
         Vector3 _position = new(0, 0, 0);
         Vector3 _lookDirection = new(0, -.3f, -1f);
@@ -28,6 +28,7 @@ namespace UAlbion.Core
         {
             if (!_dirty)
                 return;
+
             _viewMatrix.Data = new ViewMatrix(CalculateView());
             _projectionMatrix.Data = new ProjectionMatrix(CalculateProjection());
             _dirty = false;
@@ -73,7 +74,17 @@ namespace UAlbion.Core
 
         public PerspectiveCamera(bool legacyPitch = false)
         {
-            On<CreateDeviceObjectsEvent>(_ => _dirty = true);
+            _viewMatrix = AttachChild(new SingleBuffer<ViewMatrix>(
+                new ViewMatrix(),
+                BufferUsage.UniformBuffer,
+                "M_View"));
+
+            _projectionMatrix = AttachChild(new SingleBuffer<ProjectionMatrix>(
+                new ProjectionMatrix(),
+                BufferUsage.UniformBuffer,
+                "M_Projection"));
+
+            On<DeviceCreatedEvent>(_ => _dirty = true);
             /*
             OnAsync<ScreenCoordinateSelectEvent, Selection>(TransformSelect);
             On<EngineFlagEvent>(_ => UpdateBackend());

@@ -24,6 +24,7 @@ namespace UAlbion.Core.SpriteBatch
 
         public SpriteSet()
         {
+            On<DeviceCreatedEvent>(_ => Dirty());
             On<DestroyDeviceObjectsEvent>(_ => Dispose());
         }
 
@@ -92,10 +93,10 @@ namespace UAlbion.Core.SpriteBatch
 
         protected override void Subscribed() => Dirty();
         protected override void Unsubscribed() => Dispose();
-        void Dirty() => On<PrepareFrameResourcesEvent>(Update);
+        void Dirty() => On<PrepareFrameResourceSetsEvent>(Update);
         void DependencyPropertyChanged(object sender, PropertyChangedEventArgs e) => Dirty();
 
-        void Update(PrepareFrameResourcesEvent e)
+        void Update(IVeldridInitEvent e)
         {
             if (_resourceSet != null)
                 Dispose();
@@ -107,7 +108,7 @@ namespace UAlbion.Core.SpriteBatch
 
             var layoutSource = Resolve<IResourceLayoutSource>();
             _resourceSet = e.Device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
-                layoutSource.Get(Layout),
+                layoutSource.Get(GetType(), e.Device),
                 _texture.TextureView,
                 _sampler.Sampler,
                 _uniform.DeviceBuffer));

@@ -56,7 +56,7 @@ namespace UAlbion.Core
         public OrthographicCamera(bool yAxisIncreasesDownTheScreen = true)
         {
             _yAxisIncreasesDownTheScreen = yAxisIncreasesDownTheScreen;
-            On<CreateDeviceObjectsEvent>(_ => _dirty = true);
+            On<DeviceCreatedEvent>(_ => _dirty = true);
             /*
             OnAsync<ScreenCoordinateSelectEvent, Selection>(TransformSelect);
             On<CameraPositionEvent>(e => Position = new Vector3(e.X, e.Y, e.Z));

@@ -25,9 +25,11 @@ namespace UAlbion.Core.SpriteBatch
 
         public SpriteArraySet()
         {
-            On<CreateDeviceObjectsEvent>(Update);
+            On<DeviceCreatedEvent>(_ => Dirty());
             On<DestroyDeviceObjectsEvent>(e => Dispose());
         }
+
+        public ResourceSet DeviceSet => _resourceSet;
 
         public string Name
         {
@@ -102,7 +104,7 @@ namespace UAlbion.Core.SpriteBatch
 
             var layoutSource = Resolve<IResourceLayoutSource>();
             _resourceSet = e.Device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
-                layoutSource.Get(Layout),
+                layoutSource.Get(GetType(), e.Device),
                 _texture.TextureView,
                 _sampler.Sampler,
                 _uniform.DeviceBuffer));
