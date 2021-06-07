@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Numerics;
 using ImGuiNET;
 using UAlbion.Api;
 using UAlbion.Core.Events;
@@ -28,9 +27,7 @@ namespace UAlbion.Core.Veldrid
         CommandList _frameCommands;
         bool _done;
         bool _vsync = true;
-        Vector2? _pendingCursorUpdate;
         GraphicsBackend? _newBackend;
-        DateTime _lastTitleUpdateTime;
 
         internal GraphicsDevice GraphicsDevice { get; private set; }
         internal static RenderDoc RenderDoc => _renderDoc;
@@ -38,6 +35,9 @@ namespace UAlbion.Core.Veldrid
 
         public Engine(GraphicsBackend backend, bool useRenderDoc, IScene scene, Rectangle? windowRect = null)
         {
+            On<QuitEvent>(e => _done = true);
+            On<WindowResizedEvent>(e => GraphicsDevice.ResizeMainWindow((uint)e.Width, (uint)e.Height));
+
             /*
             On<LoadRenderDocEvent>(e =>
             {
@@ -46,7 +46,6 @@ namespace UAlbion.Core.Veldrid
                 _recreateWindow = true;
             });
             On<GarbageCollectionEvent>(e => GC.Collect());
-            On<QuitEvent>(e => _done = true);
             On<RunRenderDocEvent>(e => _renderDoc?.LaunchReplayUI());
             On<SetCursorPositionEvent>(e => _pendingCursorUpdate = new Vector2(e.X, e.Y));
             On<ToggleFullscreenEvent>(e => ToggleFullscreenState());
@@ -251,20 +250,4 @@ namespace UAlbion.Core.Veldrid
             }
         }
     }
-
-    /*
-    [Event("update")] public partial record UpdateEvent([EventPart("delta")] double Delta);
-    public partial record UpdateEvent
-    {
-        public static UpdateEvent Parse(string s)
-        {
-            return new(double.Parse(s["update ".Length..]));
-        }
-
-        public override string ToString()
-        {
-            return "update " + Delta;
-        }
-    }
-    */
 }

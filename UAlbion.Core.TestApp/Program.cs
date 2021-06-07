@@ -4,9 +4,9 @@ using System.Numerics;
 using System.Reflection;
 using UAlbion.Api;
 using UAlbion.Api.Visual;
+using UAlbion.Core.SpriteRenderer;
 using UAlbion.Core.Sprites;
 using UAlbion.Core.Veldrid;
-using UAlbion.Core.Veldrid.SpriteBatch;
 using Veldrid;
 using VeldridCodeGen.Interfaces;
 
@@ -43,7 +43,7 @@ namespace UAlbion.Core.TestApp
             var scene = new SpriteScene(palette, framebuffer);
             var engine = new Engine(GraphicsBackend.Direct3D11, true, scene);
 
-            shaderCache.AddShaderPath(Path.Combine(rootDir, @"UAlbion.Core.Veldrid\SpriteBatch\Shaders"));
+            shaderCache.AddShaderPath(Path.Combine(rootDir, @"UAlbion.Core.SpriteRenderer\Shaders"));
 
             exchange
                 .Register<IFileSystem>(fileSystem)
@@ -56,9 +56,13 @@ namespace UAlbion.Core.TestApp
                 .Attach(engine)
                 ;
 
-            var key = new SpriteKey(texture, SpriteSampler.Default, 0);
-            var lease = scene.SpriteManager.Borrow(key, 1, null);
+            var key = new SpriteKey(texture, SpriteSampler.Default, SpriteKeyFlags.UsePalette);
+            var lease = scene.SpriteManager.Borrow(key, 5, null);
             lease.Set(0, new Vector3(0, 0, -10), 4 * Vector2.One, texture.Regions[0], SpriteFlags.None);
+            lease.Set(1, new Vector3(-4, -4, -10), 4 * Vector2.One, texture.Regions[1], SpriteFlags.None);
+            lease.Set(2, new Vector3(-4, 4, -10), 4 * Vector2.One, texture.Regions[2], SpriteFlags.None);
+            lease.Set(3, new Vector3(4, -4, -10), 4 * Vector2.One, texture.Regions[3], SpriteFlags.None);
+            lease.Set(4, new Vector3(4, 4, -10), 4 * Vector2.One, texture.Regions[4], SpriteFlags.None);
             engine.Run();
         }
 
@@ -74,13 +78,49 @@ namespace UAlbion.Core.TestApp
 
         static ArrayTexture<byte> BuildTexture()
         {
-            var texture = new ArrayTexture<byte>(new AssetId(1, "Test Texture"), 64, 64, 1);
-            texture.AddRegion(0, 0, 64, 64);
-            var pixels = texture.GetMutableRegionBuffer(0);
-            for (int j = 0; j < pixels.Height; j++)
-                for (int i = 0; i < pixels.Width; i++)
-                    pixels.Buffer[j * pixels.Width + i] = i == 0 || j == 0 ? (byte)255 : (byte)(2 * (i + j));
+            var texture = new ArrayTexture<byte>(new AssetId(1, "Test Texture"), 64, 64, 5);
+            {
+                texture.AddRegion(0, 0, 64, 64);
+                var pixels = texture.GetMutableRegionBuffer(0);
+                for (int j = 0; j < pixels.Height; j++)
+                    for (int i = 0; i < pixels.Width; i++)
+                        pixels.Buffer[j * pixels.Width + i] = i == 0 || j == 0 ? (byte)255 : (byte)(2 * (i + j));
+            }
 
+            {
+                texture.AddRegion(0, 0, 64, 64, 1);
+                var pixels = texture.GetMutableRegionBuffer(1);
+                for (int j = 0; j < pixels.Height; j++)
+                    for (int i = 0; i < pixels.Width; i++)
+                        pixels.Buffer[j * pixels.Width + i] = i == 0 || j == 0 ? (byte)255 : (byte)(255 - 2 * (i + j));
+            }
+
+            {
+
+                texture.AddRegion(0, 0, 64, 64, 2);
+                var pixels = texture.GetMutableRegionBuffer(2);
+                for (int j = 0; j < pixels.Height; j++)
+                    for (int i = 0; i < pixels.Width; i++)
+                        pixels.Buffer[j * pixels.Width + i] = i == 0 || j == 0 ? (byte)255 : (byte)((i - j));
+            }
+
+            {
+
+                texture.AddRegion(0, 0, 64, 64, 3);
+                var pixels = texture.GetMutableRegionBuffer(3);
+                for (int j = 0; j < pixels.Height; j++)
+                    for (int i = 0; i < pixels.Width; i++)
+                        pixels.Buffer[j * pixels.Width + i] = i == 0 || j == 0 ? (byte)255 : (byte)(i * j);
+            }
+
+            {
+
+                texture.AddRegion(0, 0, 64, 64, 4);
+                var pixels = texture.GetMutableRegionBuffer(4);
+                for (int j = 0; j < pixels.Height; j++)
+                    for (int i = 0; i < pixels.Width; i++)
+                        pixels.Buffer[j * pixels.Width + i] = i == 0 || j == 0 ? (byte)255 : (byte)(i % j);
+            }
             return texture;
         }
     }

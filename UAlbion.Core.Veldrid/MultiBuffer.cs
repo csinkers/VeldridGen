@@ -52,8 +52,8 @@ namespace UAlbion.Core.Veldrid
             _usage = usage;
             _name = name;
 
+            On<DeviceCreatedEvent>(_ => Dirty());
             On<DestroyDeviceObjectsEvent>(_ => Dispose());
-            Dirty();
         }
 
         protected override void Subscribed() => Dirty();

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using UAlbion.Core.Veldrid.Events;
 using Veldrid;
+using VeldridCodeGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {
-    public class SingleBuffer<T> : Component, IDisposable where T : struct // GPU buffer containing a single instance of T
+    public class SingleBuffer<T> : Component, IBufferHolder where T : struct // GPU buffer containing a single instance of T
     {
         readonly BufferUsage _usage;
         string _name;
@@ -40,8 +40,8 @@ namespace UAlbion.Core.Veldrid
             _usage = usage;
             _name = name;
 
+            On<DeviceCreatedEvent>(_ => Dirty());
             On<DestroyDeviceObjectsEvent>(_ => Dispose());
-            Dirty();
         }
 
         protected override void Subscribed() => Dirty();
