@@ -4,7 +4,7 @@
     {
         None,
         All,
-        Layer,
-        Region
+        Region,
+        Layer
     }
 }

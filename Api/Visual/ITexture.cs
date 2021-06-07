@@ -26,16 +26,6 @@ namespace UAlbion.Api.Visual
         int Depth { get; }
     }
 
-    public interface IReadOnlyArrayTexture<T> : IReadOnlyTexture<T>, IArrayTexture where T : unmanaged
-    {
-        ReadOnlyImageBuffer<T> GetLayerBuffer(int i);
-    }
-
-    public interface IMutableArrayTexture<T> : IMutableTexture<T>, IArrayTexture where T : unmanaged
-    {
-        ImageBuffer<T> GetMutableLayerBuffer(int i);
-    }
-
     public interface IReadOnlyTexture<T> : ITexture where T : unmanaged
     {
         ReadOnlySpan<T> PixelData { get; }
@@ -46,5 +36,15 @@ namespace UAlbion.Api.Visual
     {
         Span<T> MutablePixelData { get; }
         ImageBuffer<T> GetMutableRegionBuffer(int i);
+    }
+
+    public interface IReadOnlyArrayTexture<T> : IReadOnlyTexture<T>, IArrayTexture where T : unmanaged
+    {
+        ReadOnlyImageBuffer<T> GetLayerBuffer(int i);
+    }
+
+    public interface IMutableArrayTexture<T> : IMutableTexture<T>, IReadOnlyArrayTexture<T> where T : unmanaged
+    {
+        ImageBuffer<T> GetMutableLayerBuffer(int i);
     }
 }
