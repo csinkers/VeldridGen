@@ -1,0 +1,108 @@
+ISourceGenerator (must be stateless)
+    Initialize(GeneratorInitializationContext)
+        context.RegisterForSyntaxNotifications(Func<ISyntaxReceiver>)
+        context.RegisterForSyntaxNotifications(Func<ISyntaxContextReceiver>)
+        context.RegisterForPostInitialization(Action<GeneratorPostInitializationContext>)
+            context.AddSource(filename, csText)
+
+    Execute(GeneratorExecutionContext)
+        context.Compilation.SyntaxTrees // 1 per file
+        context.SyntaxContextReceiver
+        context.ReportDiagnostic(Diagnostic)
+        context.AddSource(nameHint, sourceText)
+    {
+        INamedTypeSymbol attribSymbol = context.Compilation.GetTypeByMetadataName("NS.SomeAttrib");
+        foreach(var g in receiver.Fields.GroupBy(x => x.ContainingType))
+        {
+            string classSource = ProcessClass(group.Key, group.ToList(), attribSymbol, context);
+            context.AddSource($"{group.Key.Name}_VeldridGen.cs", SourceText.From(classSource, Encoding.UTF8));
+        }
+    }
+
+ProcessClass
+    // Use classSymbol.ContainingSymbol.Equals(classSymbol.ContainingNamespace) to check for nested classes
+    // ToDisplayString on symbols to get full names, e.g. namespace etc
+    // .Name for short names
+    classSymbol.Interfaces.Contains(someInterfaceSymbol);
+ProcessField(sb, fieldSym, attribSym)
+    // cache names & types in locals for perf?
+    var attribData = fieldSym.GetAttributes().Single(x => x.AttributeClass.Equals(attribSym, SymbolEqualityComparer.Default);
+    var attribParam = attribData.NamedArguments.SingleOrDefault(kvp => kvp.Key == "AttribPropName").Value; // returns option type?!
+    name: TrimStart('_'), first char ToUpper.
+
+ISyntaxReceiver
+    OnVisitSyntaxNode(SyntaxNode)
+    {
+        if (syntaxNode is FieldDeclarationSyntax fds && fds.AttributeLists.Count > 0)
+            Results.Add(fds);
+
+        ...or
+
+        if (context.Node is FieldDS fds && fds.AttributeLists.Count > 0)
+        {
+            foreach (VariableDeclaratorS variable in fds.Declaration.Variables)
+            {
+                var fieldSym = context.SemanticModel.GetDeclaredSymbol(variable) as IFieldSymbol;
+                if(fieldSym.GetAttributes().Any(ad => ad.AttributeClass.ToDisplayString() == "NS.SomeAttribute")
+                    Results.Add(fieldSym);
+            }
+        }
+
+    }
+
+ISyntaxContextReceiver
+    OnVisitSyntaxNode(GeneratorSyntaxContext)
+        context.Node // SyntaxNode
+        context.SemanticModel
+
+SyntaxNode / CSharpSyntaxNode
+    AttributeSyntax
+    MemberDeclarationSyntax
+        BaseTypeDeclarationSyntax 
+            EnumDS
+            TypeDS
+                ClassDS
+                InterfaceDS
+                RecordDS
+                StructDS
+        BaseFieldDS
+            EventFieldDS
+            FieldDS
+        BaseMethodDS
+            ConstructorDS
+            ConversionOperatorDS
+            DestructorDS
+            MethodDS
+            OperatorDS
+        BasePropertyDS
+            EventDS
+            IndexerDS
+            PropertyDS
+        EnumMemberDS
+    StatementS
+        BlockS
+        BreakStatementS
+        CheckedStatementS
+        CommonForEachStatementS
+        ContinueSS
+        DoSS
+        EmptySS
+        ExpressionSS
+        FixedSS
+        ForSS
+        GotoSS
+        IfSS
+        LabeledSS
+        LocalDSS
+        LocalFunctionSS
+        LockSS
+        ReturnSS
+        SwitchSS
+        ThrowSS
+        TrySS
+        UnsafeSS
+        UsingSS
+        WhileSS
+        YieldSS
+
+

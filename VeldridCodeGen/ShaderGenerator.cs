@@ -1,16 +1,221 @@
-﻿#if false
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
-namespace UAlbion.CodeGen
+namespace VeldridCodeGen
 {
+    [Generator]
+    public class VeldridGenerator : ISourceGenerator
+    {
+        public void Initialize(GeneratorInitializationContext context)
+        {
+            context.RegisterForSyntaxNotifications(() => new VeldridSyntaxReceiver());
+        }
+
+        public void Execute(GeneratorExecutionContext context)
+        {
+        }
+
+        void GenerateResourceSets()
+        {
+        }
+
+        void GenerateResourceSet()
+        {
+            // 1) class derives from IResourceLayout
+            // 2) Generate for fields w/ ResourceAttribute
+            /*
+        public static readonly ResourceLayoutDescription Layout = new(
+            new ResourceLayoutElementDescription("{resourceAttrib.Name}", ResourceKind.UniformBuffer, {resourceAttrib.Stages}),
+            Kind: IBufferHolder => UniformBuffer, ITextureHolder => TextureReadOnly, ISamplerHolder => Sampler, TODO: Read/write textures, structured buffers
+
+        ResourceSet _resourceSet; // TODO: Diagnostic if name taken
+        string _name; // TODO: Diagnostic if name taken
+
+        public CommonSet()
+        {
+            {config.ConstructorBlock(context)}
+            On<DeviceCreatedEvent>(_ => Dirty());
+            On<DestroyDeviceObjectsEvent>(_ => Dispose());
+        }
+
+        public ResourceSet DeviceSet => _resourceSet;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (_name == value) return;
+                _name = value;
+                if (_resourceSet != null)
+                    _resourceSet.Name = _name;
+            }
+        }
+
+        public SingleBuffer<GlobalInfo> GlobalInfo // Copy type from field
+        {
+            get => _globalInfo;
+            set
+            {
+                if (_globalInfo == value)
+                    return;
+                _globalInfo = value;
+                Dirty(); // {config.PropertyChangedBlock("GlobalInfo", "_globalInfo")}
+            }
+        }
+
+        public Texture2DHolder Palette // Copy type, transform name
+        {
+            get => _palette;
+            set
+            {
+                if (_palette == value) return;
+
+                if (_palette != null)
+                    _palette.PropertyChanged -= PropertyDirty;
+
+                _palette = value;
+
+                if (_palette != null)
+                    _palette.PropertyChanged += PropertyDirty;
+                Dirty(); // {config.PropertyChangedBlock("Palette", "_palette")}
+            }
+        }
+
+        // config.ExtraMethods
+        protected override void Subscribed() => Dirty();
+        protected override void Unsubscribed() => Dispose();
+        void Dirty() => On<PrepareFrameResourceSetsEvent>(Update);
+        void PropertyDirty(object sender, PropertyChangedEventArgs e) => Dirty();
+
+        void Update(IVeldridInitEvent e)
+        {
+            if (_resourceSet != null)
+                Dispose();
+
+            var layoutSource = Resolve<IResourceLayoutSource>(); // {config.PreCreateSetBlock}
+            _resourceSet = e.Device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
+                layoutSource.Get(GetType(), e.Device), // {config.GetResourceLayoutBlock}
+                _globalInfo.DeviceBuffer,
+                _projection.DeviceBuffer,
+                _view.DeviceBuffer,
+                _palette.TextureView));
+
+            _resourceSet.Name = Name;
+            Off<PrepareFrameResourcesEvent>();
+        }
+
+        public void Dispose()
+        {
+            _resourceSet?.Dispose();
+            _resourceSet = null;
+        }
+GLSL:
+layout(set = 1, binding = 0) uniform _Shared {
+	vec3 uWorldSpacePosition;  // 12
+	uint _s_padding_1;         // 16
+	vec3 uCameraLookDirection; // 28
+	uint _s_padding_2;         // 32
+
+	vec2 uResolution;    // 40
+	float uTime;         // 44
+	float uSpecial1;     // 48
+
+	float uSpecial2;     // 52
+	uint uEngineFlags;   // 56
+	float uPaletteBlend; // 60
+	uint _s_padding_3;   // 64
+};
+
+        */
+        }
+
+        void GenerateVertexFormats()
+        {
+            // Derives from IVertexFormat
+            // Fields with InputParam attrib (name + optional format)
+        }
+
+        void GenerateVertexFormat()
+        {
+            /*
+    public readonly partial struct Vertex2DTextured // match access specifier, name
+    {
+        public static VertexLayoutDescription Layout = new(
+            new VertexElementDescription("vPosition", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2), // attrib.Name
+            new VertexElementDescription("vTextCoords", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2));
+
+            Types:
+            float => Float1
+            Vector2 => Float2
+            Vector3 => Float3
+            Vector4 => Float4
+            uint => UInt1
+            int => Int1
+            // TODO: various packed formats, like half floats, 2xbyte, 4xbyte, 2xushort etc
+    }
+            Vertex GLSL:
+// {type name}
+layout(location = {index}) in vec2 {attrib.Name};
+layout(location = {index}) in uint {attrib.Name};
+
+             */
+        }
+
+        void GenerateFramebuffers()
+        {
+
+/*
+    public partial class OffscreenFramebuffer
+    {
+        protected override Framebuffer CreateFramebuffer(IVeldridInitEvent e)
+        {
+            _depth = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                Width, Height, 1, 1, 1,
+                PixelFormat.R32_Float, TextureUsage.DepthStencil, TextureType.Texture2D));
+
+            _color = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                Width, Height, 1, 1, 1,
+                PixelFormat.B8_G8_R8_A8_UNorm, TextureUsage.RenderTarget, TextureType.Texture2D));
+
+            var description = new FramebufferDescription(_depth, _color);
+            return e.Device.ResourceFactory.CreateFramebuffer(ref description);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _depth?.Dispose();
+            _color?.Dispose();
+            _depth = null;
+            _color = null;
+        }
+    } */
+        }
+
+        void GenerateGlsl()
+        {
+            /*
+            Vertex:
+            Resource sets
+            Vertex layouts / input params
+            */
+        }
+
+
+    }
+
+    public class VeldridSyntaxReceiver : ISyntaxContextReceiver
+    {
+        public List<FieldDeclarationSyntax> Fields { get; } = new();
+        public List<PropertyDeclarationSyntax> Properties { get; } = new();
+        public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
+        {
+        }
+    }
+
+#if false
     [Generator]
     public class ShaderGenerator : ISourceGenerator
     {
@@ -275,5 +480,5 @@ public {fieldType} {propertyName}
             }
         }
     }
-}
 #endif
+}

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\VeldridCodeGen.Interfaces\VeldridCodeGen.Interfaces.csproj" />
+    <ProjectReference Include="..\UAlbion.Core.Veldrid\UAlbion.Core.Veldrid.csproj" />
+  </ItemGroup>
+
+</Project>
