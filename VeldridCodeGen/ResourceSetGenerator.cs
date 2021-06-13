@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Veldrid;
 
 namespace VeldridCodeGen
 {
     static class ResourceSetGenerator
     {
-        public static void Generate(StringBuilder sb, VeldridTypeInfo type)
+        public static void Generate(StringBuilder sb, VeldridTypeInfo type, Symbols symbols)
         {
             /* e.g.
             new ResourceLayoutElementDescription("uSprite", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
@@ -22,8 +21,8 @@ namespace VeldridCodeGen
                 if (!first)
                     sb.AppendLine(",");
 
-                var shaderStages = Util.FormatFlagsEnum(member.Resource.Stages);
-                sb.Append($"            new ResourceLayoutElementDescription(\"{member.Resource.Name}\", ResourceKind.{member.Resource.Kind}, {shaderStages})");
+                var shaderStages = member.Resource.Stages.ToString(); // Util.FormatFlagsEnum(member.Resource.Stages);
+                sb.Append($"            new ResourceLayoutElementDescription(\"{member.Resource.Name}\", global::{member.Resource.Kind}, (ShaderStages){shaderStages})");
                 first = false;
             }
             sb.AppendLine(");");
@@ -31,13 +30,10 @@ namespace VeldridCodeGen
 
             foreach (var member in type.Members.Where(x => (x.Flags & MemberFlags.IsResource) != 0))
             {
-                switch (member.Resource.Kind)
-                {
-                    case ResourceKind.UniformBuffer: GenerateUniform(sb, member); break;
-                    case ResourceKind.TextureReadOnly: GenerateTexture(sb, member); break;
-                    case ResourceKind.Sampler: GenerateSampler(sb, member); break;
-                    default: throw new ArgumentOutOfRangeException();
-                }
+                if (Equals(member.Resource.Kind, symbols.ResourceKind.UniformBuffer.ToDisplayString())) GenerateUniform(sb, member);
+                else if (Equals(member.Resource.Kind, symbols.ResourceKind.TextureReadOnly.ToDisplayString())) GenerateTexture(sb, member);
+                else if (Equals(member.Resource.Kind, symbols.ResourceKind.Sampler.ToDisplayString())) GenerateSampler(sb, member);
+                else throw new ArgumentOutOfRangeException();
             }
 
             /* e.g. protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
@@ -59,16 +55,14 @@ namespace VeldridCodeGen
                 if (member.Symbol is not IFieldSymbol field)
                     throw new ArgumentOutOfRangeException("Resource set backing members must be fields");
 
-                sb.Append("                    ");
+                sb.Append("                ");
                 sb.Append(field.Name);
                 sb.Append('.');
-                switch (member.Resource.Kind)
-                {
-                    case ResourceKind.UniformBuffer: sb.Append("DeviceBuffer"); break;
-                    case ResourceKind.TextureReadOnly: sb.Append("TextureView"); break;
-                    case ResourceKind.Sampler: sb.Append("Sampler"); break;
-                    default: throw new ArgumentOutOfRangeException();
-                }
+
+                if (Equals(member.Resource.Kind, symbols.ResourceKind.UniformBuffer.ToDisplayString())) sb.Append("DeviceBuffer");
+                else if (Equals(member.Resource.Kind, symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("TextureView");
+                else if (Equals(member.Resource.Kind, symbols.ResourceKind.Sampler.ToDisplayString())) sb.Append("Sampler");
+                else throw new ArgumentOutOfRangeException();
             }
 
             sb.AppendLine("));");
@@ -93,7 +87,7 @@ namespace VeldridCodeGen
             }
         } */
             var propertyName = Util.UnderscoreToTitleCase(field.Name);
-            sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)} {propertyName}
+            sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {propertyName}
         {{
             get => {field.Name};
             set
@@ -132,7 +126,7 @@ namespace VeldridCodeGen
             }
         } */
             var propertyName = Util.UnderscoreToTitleCase(field.Name);
-            sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)} {propertyName}
+            sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {propertyName}
         {{
             get => {field.Name};
             set
@@ -170,7 +164,7 @@ namespace VeldridCodeGen
                 }
             }*/
             var propertyName = Util.UnderscoreToTitleCase(field.Name);
-            sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)} {propertyName}
+            sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {propertyName}
         {{
             get => {field.Name};
             set

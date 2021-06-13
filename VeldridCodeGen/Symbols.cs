@@ -5,14 +5,14 @@ namespace VeldridCodeGen
     public class Symbols
     {
         // Interfaces
-        public INamedTypeSymbol UniformFormat { get; }
-        public INamedTypeSymbol VertexFormat { get; }
-        public INamedTypeSymbol ResourceSetHolder { get; }
+        public INamedTypeSymbol BufferHolder { get; }
         public INamedTypeSymbol FramebufferHolder { get; }
         public INamedTypeSymbol PipelineHolder { get; }
+        public INamedTypeSymbol ResourceSetHolder { get; }
         public INamedTypeSymbol SamplerHolder { get; }
-        public INamedTypeSymbol BufferHolder { get; }
         public INamedTypeSymbol TextureHolder { get; }
+        public INamedTypeSymbol UniformFormat { get; }
+        public INamedTypeSymbol VertexFormat { get; }
 
         // Attributes
         public INamedTypeSymbol ColorAttachmentAttrib { get; }
@@ -28,30 +28,37 @@ namespace VeldridCodeGen
         public INamedTypeSymbol Vector3 { get; }
         public INamedTypeSymbol Vector4 { get; }
         public INamedTypeSymbol NotifyPropertyChanged { get; }
+        public VertexElementFormatSymbols VertexElementFormat { get; }
+        public ShaderStageSymbols ShaderStages { get; }
+        public ResourceKindSymbols ResourceKind { get; }
 
         public Symbols(Compilation compilation)
         {
-            UniformFormat = compilation.GetTypeByMetadataName(Interfaces.UniformFormatFullName);
-            VertexFormat = compilation.GetTypeByMetadataName(Interfaces.VertexFormatFullName);
-            ResourceSetHolder = compilation.GetTypeByMetadataName(Interfaces.ResourceSetHolderFullName);
-            FramebufferHolder = compilation.GetTypeByMetadataName(Interfaces.FramebufferHolderFullName);
-            PipelineHolder = compilation.GetTypeByMetadataName(Interfaces.PipelineHolderFullName);
-            SamplerHolder = compilation.GetTypeByMetadataName(Interfaces.SamplerHolderFullName);
-            BufferHolder = compilation.GetTypeByMetadataName(Interfaces.BufferHolderFullName);
-            TextureHolder = compilation.GetTypeByMetadataName(Interfaces.TextureHolderFullName);
+            BufferHolder      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IBufferHolder");
+            FramebufferHolder = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IFramebufferHolder");
+            PipelineHolder    = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IPipelineHolder");
+            ResourceSetHolder = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IResourceSetHolder");
+            SamplerHolder     = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ISamplerHolder");
+            TextureHolder     = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ITextureHolder");
+            UniformFormat     = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IUniformFormat");
+            VertexFormat      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IVertexFormat");
 
-            ColorAttachmentAttrib = compilation.GetTypeByMetadataName(Attributes.ColorAttachmentFullName);
-            DepthAttachmentAttrib = compilation.GetTypeByMetadataName(Attributes.DepthAttachmentFullName);
-            InputParamAttrib = compilation.GetTypeByMetadataName(Attributes.InputParamFullName);
-            ResourceAttrib = compilation.GetTypeByMetadataName(Attributes.ResourceFullName);
+            ColorAttachmentAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ColorAttachmentAttribute");
+            DepthAttachmentAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.DepthAttachmentAttribute");
+            InputParamAttrib      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.InputParamAttribute");
+            ResourceAttrib        = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ResourceAttribute");
 
-            Int = compilation.GetTypeByMetadataName("System.Int32");
-            UInt = compilation.GetTypeByMetadataName("System.UInt32");
-            Float = compilation.GetTypeByMetadataName("System.Single");
-            Vector2 = compilation.GetTypeByMetadataName("System.Numerics.Vector2");
-            Vector3 = compilation.GetTypeByMetadataName("System.Numerics.Vector3");
-            Vector4 = compilation.GetTypeByMetadataName("System.Numerics.Vector4");
-            NotifyPropertyChanged = compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
+            Int = Util.Resolve(compilation, typeof(int).FullName!);
+            UInt = Util.Resolve(compilation, typeof(uint).FullName!);
+            Float = Util.Resolve(compilation, typeof(float).FullName!);
+            Vector2 = Util.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
+            Vector3 = Util.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
+            Vector4 = Util.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
+            NotifyPropertyChanged = Util.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
+
+            VertexElementFormat = new VertexElementFormatSymbols(compilation);
+            ShaderStages = new ShaderStageSymbols(compilation);
+            ResourceKind = new ResourceKindSymbols(compilation);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 
 namespace VeldridCodeGen.Interfaces
 {
@@ -10,3 +11,4 @@ namespace VeldridCodeGen.Interfaces
         public ResourceSetAttribute(Type type) => Type = type;
     }
 }
+#endif

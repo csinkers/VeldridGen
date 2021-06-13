@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace VeldridCodeGen
 {
@@ -7,7 +6,6 @@ namespace VeldridCodeGen
     {
         public static void Generate(StringBuilder sb, VeldridTypeInfo type)
         {
-            throw new NotImplementedException();
         }
             /*
     public readonly partial struct Vertex2DTextured // match access specifier, name

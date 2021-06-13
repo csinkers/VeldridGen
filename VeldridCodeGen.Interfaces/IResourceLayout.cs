@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 
 namespace VeldridCodeGen.Interfaces
 {
@@ -7,3 +8,4 @@ namespace VeldridCodeGen.Interfaces
         string Name { get; set; }
     }
 }
+#endif

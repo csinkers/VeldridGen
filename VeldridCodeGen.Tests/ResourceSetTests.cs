@@ -38,9 +38,10 @@ namespace VeldridCodeGenTests
             Compilation newComp = TestCommon.RunGenerators(comp, out var generatorDiags, new VeldridGenerator());
             var generatedTrees = newComp.RemoveSyntaxTrees(comp.SyntaxTrees).SyntaxTrees.ToList();
 
-            Assert.Equal(3, generatedTrees.Count);
+            Assert.Single(generatedTrees);
             Assert.Empty(generatorDiags);
-            Assert.Empty(newComp.GetDiagnostics());
+            var diag = newComp.GetDiagnostics();
+            Assert.Empty(diag);
         }
     }
 }

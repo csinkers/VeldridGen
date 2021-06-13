@@ -12,14 +12,7 @@ namespace VeldridCodeGen
     {
         public void Initialize(GeneratorInitializationContext context)
         {
-            context.RegisterForPostInitialization(AddInterfaces);
             context.RegisterForSyntaxNotifications(() => new VeldridSyntaxReceiver());
-        }
-
-        void AddInterfaces(GeneratorPostInitializationContext context)
-        {
-            context.AddSource("VeldridGen_Interfaces.cs", Interfaces.Source);
-            context.AddSource("VeldridGen_Attributes.cs", Attributes.Source);
         }
 
         public void Execute(GeneratorExecutionContext context)
@@ -29,9 +22,12 @@ namespace VeldridCodeGen
                 throw new InvalidOperationException("Could not retrieve syntax receiver for VeldridGenerator");
 
             var compilation = context.Compilation;
-            var diag = compilation.GetDiagnostics();
+            // var diag = compilation.GetDiagnostics();
             var symbols = new Symbols(compilation);
-            var types = new Dictionary<INamedTypeSymbol, VeldridTypeInfo>();
+
+#pragma warning disable RS1024 // Compare symbols correctly
+            var types = new Dictionary<INamedTypeSymbol, VeldridTypeInfo>(SymbolEqualityComparer.Default);
+#pragma warning restore RS1024 // Compare symbols correctly
 
             ISymbol GetSymbol(MemberDeclarationSyntax memberDeclarationSyntax)
             {
@@ -69,12 +65,13 @@ namespace VeldridCodeGen
 
             foreach (var type in types.Values.Where(x => x.Flags != 0))
             {
-                string source = GenerateType(type);
-                context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", source);
+                string source = GenerateType(type, symbols);
+                if (source != null)
+                    context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", source);
             }
         }
 
-        static string GenerateType(VeldridTypeInfo type)
+        static string GenerateType(VeldridTypeInfo type, Symbols symbols)
         {
             var sb = new StringBuilder();
             sb.AppendLine($@"using Veldrid;
@@ -83,25 +80,20 @@ namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
     {type.Symbol.DeclaredAccessibility.ToString().ToLower()} partial class {type.Symbol.Name}
     {{");
 
+            int length = sb.Length;
             if ((type.Flags & TypeFlags.IsResourceSetHolder) != 0)
-                ResourceSetGenerator.Generate(sb, type);
+                ResourceSetGenerator.Generate(sb, type, symbols);
             if ((type.Flags & TypeFlags.IsVertexFormat) != 0)
                 VertexFormatGenerator.Generate(sb, type);
             if ((type.Flags & TypeFlags.IsFramebufferHolder) != 0)
                 FramebufferGenerator.Generate(sb, type);
 
+            if (sb.Length == length)
+                return null;
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
             return sb.ToString();
-        }
-
-        void GenerateGlsl()
-        {
-            /*
-            Vertex:
-            Resource sets
-            Vertex layouts / input params
-            */
         }
     }
 }

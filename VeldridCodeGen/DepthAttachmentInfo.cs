@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.CodeAnalysis;
-using Veldrid;
 
 namespace VeldridCodeGen
 {
@@ -9,9 +8,9 @@ namespace VeldridCodeGen
         public DepthAttachmentInfo(AttributeData attrib)
         {
             var value = attrib.ConstructorArguments[0].Value;
-            Format = (PixelFormat?)value ?? throw new ArgumentOutOfRangeException("Depth attachment attribute did not contain a pixel format parameter");
+            Format = value ?? throw new ArgumentOutOfRangeException("Depth attachment attribute did not contain a pixel format parameter");
         }
 
-        public PixelFormat Format { get; }
+        public object Format { get; }
     }
 }

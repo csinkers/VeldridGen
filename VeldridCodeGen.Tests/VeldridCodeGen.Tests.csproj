@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VeldridCodeGen.Interfaces\VeldridCodeGen.Interfaces.csproj" />
     <ProjectReference Include="..\VeldridCodeGen\VeldridCodeGen.csproj" />
   </ItemGroup>
 

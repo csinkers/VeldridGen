@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Text;
-using Veldrid;
+using Microsoft.CodeAnalysis;
 
 namespace VeldridCodeGen
 {
@@ -34,12 +33,17 @@ namespace VeldridCodeGen
             }
         }
 
+        public static INamedTypeSymbol Resolve(Compilation compilation, string name) 
+            => compilation.GetTypeByMetadataName(name)
+            ?? throw new TypeResolutionException(name);
+
+        /*
         public static string FormatFlagsEnum<T>(T value) where T : unmanaged, Enum
         {
             int intValue = Convert.ToInt32(value);
             int flag = 1;
             StringBuilder sb = new();
-            while (flag <= (int)ShaderStages.Compute)
+            while (flag <= (int)maxValue)
             {
                 if ((intValue & flag) != 0)
                 {
@@ -57,6 +61,17 @@ namespace VeldridCodeGen
             if (string.IsNullOrEmpty(result))
                 return "0";
             return result;
+        }
+        */
+        public static ITypeSymbol GetFieldOrPropertyType(ISymbol member)
+        {
+            return member switch
+            {
+                IFieldSymbol field => field.Type,
+                IPropertySymbol property => property.Type,
+                _ => throw new ArgumentOutOfRangeException(
+                    "Member with a ResourceAttribute was neither a field nor a property")
+            };
         }
     }
 }

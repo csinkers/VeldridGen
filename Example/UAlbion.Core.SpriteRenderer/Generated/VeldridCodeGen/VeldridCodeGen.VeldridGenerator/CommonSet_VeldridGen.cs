@@ -1,18 +1,15 @@
-﻿using UAlbion.Core.Veldrid;
-using Veldrid;
-
+﻿using Veldrid;
 namespace UAlbion.Core.SpriteRenderer
 {
-    // To be generated
     public partial class CommonSet
     {
         public static readonly ResourceLayoutDescription Layout = new(
-            new ResourceLayoutElementDescription("_Shared", ResourceKind.UniformBuffer, ShaderStages.Fragment | ShaderStages.Vertex),
-            new ResourceLayoutElementDescription("_Projection", ResourceKind.UniformBuffer, ShaderStages.Vertex),
-            new ResourceLayoutElementDescription("_View", ResourceKind.UniformBuffer, ShaderStages.Vertex),
-            new ResourceLayoutElementDescription("uPalette", ResourceKind.TextureReadOnly, ShaderStages.Fragment));
+            new ResourceLayoutElementDescription("_Shared", global::Veldrid.ResourceKind.UniformBuffer, (ShaderStages)17),
+            new ResourceLayoutElementDescription("_Projection", global::Veldrid.ResourceKind.UniformBuffer, (ShaderStages)1),
+            new ResourceLayoutElementDescription("_View", global::Veldrid.ResourceKind.UniformBuffer, (ShaderStages)1),
+            new ResourceLayoutElementDescription("uPalette", global::Veldrid.ResourceKind.TextureReadOnly, (ShaderStages)16));
 
-        public SingleBuffer<GlobalInfo> GlobalInfo
+        public global::UAlbion.Core.Veldrid.SingleBuffer<global::UAlbion.Core.Veldrid.GlobalInfo> GlobalInfo
         {
             get => _globalInfo;
             set
@@ -24,29 +21,31 @@ namespace UAlbion.Core.SpriteRenderer
             }
         }
 
-        public SingleBuffer<ProjectionMatrix> Projection
+        public global::UAlbion.Core.Veldrid.SingleBuffer<global::UAlbion.Core.SpriteRenderer.ProjectionMatrix> Projection
         {
             get => _projection;
             set
             {
-                if (_projection == value) return;
+                if (_projection == value)
+                    return;
                 _projection = value;
                 Dirty();
             }
         }
 
-        public SingleBuffer<ViewMatrix> View
+        public global::UAlbion.Core.Veldrid.SingleBuffer<global::UAlbion.Core.SpriteRenderer.ViewMatrix> View
         {
             get => _view;
             set
             {
-                if (_view == value) return;
+                if (_view == value)
+                    return;
                 _view = value;
                 Dirty();
             }
         }
 
-        public Texture2DHolder Palette
+        public global::UAlbion.Core.Veldrid.Texture2DHolder Palette
         {
             get => _palette;
             set

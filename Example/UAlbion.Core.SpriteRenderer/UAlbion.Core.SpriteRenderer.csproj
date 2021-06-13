@@ -1,12 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <EmitCompilerGeneratedFiles>True</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\VeldridCodeGen.Interfaces\VeldridCodeGen.Interfaces.csproj" />
+    <ProjectReference Include="..\..\VeldridCodeGen\VeldridCodeGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\UAlbion.Core.Veldrid\UAlbion.Core.Veldrid.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't include output from a previous source generator execution into future runs; the */** trick here ensures that there's
+      at least one subdirectory, which is our key that it's coming from a source generator as opposed to something that is coming from
+      some other tool. -->
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
+    <None Include="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
   </ItemGroup>
 
 </Project>

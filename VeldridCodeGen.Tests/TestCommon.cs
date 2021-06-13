@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using VeldridCodeGen.Interfaces;
 
 namespace VeldridCodeGen.Tests
 {
@@ -19,6 +20,7 @@ namespace VeldridCodeGen.Tests
                     MetadataReference.CreateFromFile(AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "netstandard").Location),
                     MetadataReference.CreateFromFile(AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "System.Runtime").Location),
                     MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(IUniformFormat).GetTypeInfo().Assembly.Location),
                     MetadataReference.CreateFromFile(typeof(Veldrid.GraphicsDevice).GetTypeInfo().Assembly.Location)
                 },
                 new CSharpCompilationOptions(outputKind));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 
 namespace VeldridCodeGen.Interfaces
 {
@@ -8,3 +9,4 @@ namespace VeldridCodeGen.Interfaces
         public FragmentShaderAttribute(Type type) => Type = type ?? throw new ArgumentNullException(nameof(type));
     }
 }
+#endif

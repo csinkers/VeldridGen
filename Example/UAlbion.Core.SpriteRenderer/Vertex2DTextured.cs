@@ -8,12 +8,6 @@ namespace UAlbion.Core.SpriteRenderer
         [InputParam("vPosition")] public Vector2 Position { get; }
         [InputParam("vTextCoords")] public Vector2 Texture { get; }
 
-        public Vertex2DTextured(Vector2 position, Vector2 textureCoordinates)
-        {
-            Position = position;
-            Texture = textureCoordinates;
-        }
-
         public Vertex2DTextured(float x, float y, float u, float v)
         {
             Position = new Vector2(x, y);

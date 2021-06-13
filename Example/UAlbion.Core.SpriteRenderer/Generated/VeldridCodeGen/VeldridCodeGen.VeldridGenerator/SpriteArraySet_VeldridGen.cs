@@ -1,41 +1,37 @@
-﻿using UAlbion.Core.Veldrid;
-using Veldrid;
-
+﻿using Veldrid;
 namespace UAlbion.Core.SpriteRenderer
 {
-    // To be generated
-    public partial class SpriteSet
+    public partial class SpriteArraySet
     {
         public static readonly ResourceLayoutDescription Layout = new(
-            new ResourceLayoutElementDescription("uSprite", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
-            new ResourceLayoutElementDescription("uSpriteSampler", ResourceKind.Sampler, ShaderStages.Fragment),
-            new ResourceLayoutElementDescription("_Uniform", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment));
+            new ResourceLayoutElementDescription("uSprite", global::Veldrid.ResourceKind.TextureReadOnly, (ShaderStages)17),
+            new ResourceLayoutElementDescription("uSpriteSampler", global::Veldrid.ResourceKind.Sampler, (ShaderStages)17),
+            new ResourceLayoutElementDescription("_Uniform", global::Veldrid.ResourceKind.UniformBuffer, (ShaderStages)17));
 
-        public Texture2DArrayHolder Texture
+        public global::UAlbion.Core.Veldrid.Texture2DArrayHolder Texture
         {
             get => _texture;
             set
             {
-                if (_texture == value)
-                    return;
+                if (_texture == value) return;
 
                 if (_texture != null)
                     _texture.PropertyChanged -= PropertyDirty;
 
                 _texture = value;
-                
-                if(_texture != null)
+
+                if (_texture != null)
                     _texture.PropertyChanged += PropertyDirty;
                 Dirty();
             }
         }
 
-        public SamplerHolder Sampler
+        public global::UAlbion.Core.Veldrid.SamplerHolder Sampler
         {
             get => _sampler;
             set
             {
-                if (_sampler == value)
+                if (_sampler == value) 
                     return;
 
                 if (_sampler != null)
@@ -49,7 +45,7 @@ namespace UAlbion.Core.SpriteRenderer
             }
         }
 
-        public SingleBuffer<SpriteUniform> Uniform
+        public global::UAlbion.Core.Veldrid.SingleBuffer<global::UAlbion.Core.SpriteRenderer.SpriteUniform> Uniform
         {
             get => _uniform;
             set
