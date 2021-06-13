@@ -17,7 +17,7 @@ namespace VeldridCodeGen
         // Attributes
         public INamedTypeSymbol ColorAttachmentAttrib { get; }
         public INamedTypeSymbol DepthAttachmentAttrib { get; }
-        public INamedTypeSymbol InputParamAttrib { get; }
+        public INamedTypeSymbol VertexAttrib { get; }
         public INamedTypeSymbol ResourceAttrib { get; }
 
         // Built-in types
@@ -45,7 +45,7 @@ namespace VeldridCodeGen
 
             ColorAttachmentAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ColorAttachmentAttribute");
             DepthAttachmentAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.DepthAttachmentAttribute");
-            InputParamAttrib      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.InputParamAttribute");
+            VertexAttrib          = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.VertexAttribute");
             ResourceAttrib        = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ResourceAttribute");
 
             Int = Util.Resolve(compilation, typeof(int).FullName!);

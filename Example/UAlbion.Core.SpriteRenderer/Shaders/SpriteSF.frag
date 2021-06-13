@@ -1,29 +1,5 @@
-//!#version 450 // Comments with //! are for tricking the Visual Studio GLSL plugin into doing the right thing
-//!#extension GL_KHR_vulkan_glsl: enable
-
-// Resource Sets
-layout(binding = 0) uniform texture2DArray uSprite;
-layout(binding = 1) uniform sampler uSpriteSampler;
-
-layout(binding = 2) uniform _Uniform {
-	uint uFlags;
-	float uTexSizeW;
-	float uTexSizeH;
-	uint _u_padding_3;
-};
-
-// Shared set
-#include "CommonResources.glsl"
-
-// Inputs from vertex shader
-layout(location = 0) in vec2 iTexPosition;   // Texture Coordinates
-layout(location = 1) in flat float iLayer;   // Texture Layer
-layout(location = 2) in flat uint  iFlags;   // Flags
-layout(location = 3) in vec2 iNormCoords;    // Normalised sprite coordinates
-layout(location = 4) in vec3 iWorldPosition; // World-space position
-
-// Fragment shader outputs
-layout(location = 0) out vec4 OutputColor;
+#include "SpriteSF.g.frag"
+#define DEPTH_COLOR(depth) (vec4((int((depth) * 1024) % 10) / 10.0f, 20 * (max((depth), 0.95) - 0.95), 20 * min((depth), 0.05), 1.0f))
 
 void main()
 {
@@ -34,19 +10,19 @@ void main()
 
 	vec4 color = texture(sampler2DArray(uSprite, uSpriteSampler), vec3(uv, iLayer)); //! vec4 color;
 
-//#ifdef USE_PALETTE
-	color = color[0] == 0 
-		? vec4(0)
-		: texture(sampler2D(uPalette, uSpriteSampler),
-			vec2((color[0] * 255.0f/256.f) + (0.5f/256.0f), 0));
-//#endif
-/*
+	if ((uFlags & SKF_USE_PALETTE) != 0)
+	{
+		color = color[0] == 0 
+			? vec4(0)
+			: texture(sampler2D(uPalette, uSpriteSampler), //! : vec4(0);
+				vec2((color[0] * 255.0f/256.f) + (0.5f/256.0f), 0)); //!
+	}
+
 	if ((iFlags & SF_GRADIENT_PIXELS) != 0)
 	{
-		vec2 subPixelPos = smoothstep(
-			0,
-			1,
+		vec2 subPixelPos = smoothstep(0, 1,
 			1 - fract(uv * vec2(uTexSizeW, uTexSizeH)));
+
 		color = color * vec4(
 			vec3(subPixelPos.x*subPixelPos.y + 0.4),
 			1.0);
@@ -72,9 +48,9 @@ void main()
 	if ((iFlags & SF_GREEN_TINT) != 0) color = vec4(color.x * 0.7f,        color.y * 1.5f + 0.3f, color.z * 0.7f, color.w);
 	if ((iFlags & SF_BLUE_TINT)  != 0) color = vec4(color.xy * 0.7f,       color.z * 1.5f + 0.3f,                 color.w);
 #endif
-*/
+
 	float depth = (color.w == 0.0f) ? 1.0f : gl_FragCoord.z;
-/*
+
 	if ((iFlags & SF_DROP_SHADOW) != 0)
 		color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -84,12 +60,12 @@ void main()
 		color = vec4(color.xyz, color.w * opacity);
 	}
 
-
 #ifdef DEBUG
 	if ((uEngineFlags & EF_RENDER_DEPTH) != 0)
 		color = DEPTH_COLOR(depth);
 #endif
-*/	
-	OutputColor = color;
+
+	oColor = color;
 	gl_FragDepth = ((uEngineFlags & EF_FLIP_DEPTH_RANGE) != 0) ? 1.0f - depth : depth;
 }
+

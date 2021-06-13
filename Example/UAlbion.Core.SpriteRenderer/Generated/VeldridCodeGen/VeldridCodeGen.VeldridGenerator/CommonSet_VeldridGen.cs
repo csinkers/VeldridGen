@@ -9,7 +9,7 @@ namespace UAlbion.Core.SpriteRenderer
             new ResourceLayoutElementDescription("_View", global::Veldrid.ResourceKind.UniformBuffer, (ShaderStages)1),
             new ResourceLayoutElementDescription("uPalette", global::Veldrid.ResourceKind.TextureReadOnly, (ShaderStages)16));
 
-        public global::UAlbion.Core.Veldrid.SingleBuffer<global::UAlbion.Core.Veldrid.GlobalInfo> GlobalInfo
+        public global::UAlbion.Core.Veldrid.SingleBuffer<global::UAlbion.Core.SpriteRenderer.GlobalInfo> GlobalInfo
         {
             get => _globalInfo;
             set

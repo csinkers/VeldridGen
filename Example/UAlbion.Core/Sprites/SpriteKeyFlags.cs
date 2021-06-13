@@ -6,7 +6,7 @@ namespace UAlbion.Core.Sprites
     /// Flags that need to be the same for all instances in a sprite draw call
     /// </summary>
     [Flags]
-    public enum SpriteKeyFlags
+    public enum SpriteKeyFlags : uint
     {
         NoDepthTest     = 0x1,
         UseArrayTexture = 0x2,

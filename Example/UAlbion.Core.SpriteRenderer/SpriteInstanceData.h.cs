@@ -15,9 +15,6 @@ namespace UAlbion.Core.SpriteRenderer
             new VertexElementDescription("iTexOffset", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2),
             new VertexElementDescription("iTexSize", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2),
             new VertexElementDescription("iTexLayer", VertexElementSemantic.TextureCoordinate, VertexElementFormat.UInt1),
-            new VertexElementDescription("iFlags", VertexElementSemantic.TextureCoordinate, VertexElementFormat.UInt1))
-        {
-            InstanceStepRate = 1
-        };
+            new VertexElementDescription("iFlags", VertexElementSemantic.TextureCoordinate, VertexElementFormat.UInt1));
     }
 }

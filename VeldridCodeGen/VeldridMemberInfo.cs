@@ -24,9 +24,9 @@ namespace VeldridCodeGen
                     DepthAttachment = new DepthAttachmentInfo(attrib);
                 }
 
-                if (attrib.AttributeClass.Equals(symbols.InputParamAttrib, SymbolEqualityComparer.Default))
+                if (attrib.AttributeClass.Equals(symbols.VertexAttrib, SymbolEqualityComparer.Default))
                 {
-                    Flags |= MemberFlags.IsInputParam;
+                    Flags |= MemberFlags.IsVertexComponent;
                     Input = new InputInfo(attrib, symbol, symbols);
                 }
 

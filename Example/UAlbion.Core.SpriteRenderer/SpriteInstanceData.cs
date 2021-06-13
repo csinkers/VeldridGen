@@ -12,14 +12,14 @@ namespace UAlbion.Core.SpriteRenderer
     {
         public override string ToString() => $"SID {Position}:{TexLayer} ({Flags & ~SpriteFlags.DebugMask})";
 
-        [InputParam("iTransform1")] public Vector3 Transform1 { get; private set; }
-        [InputParam("iTransform2")] public Vector3 Transform2 { get; private set; }
-        [InputParam("iTransform3")] public Vector3 Transform3 { get; private set; }
-        [InputParam("iTransform4")] public Vector3 Transform4 { get; private set; }
-        [InputParam("iTexOffset")] public Vector2 TexPosition { get; } // Normalised texture coordinates
-        [InputParam("iTexSize")] public Vector2 TexSize { get; } // Normalised texture coordinates
-        [InputParam("iTexLayer")] public uint TexLayer { get; }
-        [InputParam("iFlags")] public SpriteFlags Flags { get; set; }
+        [Vertex("Transform1")] public Vector3 Transform1 { get; private set; }
+        [Vertex("Transform2")] public Vector3 Transform2 { get; private set; }
+        [Vertex("Transform3")] public Vector3 Transform3 { get; private set; }
+        [Vertex("Transform4")] public Vector3 Transform4 { get; private set; }
+        [Vertex("TexOffset")] public Vector2 TexPosition { get; } // Normalised texture coordinates
+        [Vertex("TexSize")] public Vector2 TexSize { get; } // Normalised texture coordinates
+        [Vertex("TexLayer")] public uint TexLayer { get; }
+        [Vertex("Flags", EnumPrefix = "SF")] public SpriteFlags Flags { get; set; }
 
         // Derived properties for use by C# code
         public void OffsetBy(Vector3 offset) => Transform4 += offset;

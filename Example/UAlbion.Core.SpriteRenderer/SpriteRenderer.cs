@@ -8,7 +8,7 @@ namespace UAlbion.Core.SpriteRenderer
     {
         readonly MultiBuffer<Vertex2DTextured> _vertexBuffer;
         readonly MultiBuffer<ushort> _indexBuffer;
-        readonly PipelineHolder _pipeline;
+        readonly SpritePipeline _pipeline;
 
         static readonly ushort[] Indices = { 0, 1, 2, 2, 1, 3 };
         static readonly Vertex2DTextured[] Vertices =
@@ -21,21 +21,17 @@ namespace UAlbion.Core.SpriteRenderer
         {
             _vertexBuffer = AttachChild(new MultiBuffer<Vertex2DTextured>(Vertices, BufferUsage.VertexBuffer, "SpriteVertexBuffer"));
             _indexBuffer = AttachChild(new MultiBuffer<ushort>(Indices, BufferUsage.IndexBuffer, "SpriteIndexBuffer"));
-            _pipeline = AttachChild(new PipelineHolder(
-                "SpriteSV.vert",
-                "SpriteSF.frag",
-                new [] { Vertex2DTextured.Layout, SpriteInstanceData.Layout },
-                new[] { typeof(SpriteArraySet), typeof(CommonSet) })
+            _pipeline = AttachChild(new SpritePipeline
             {
                 Name = "P:Sprite",
+                AlphaBlend = BlendStateDescription.SingleAlphaBlend,
+                CullMode = FaceCullMode.None,
+                DepthStencilMode = DepthStencilStateDescription.DepthOnlyLessEqual,
+                FillMode = PolygonFillMode.Solid,
+                Topology = PrimitiveTopology.TriangleList,
                 UseDepthTest = true,
                 UseScissorTest = true,
-                DepthStencilMode = DepthStencilStateDescription.DepthOnlyLessEqual,
-                CullMode = FaceCullMode.None,
-                Topology = PrimitiveTopology.TriangleList,
-                FillMode = PolygonFillMode.Solid,
                 Winding = FrontFace.Clockwise,
-                AlphaBlend = BlendStateDescription.SingleAlphaBlend,
             });
         }
 
@@ -51,8 +47,8 @@ namespace UAlbion.Core.SpriteRenderer
             }
 
             cl.SetPipeline(_pipeline.Pipeline);
-            cl.SetGraphicsResourceSet(0, batch.SpriteResources.ResourceSet);
-            cl.SetGraphicsResourceSet(1, commonSet.ResourceSet);
+            cl.SetGraphicsResourceSet(0, commonSet.ResourceSet);
+            cl.SetGraphicsResourceSet(1, batch.SpriteResources.ResourceSet);
             cl.SetVertexBuffer(0, _vertexBuffer.DeviceBuffer);
             cl.SetIndexBuffer(_indexBuffer.DeviceBuffer, IndexFormat.UInt16);
             cl.SetVertexBuffer(1, batch.Instances.DeviceBuffer);
