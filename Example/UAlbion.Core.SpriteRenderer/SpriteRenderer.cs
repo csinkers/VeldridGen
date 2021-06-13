@@ -1,7 +1,6 @@
 ﻿using System;
 using UAlbion.Core.Veldrid;
 using Veldrid;
-using Pipeline = UAlbion.Core.Veldrid.Pipeline;
 
 namespace UAlbion.Core.SpriteRenderer
 {
@@ -9,7 +8,7 @@ namespace UAlbion.Core.SpriteRenderer
     {
         readonly MultiBuffer<Vertex2DTextured> _vertexBuffer;
         readonly MultiBuffer<ushort> _indexBuffer;
-        readonly Pipeline _pipeline;
+        readonly PipelineHolder _pipeline;
 
         static readonly ushort[] Indices = { 0, 1, 2, 2, 1, 3 };
         static readonly Vertex2DTextured[] Vertices =
@@ -22,7 +21,7 @@ namespace UAlbion.Core.SpriteRenderer
         {
             _vertexBuffer = AttachChild(new MultiBuffer<Vertex2DTextured>(Vertices, BufferUsage.VertexBuffer, "SpriteVertexBuffer"));
             _indexBuffer = AttachChild(new MultiBuffer<ushort>(Indices, BufferUsage.IndexBuffer, "SpriteIndexBuffer"));
-            _pipeline = AttachChild(new Pipeline(
+            _pipeline = AttachChild(new PipelineHolder(
                 "SpriteSV.vert",
                 "SpriteSF.frag",
                 new [] { Vertex2DTextured.Layout, SpriteInstanceData.Layout },
@@ -51,7 +50,7 @@ namespace UAlbion.Core.SpriteRenderer
                 cl.SetScissorRect(0, (uint)rect.x, (uint)rect.y, (uint)rect.w, (uint)rect.h);
             }
 
-            cl.SetPipeline(_pipeline.DevicePipeline);
+            cl.SetPipeline(_pipeline.Pipeline);
             cl.SetGraphicsResourceSet(0, batch.SpriteResources.ResourceSet);
             cl.SetGraphicsResourceSet(1, commonSet.ResourceSet);
             cl.SetVertexBuffer(0, _vertexBuffer.DeviceBuffer);

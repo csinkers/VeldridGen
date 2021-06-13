@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 using UAlbion.Core.Veldrid.Events;
 using VeldridCodeGen.Interfaces;
 
@@ -40,3 +41,4 @@ namespace UAlbion.Core.SpriteRenderer
         }
     }
 }
+#endif

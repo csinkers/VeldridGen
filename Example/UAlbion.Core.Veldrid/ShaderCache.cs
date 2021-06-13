@@ -10,7 +10,6 @@ using UAlbion.Api;
 using UAlbion.Core.Veldrid.Events;
 using Veldrid;
 using Veldrid.SPIRV;
-using VeldridCodeGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {

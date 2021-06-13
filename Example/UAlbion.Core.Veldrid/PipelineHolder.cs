@@ -6,7 +6,7 @@ using VeldridCodeGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {
-    public class Pipeline : Component, IDisposable
+    public class PipelineHolder : Component, IPipelineHolder
     {
         readonly object _syncRoot = new();
         readonly string _vertexShaderName;
@@ -14,7 +14,7 @@ namespace UAlbion.Core.Veldrid
         readonly VertexLayoutDescription[] _vertexLayouts;
         readonly Type[] _resourceLayouts;
 
-        global::Veldrid.Pipeline _pipeline;
+        Pipeline _pipeline;
         Shader[] _shaders;
         string _name;
         bool _useDepthTest = true;
@@ -27,7 +27,7 @@ namespace UAlbion.Core.Veldrid
         BlendStateDescription _alphaBlend = BlendStateDescription.SingleAlphaBlend;
         DepthStencilStateDescription _depthStencilMode = DepthStencilStateDescription.DepthOnlyLessEqual;
 
-        public Pipeline(string vertexShaderName, string fragmentShaderName, VertexLayoutDescription[] vertexLayouts, Type[] resourceLayouts)
+        public PipelineHolder(string vertexShaderName, string fragmentShaderName, VertexLayoutDescription[] vertexLayouts, Type[] resourceLayouts)
         {
             _vertexShaderName = vertexShaderName ?? throw new ArgumentNullException(nameof(vertexShaderName));
             _fragmentShaderName = fragmentShaderName ?? throw new ArgumentNullException(nameof(fragmentShaderName));
@@ -39,7 +39,7 @@ namespace UAlbion.Core.Veldrid
             Dirty();
         }
 
-        public global::Veldrid.Pipeline DevicePipeline => _pipeline;
+        public Pipeline Pipeline => _pipeline;
         public bool UseDepthTest { get => _useDepthTest; set { _useDepthTest = value; Dirty(); } } 
         public bool UseScissorTest { get => _useScissorTest; set { _useScissorTest = value; Dirty(); } } 
         public DepthStencilStateDescription DepthStencilMode { get => _depthStencilMode; set { _depthStencilMode = value; Dirty(); } } 

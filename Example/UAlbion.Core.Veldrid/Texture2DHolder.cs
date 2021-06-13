@@ -22,7 +22,7 @@ namespace UAlbion.Core.Veldrid
             set { _texture = value; Dirty();}
         }
 
-        public global::Veldrid.Texture DeviceTexture
+        public Texture DeviceTexture
         {
             get => _deviceTexture;
             private set
