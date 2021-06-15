@@ -8,7 +8,6 @@ namespace VeldridCodeGen.Interfaces
         public override object TypeId => this;
         public int Order { get; }
         public Type Type { get; }
-        public int InstanceStep { get; set; }
         public VertexOutputAttribute(int order, Type type)
         {
             Order = order;

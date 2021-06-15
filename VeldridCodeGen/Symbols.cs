@@ -6,6 +6,7 @@ namespace VeldridCodeGen
     {
         // Interfaces
         public INamedTypeSymbol BufferHolder { get; }
+        public INamedTypeSymbol FragmentShader { get; }
         public INamedTypeSymbol FramebufferHolder { get; }
         public INamedTypeSymbol PipelineHolder { get; }
         public INamedTypeSymbol ResourceSetHolder { get; }
@@ -13,12 +14,19 @@ namespace VeldridCodeGen
         public INamedTypeSymbol TextureHolder { get; }
         public INamedTypeSymbol UniformFormat { get; }
         public INamedTypeSymbol VertexFormat { get; }
+        public INamedTypeSymbol VertexShader { get; }
 
         // Attributes
         public INamedTypeSymbol ColorAttachmentAttrib { get; }
         public INamedTypeSymbol DepthAttachmentAttrib { get; }
-        public INamedTypeSymbol VertexAttrib { get; }
+        public INamedTypeSymbol FragmentShaderAttrib { get; }
+        public INamedTypeSymbol NameAttrib { get; }
         public INamedTypeSymbol ResourceAttrib { get; }
+        public INamedTypeSymbol ResourceSetAttrib { get; }
+        public INamedTypeSymbol VertexAttrib { get; }
+        public INamedTypeSymbol VertexInputAttrib { get; }
+        public INamedTypeSymbol VertexOutputAttrib { get; }
+        public INamedTypeSymbol VertexShaderAttrib { get; }
 
         // Built-in types
         public INamedTypeSymbol Int { get; }
@@ -35,6 +43,7 @@ namespace VeldridCodeGen
         public Symbols(Compilation compilation)
         {
             BufferHolder      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IBufferHolder");
+            FragmentShader    = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IFragmentShader");
             FramebufferHolder = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IFramebufferHolder");
             PipelineHolder    = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IPipelineHolder");
             ResourceSetHolder = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IResourceSetHolder");
@@ -42,11 +51,19 @@ namespace VeldridCodeGen
             TextureHolder     = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ITextureHolder");
             UniformFormat     = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IUniformFormat");
             VertexFormat      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IVertexFormat");
+            VertexShader      = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.IVertexShader");
 
             ColorAttachmentAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ColorAttachmentAttribute");
             DepthAttachmentAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.DepthAttachmentAttribute");
             VertexAttrib          = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.VertexAttribute");
             ResourceAttrib        = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ResourceAttribute");
+
+            FragmentShaderAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.FragmentShaderAttribute");
+            NameAttrib        = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.NameAttribute");
+            ResourceSetAttrib = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.ResourceSetAttribute");
+            VertexInputAttrib    = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.VertexInputAttribute");
+            VertexOutputAttrib   = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.VertexOutputAttribute");
+            VertexShaderAttrib   = Util.Resolve(compilation, "VeldridCodeGen.Interfaces.VertexShaderAttribute");
 
             Int = Util.Resolve(compilation, typeof(int).FullName!);
             UInt = Util.Resolve(compilation, typeof(uint).FullName!);

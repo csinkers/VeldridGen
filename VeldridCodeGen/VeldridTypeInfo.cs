@@ -20,18 +20,39 @@ namespace VeldridCodeGen
                 else if (symbols.FramebufferHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsFramebufferHolder;
                 else if (symbols.PipelineHolder.Equals(iface, SymbolEqualityComparer.Default))
+                {
                     Flags |= TypeFlags.IsPipelineHolder;
+                    Pipeline = new PipelineInfo(symbol, symbols);
+                }
                 else if (symbols.SamplerHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsSamplerHolder;
                 else if (symbols.BufferHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsBufferHolder;
                 else if (symbols.TextureHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsTextureHolder;
+                else if (symbols.VertexShader.Equals(iface, SymbolEqualityComparer.Default))
+                    Flags |= TypeFlags.IsVertexShader;
+                else if (symbols.FragmentShader.Equals(iface, SymbolEqualityComparer.Default))
+                    Flags |= TypeFlags.IsFragmentShader;
+            }
+
+            if ((Flags & TypeFlags.IsShader) != 0)
+            {
+                var type = (Flags & TypeFlags.IsShader) switch
+                {
+                    TypeFlags.IsVertexShader => ShaderType.Vertex,
+                    TypeFlags.IsFragmentShader => ShaderType.Fragment,
+                    _ => throw new ArgumentOutOfRangeException(nameof(symbol), "Shader interface combinations are not supported")
+                };
+
+                Shader = new ShaderInfo(type, symbol, symbols);
             }
         }
 
         public TypeFlags Flags { get; }
         public INamedTypeSymbol Symbol { get; }
+        public PipelineInfo Pipeline { get; }
+        public ShaderInfo Shader { get; }
         public List<VeldridMemberInfo> Members { get; } = new();
 
         public void AddMember(ISymbol memberSym, Symbols symbols)

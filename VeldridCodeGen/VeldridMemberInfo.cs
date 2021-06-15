@@ -17,20 +17,17 @@ namespace VeldridCodeGen
                     Flags |= MemberFlags.IsColorAttachment;
                     ColorAttachment = new ColorAttachmentInfo(attrib);
                 }
-
-                if (attrib.AttributeClass.Equals(symbols.DepthAttachmentAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(symbols.DepthAttachmentAttrib, SymbolEqualityComparer.Default))
                 {
                     Flags |= MemberFlags.IsDepthAttachment;
                     DepthAttachment = new DepthAttachmentInfo(attrib);
                 }
-
-                if (attrib.AttributeClass.Equals(symbols.VertexAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(symbols.VertexAttrib, SymbolEqualityComparer.Default))
                 {
                     Flags |= MemberFlags.IsVertexComponent;
                     Vertex = new VertexInfo(attrib, symbol, symbols);
                 }
-
-                if (attrib.AttributeClass.Equals(symbols.ResourceAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(symbols.ResourceAttrib, SymbolEqualityComparer.Default))
                 {
                     Flags |= MemberFlags.IsResource;
                     Resource = new ResourceInfo(attrib, symbol, symbols);

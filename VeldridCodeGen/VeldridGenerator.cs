@@ -63,15 +63,28 @@ namespace VeldridCodeGen
             foreach (var property in receiver.Properties)
                 PopulateMember(property);
 
+            foreach (var type in receiver.Types)
+            {
+                var sym = (INamedTypeSymbol)GetSymbol(type);
+                if (sym == null)
+                    return;
+
+                if (types.TryGetValue(sym, out var typeInfo)) 
+                    continue;
+
+                typeInfo = new VeldridTypeInfo(sym, symbols);
+                types[sym] = typeInfo;
+            }
+
             foreach (var type in types.Values.Where(x => x.Flags != 0))
             {
-                string source = GenerateType(type, symbols);
+                string source = GenerateType(type, symbols, types);
                 if (source != null)
                     context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", source);
             }
         }
 
-        static string GenerateType(VeldridTypeInfo type, Symbols symbols)
+        static string GenerateType(VeldridTypeInfo type, Symbols symbols, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
         {
             var kword = type.Symbol.IsReferenceType
                 ? type.Symbol.IsRecord ? "record" : "class"
@@ -91,6 +104,10 @@ namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
                 VertexFormatGenerator.Generate(sb, type);
             if ((type.Flags & TypeFlags.IsFramebufferHolder) != 0)
                 FramebufferGenerator.Generate(sb, type);
+            if ((type.Flags & TypeFlags.IsPipelineHolder) != 0)
+                PipelineGenerator.Generate(sb, type, types);
+            if ((type.Flags & TypeFlags.IsShader) != 0)
+                ShaderGenerator.Generate(sb, type);
 
             if (sb.Length == length)
                 return null;
