@@ -16,7 +16,7 @@ namespace UAlbion.Core.SpriteRenderer
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct GlobalInfo : IUniformFormat
+    public partial struct GlobalInfo : IUniformFormat
     {
         [Uniform("uWorldSpacePosition")] public Vector3 WorldSpacePosition;
         [Uniform("_globalInfo_pad1")] readonly uint _padding1;
@@ -34,13 +34,13 @@ namespace UAlbion.Core.SpriteRenderer
         [Uniform("_globalInfo_pad5")] readonly uint _padding5;
     }
 
-    public struct ProjectionMatrix : IUniformFormat
+    public partial struct ProjectionMatrix : IUniformFormat
     {
         public ProjectionMatrix(Matrix4x4 matrix) => Matrix = matrix;
         [Uniform("uProjection")] public Matrix4x4 Matrix { get; }
     }
 
-    public struct ViewMatrix : IUniformFormat
+    public partial struct ViewMatrix : IUniformFormat
     {
         public ViewMatrix(Matrix4x4 matrix) => Matrix = matrix;
         [Uniform("uView")] public Matrix4x4 Matrix { get; }

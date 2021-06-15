@@ -1,23 +1,24 @@
 ﻿using System;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridCodeGen
 {
-    class InputInfo
+    class VertexInfo
     {
-        public InputInfo(AttributeData attrib, ISymbol symbol, Symbols symbols)
+        public VertexInfo(AttributeData attrib, ISymbol symbol, Symbols symbols)
         {
             // matching "public InputParamAttribute(string name, VertexElementFormat format)" (second param optional)
             Name = (string)attrib.ConstructorArguments[0].Value;
             Format = attrib.ConstructorArguments.Length > 1 && attrib.ConstructorArguments[1].Value != null
-                ? attrib.ConstructorArguments[1].Value
-                : FormatForType(symbol, symbols);
+                ? attrib.ConstructorArguments[1].ToCSharpString()
+                : FormatForType(symbol, symbols).ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
         }
 
         public string Name { get; }
-        public object Format { get; }
+        public string Format { get; }
 
-        object FormatForType(ISymbol member, Symbols symbols)
+        static ISymbol FormatForType(ISymbol member, Symbols symbols)
         {
             var type = Util.GetFieldOrPropertyType(member);
             if (type.TypeKind == TypeKind.Enum)

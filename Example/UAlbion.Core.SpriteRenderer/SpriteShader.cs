@@ -62,7 +62,7 @@ namespace UAlbion.Core.SpriteRenderer
         [Vertex("WorldPosition")] public Vector3 WorldPosition;
     }
 
-    public struct ColorOnly : IVertexFormat
+    public partial struct ColorOnly : IVertexFormat
     {
         [Vertex("Color")] public Vector4 OutputColor;
     }

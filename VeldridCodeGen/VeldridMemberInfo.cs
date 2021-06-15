@@ -27,7 +27,7 @@ namespace VeldridCodeGen
                 if (attrib.AttributeClass.Equals(symbols.VertexAttrib, SymbolEqualityComparer.Default))
                 {
                     Flags |= MemberFlags.IsVertexComponent;
-                    Input = new InputInfo(attrib, symbol, symbols);
+                    Vertex = new VertexInfo(attrib, symbol, symbols);
                 }
 
                 if (attrib.AttributeClass.Equals(symbols.ResourceAttrib, SymbolEqualityComparer.Default))
@@ -41,7 +41,7 @@ namespace VeldridCodeGen
         public ISymbol Symbol { get; }
         public MemberFlags Flags { get; }
         public ResourceInfo Resource { get; }
-        public InputInfo Input { get; }
+        public VertexInfo Vertex { get; }
         public ColorAttachmentInfo ColorAttachment { get; }
         public DepthAttachmentInfo DepthAttachment { get; }
     }

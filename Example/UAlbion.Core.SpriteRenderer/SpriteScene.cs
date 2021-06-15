@@ -9,10 +9,10 @@ namespace UAlbion.Core.SpriteRenderer
 {
     public class SpriteScene : Component, IScene
     {
-        readonly SpriteRenderer _spriteRenderer;
         readonly ICamera _camera;
         readonly ITexture _palette;
         readonly SpriteManager _spriteManager;
+        readonly SpriteRenderer _spriteRenderer;
         readonly FramebufferHolder _framebuffer;
         readonly SingleBuffer<ViewMatrix> _viewMatrix;
         readonly SingleBuffer<ProjectionMatrix> _projectionMatrix;

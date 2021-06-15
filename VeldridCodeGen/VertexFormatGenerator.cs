@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 
 namespace VeldridCodeGen
 {
@@ -6,6 +7,20 @@ namespace VeldridCodeGen
     {
         public static void Generate(StringBuilder sb, VeldridTypeInfo type)
         {
+            var members = type.Members.Where(x => (x.Flags & MemberFlags.IsVertexComponent) != 0).ToList();
+            if (members.Count == 0)
+                return;
+
+            sb.AppendLine(@"        public static VertexLayoutDescription Layout = new(");
+            bool first = true;
+            foreach (var member in members)
+            {
+                if (!first)
+                    sb.AppendLine(",");
+                sb.Append($@"            new VertexElementDescription(""{member.Vertex.Name}"", VertexElementSemantic.TextureCoordinate, {member.Vertex.Format})");
+                first = false;
+            }
+            sb.AppendLine(");");
         }
             /*
     public readonly partial struct Vertex2DTextured // match access specifier, name

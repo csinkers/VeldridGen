@@ -73,11 +73,15 @@ namespace VeldridCodeGen
 
         static string GenerateType(VeldridTypeInfo type, Symbols symbols)
         {
+            var kword = type.Symbol.IsReferenceType
+                ? type.Symbol.IsRecord ? "record" : "class"
+                : "struct";
+            
             var sb = new StringBuilder();
             sb.AppendLine($@"using Veldrid;
 namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
 {{
-    {type.Symbol.DeclaredAccessibility.ToString().ToLower()} partial class {type.Symbol.Name}
+    {type.Symbol.DeclaredAccessibility.ToString().ToLower()} partial {kword} {type.Symbol.Name}
     {{");
 
             int length = sb.Length;

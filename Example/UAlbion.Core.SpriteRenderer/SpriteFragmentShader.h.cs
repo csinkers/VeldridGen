@@ -47,23 +47,27 @@
 
 // Resource Sets
 layout(set = 0, binding = 0) uniform _Shared {
-	vec3 uWorldSpacePosition;  // 12
-	uint _s_padding_1;         // 16
-	vec3 uCameraLookDirection; // 28
-	uint _s_padding_2;         // 32
+	vec3 uWorldSpacePosition;
+	uint _s_padding_1;
+	vec3 uCameraLookDirection;
+	uint _s_padding_2;
 
-	vec2 uResolution;    // 40
-	float uTime;         // 44
-	float uSpecial1;     // 48
+	vec2 uResolution;
+	float uTime;
+	float uSpecial1;
 
-	float uSpecial2;     // 52
-	uint uEngineFlags;   // 56
-	float uPaletteBlend; // 60
-	uint _s_padding_3;   // 64
+	float uSpecial2;
+	uint uEngineFlags;
+	float uPaletteBlend;
+	uint _s_padding_3;
 };
 
-layout(set = 0, binding = 1) uniform _Projection { mat4 uProjection; };
-layout(set = 0, binding = 2) uniform _View { mat4 uView; };
+layout(set = 0, binding = 1) uniform _Projection {
+    mat4 uProjection; 
+};
+layout(set = 0, binding = 2) uniform _View {
+    mat4 uView; 
+};
 layout(set = 0, binding = 3) uniform texture2D uPalette; //! // vdspv_0_3
 
 layout(set = 1, binding = 0) uniform texture2DArray uSprite; //! // vdspv_1_0
