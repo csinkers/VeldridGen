@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen
 {
@@ -32,14 +33,20 @@ namespace VeldridGen
                     Flags |= MemberFlags.IsResource;
                     Resource = new ResourceInfo(attrib, symbol, symbols);
                 }
+                else if (attrib.AttributeClass.Equals(symbols.UniformAttrib, SymbolEqualityComparer.Default))
+                {
+                    Flags |= MemberFlags.IsUniform;
+                    Uniform = new UniformInfo(attrib);
+                }
             }
         }
 
         public ISymbol Symbol { get; }
         public MemberFlags Flags { get; }
-        public ResourceInfo Resource { get; }
-        public VertexInfo Vertex { get; }
         public ColorAttachmentInfo ColorAttachment { get; }
         public DepthAttachmentInfo DepthAttachment { get; }
+        public ResourceInfo Resource { get; }
+        public UniformInfo Uniform { get; }
+        public VertexInfo Vertex { get; }
     }
 }

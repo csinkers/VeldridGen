@@ -3,7 +3,7 @@ using Veldrid;
 
 namespace VeldridGen.Interfaces
 {
-    public interface IBufferHolder : IDisposable
+    public interface IBufferHolder<T> : IDisposable
     {
         DeviceBuffer DeviceBuffer { get; }
     }

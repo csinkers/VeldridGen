@@ -2,10 +2,11 @@
 using System.Runtime.CompilerServices;
 using UAlbion.Core.Veldrid.Events;
 using Veldrid;
+using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {
-    public class MultiBuffer<T> : Component, IDisposable where T : struct // GPU buffer containing an array of Ts
+    public class MultiBuffer<T> : Component, IBufferHolder<T> where T : struct // GPU buffer containing an array of Ts
     {
         readonly object _syncRoot = new();
         readonly BufferUsage _usage;

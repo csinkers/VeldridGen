@@ -12,6 +12,7 @@ namespace VeldridGen
         public static void Generate(StringBuilder sb, VeldridTypeInfo type, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
         {
             // TODO: Ensure the types actually exist, ensure that they're shaders of the appropriate type etc.
+            // TODO: Ensure vertex shader outputs are compatible with fragment shader inputs
             var vshader = types[type.Pipeline.VertexShader];
             var fshader = types[type.Pipeline.FragmentShader];
             foreach (var input in vshader.Shader.Inputs.Where(x => x.Item3 != 0))

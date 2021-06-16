@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
@@ -13,20 +12,23 @@ namespace VeldridGen
             Stages = attrib.ConstructorArguments.Length > 1 && attrib.ConstructorArguments[1].Value != null
                 ? (byte)attrib.ConstructorArguments[1].Value
                 : (byte)17; // Fragment | Vertex
-            Kind = GetKind(member, symbols);
+            (Kind, BufferType) = GetKind(member, symbols);
         }
 
-        static string GetKind(ISymbol member, Symbols symbols)
+        static (string, INamedTypeSymbol) GetKind(ISymbol member, Symbols symbols)
         {
             var type = Util.GetFieldOrPropertyType(member);
-            if (type.AllInterfaces.Any(x => x.Equals(symbols.BufferHolder, SymbolEqualityComparer.Default)))
-                return symbols.ResourceKind.UniformBuffer.ToDisplayString();
+            foreach (var iface in type.AllInterfaces)
+            {
+                if (iface.IsGenericType && iface.OriginalDefinition.Equals(symbols.BufferHolder, SymbolEqualityComparer.Default))
+                    return (symbols.ResourceKind.UniformBuffer.ToDisplayString(), (INamedTypeSymbol)iface.TypeArguments[0]);
 
-            if (type.AllInterfaces.Any(x => x.Equals(symbols.TextureHolder, SymbolEqualityComparer.Default)))
-                return symbols.ResourceKind.TextureReadOnly.ToDisplayString();
+                if (iface.Equals(symbols.TextureHolder, SymbolEqualityComparer.Default))
+                    return (symbols.ResourceKind.TextureReadOnly.ToDisplayString(), null);
 
-            if (type.AllInterfaces.Any(x => x.Equals(symbols.SamplerHolder, SymbolEqualityComparer.Default)))
-                return symbols.ResourceKind.Sampler.ToDisplayString();
+                if (iface.Equals(symbols.SamplerHolder, SymbolEqualityComparer.Default))
+                    return (symbols.ResourceKind.Sampler.ToDisplayString(), null);
+            }
 
             throw new ArgumentOutOfRangeException($"Unable to determine a resource kind for field {member.Name} of type {type}");
             // TODO StructuredBufferReadOnly
@@ -37,5 +39,6 @@ namespace VeldridGen
         public string Name { get; }
         public byte Stages { get; }
         public string Kind { get; }
+        public INamedTypeSymbol BufferType { get; }
     }
 }

@@ -11,18 +11,18 @@ namespace UAlbion.Core.SpriteRenderer
     public partial class SpritePipeline : PipelineHolder { }
 
     [Name("SpriteSV.vert")]
-    [VertexInput(0, typeof(Vertex2DTextured))]
-    [VertexInput(1, typeof(SpriteInstanceData), InstanceStep = 1)]
+    [Input(0, typeof(Vertex2DTextured))]
+    [Input(1, typeof(SpriteInstanceData), InstanceStep = 1)]
     [ResourceSet(0, typeof(CommonSet))]
     [ResourceSet(1, typeof(SpriteArraySet))]
-    [VertexOutput(0, typeof(SpriteIntermediateData))]
+    [Output(0, typeof(SpriteIntermediateData))]
     public partial class SpriteVertexShader : IVertexShader { }
 
     [Name("SpriteSF.frag")]
-    [VertexInput(0, typeof(SpriteIntermediateData))]
+    [Input(0, typeof(SpriteIntermediateData))]
     [ResourceSet(0, typeof(CommonSet))]
     [ResourceSet(1, typeof(SpriteArraySet))]
-    [VertexOutput(0, typeof(ColorOnly))]
+    [Output(0, typeof(ColorOnly))]
     public partial class SpriteFragmentShader : IFragmentShader { }
 
     public sealed partial class SpriteArraySet : ResourceSetHolder

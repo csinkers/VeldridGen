@@ -5,7 +5,7 @@ using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {
-    public class SingleBuffer<T> : Component, IBufferHolder where T : struct // GPU buffer containing a single instance of T
+    public class SingleBuffer<T> : Component, IBufferHolder<T> where T : struct // GPU buffer containing a single instance of T
     {
         readonly BufferUsage _usage;
         string _name;

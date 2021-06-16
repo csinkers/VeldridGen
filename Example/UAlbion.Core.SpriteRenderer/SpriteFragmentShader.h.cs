@@ -2,7 +2,7 @@
 {
     public partial class SpriteFragmentShader
     {
-        public static string ShaderSource()
+        public static string ShaderSource2()
         {
             return @"
 //!#version 450 // Comments with //! are for tricking the Visual Studio GLSL plugin into doing the right thing

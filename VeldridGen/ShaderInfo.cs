@@ -26,7 +26,7 @@ namespace VeldridGen
                 {
                     Filename = (string)attrib.ConstructorArguments[0].Value;
                 }
-                else if (attrib.AttributeClass.Equals(symbols.VertexInputAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(symbols.InputAttrib, SymbolEqualityComparer.Default))
                 {
                     var stepArgument =
                         attrib.NamedArguments
@@ -39,7 +39,7 @@ namespace VeldridGen
                         (INamedTypeSymbol)attrib.ConstructorArguments[1].Value,
                         (int?)stepArgument?.Value ?? 0));
                 }
-                else if (attrib.AttributeClass.Equals(symbols.VertexOutputAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(symbols.OutputAttrib, SymbolEqualityComparer.Default))
                 {
                     Outputs.Add((
                         (int)attrib.ConstructorArguments[0].Value,

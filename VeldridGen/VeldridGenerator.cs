@@ -107,7 +107,7 @@ namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
             if ((type.Flags & TypeFlags.IsPipelineHolder) != 0)
                 PipelineGenerator.Generate(sb, type, types);
             if ((type.Flags & TypeFlags.IsShader) != 0)
-                ShaderGenerator.Generate(sb, type);
+                ShaderGenerator.Generate(sb, type, types);
 
             if (sb.Length == length)
                 return null;
