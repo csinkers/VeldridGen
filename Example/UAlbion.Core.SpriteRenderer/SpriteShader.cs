@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using UAlbion.Core.Sprites;
 using UAlbion.Core.Veldrid;
-using VeldridCodeGen.Interfaces;
+using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.SpriteRenderer
 {

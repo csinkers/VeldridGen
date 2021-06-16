@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using UAlbion.Core.Veldrid;
 using Veldrid;
-using VeldridCodeGen.Interfaces;
+using VeldridGen.Interfaces;
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
 namespace UAlbion.Core.SpriteRenderer

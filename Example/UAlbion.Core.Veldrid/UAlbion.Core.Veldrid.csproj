@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UAlbion.Api\UAlbion.Api.csproj" />
     <ProjectReference Include="..\UAlbion.Core\UAlbion.Core.csproj" />
-    <ProjectReference Include="..\..\VeldridCodeGen.Interfaces\VeldridCodeGen.Interfaces.csproj" />
+    <ProjectReference Include="..\..\VeldridGen.Interfaces\VeldridGen.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using UAlbion.Core.Veldrid.Events;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
-using VeldridCodeGen.Interfaces;
+using VeldridGen.Interfaces;
 using Rectangle = Veldrid.Rectangle;
 
 namespace UAlbion.Core.Veldrid

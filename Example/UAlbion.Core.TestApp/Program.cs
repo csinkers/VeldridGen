@@ -8,7 +8,7 @@ using UAlbion.Core.SpriteRenderer;
 using UAlbion.Core.Sprites;
 using UAlbion.Core.Veldrid;
 using Veldrid;
-using VeldridCodeGen.Interfaces;
+using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.TestApp
 {

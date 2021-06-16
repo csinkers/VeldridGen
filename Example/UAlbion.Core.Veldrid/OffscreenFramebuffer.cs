@@ -1,5 +1,5 @@
 ﻿using Veldrid;
-using VeldridCodeGen.Interfaces;
+using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {

@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\VeldridCodeGen.Interfaces\VeldridCodeGen.Interfaces.csproj" />
-    <ProjectReference Include="..\..\VeldridCodeGen\VeldridCodeGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\VeldridGen.Interfaces\VeldridGen.Interfaces.csproj" />
+    <ProjectReference Include="..\..\VeldridGen\VeldridGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\UAlbion.Core.Veldrid\UAlbion.Core.Veldrid.csproj" />
   </ItemGroup>
 

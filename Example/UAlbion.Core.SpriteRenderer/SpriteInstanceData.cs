@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using UAlbion.Api.Visual;
 using UAlbion.Core.Sprites;
-using VeldridCodeGen.Interfaces;
+using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.SpriteRenderer
 {
