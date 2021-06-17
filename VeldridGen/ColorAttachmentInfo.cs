@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen
 {
@@ -7,10 +7,9 @@ namespace VeldridGen
     {
         public ColorAttachmentInfo(AttributeData attrib)
         {
-            var value = attrib.ConstructorArguments[0].Value;
-            Format = value ?? throw new ArgumentOutOfRangeException("Color attachment attribute did not contain a pixel format parameter");
+            Format = attrib.ConstructorArguments[0].ToCSharpString();
         }
 
-        public object Format { get; }
+        public string Format { get; }
     }
 }

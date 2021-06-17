@@ -1,20 +1,17 @@
-﻿using UAlbion.Core.Veldrid.Events;
-using Veldrid;
-
+﻿using Veldrid;
 namespace UAlbion.Core.SpriteRenderer
 {
-    // To be generated
     public partial class OffscreenFramebuffer
     {
-        protected override Framebuffer CreateFramebuffer(IVeldridInitEvent e)
+        protected override Framebuffer CreateFramebuffer(global::UAlbion.Core.Veldrid.Events.IVeldridInitEvent e)
         {
             _depth = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
-                Width, Height, 1, 1, 1,
-                PixelFormat.R32_Float, TextureUsage.DepthStencil, TextureType.Texture2D));
+                    Width, Height, 1, 1, 1,
+                    global::Veldrid.PixelFormat.R32_Float, TextureUsage.DepthStencil, TextureType.Texture2D));
 
             _color = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
-                Width, Height, 1, 1, 1,
-                PixelFormat.B8_G8_R8_A8_UNorm, TextureUsage.RenderTarget, TextureType.Texture2D));
+                    Width, Height, 1, 1, 1,
+                    global::Veldrid.PixelFormat.B8_G8_R8_A8_UNorm, TextureUsage.RenderTarget, TextureType.Texture2D));
 
             var description = new FramebufferDescription(_depth, _color);
             return e.Device.ResourceFactory.CreateFramebuffer(ref description);
@@ -24,8 +21,8 @@ namespace UAlbion.Core.SpriteRenderer
         {
             base.Dispose(disposing);
             _depth?.Dispose();
-            _color?.Dispose();
             _depth = null;
+            _color?.Dispose();
             _color = null;
         }
     }
