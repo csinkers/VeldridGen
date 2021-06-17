@@ -1,7 +1,7 @@
 ﻿using UAlbion.Core.Veldrid.Events;
 using Veldrid;
 
-namespace UAlbion.Core.Veldrid
+namespace UAlbion.Core.SpriteRenderer
 {
     // To be generated
     public partial class OffscreenFramebuffer

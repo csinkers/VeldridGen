@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -9,10 +10,12 @@ namespace VeldridGen
     {
         public static void Generate(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
         {
+            var extension = Path.GetExtension(shaderType.Shader.Filename);
+            var headerFilename = Path.GetFileNameWithoutExtension(shaderType.Shader.Filename) + ".h" + extension;
+
             sb.AppendLine($@"        public static (string, string) ShaderSource()
         {{
-            return (""{shaderType.Shader.Filename}"", @""
-//!#version 450 // Comments with //! are just for the VS GLSL plugin
+            return (""{headerFilename}"", @""//!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 ");
             ShaderEnumGenerator.EmitEnums(sb, shaderType, context);
@@ -147,6 +150,7 @@ namespace VeldridGen
                     sb.Append("flat ");
                 sb.Append(glslType);
                 sb.Append(' ');
+                sb.Append(isInput ? 'i' : 'o');
                 sb.Append(component.Vertex.Name);
                 sb.AppendLine(";");
                 location++;

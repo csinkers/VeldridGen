@@ -1,4 +1,4 @@
-#include "SpriteSF.g.frag"
+#include "SpriteSF.h.frag"
 #define DEPTH_COLOR(depth) (vec4((int((depth) * 1024) % 10) / 10.0f, 20 * (max((depth), 0.95) - 0.95), 20 * min((depth), 0.05), 1.0f))
 
 void main()

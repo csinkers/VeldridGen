@@ -1,11 +1,4 @@
-﻿using Veldrid;
-namespace UAlbion.Core.SpriteRenderer
-{
-    public partial class SpriteFragmentShader
-    {
-        public static (string, string) ShaderSource()
-        {
-            return ("SpriteSF.h.frag", @"//!#version 450 // Comments with //! are just for the VS GLSL plugin
+//!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 
 // SpriteFlags
@@ -79,7 +72,3 @@ layout(location = 4) in vec3 iWorldPosition;
 // UAlbion.Core.SpriteRenderer.ColorOnly
 layout(location = 0) out vec4 oColor;
 
-");
-        }
-    }
-}

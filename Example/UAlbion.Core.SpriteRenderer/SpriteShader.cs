@@ -43,8 +43,8 @@ namespace UAlbion.Core.SpriteRenderer
 
     public readonly partial struct Vertex2DTextured : IVertexFormat
     {
-        [Vertex("vPosition")] public Vector2 Position { get; }
-        [Vertex("vTextCoords")] public Vector2 Texture { get; }
+        [Vertex("Position")] public Vector2 Position { get; }
+        [Vertex("TexCoords")] public Vector2 Texture { get; }
 
         public Vertex2DTextured(float x, float y, float u, float v)
         {

@@ -1,11 +1,4 @@
-﻿using Veldrid;
-namespace UAlbion.Core.SpriteRenderer
-{
-    public partial class SpriteFragmentShader
-    {
-        public static (string, string) ShaderSource()
-        {
-            return ("SpriteSF.h.frag", @"//!#version 450 // Comments with //! are just for the VS GLSL plugin
+//!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 
 // SpriteFlags
@@ -58,7 +51,12 @@ layout(set = 0, binding = 0) uniform _Shared {
     uint _globalInfo_pad4;
     uint _globalInfo_pad5;
 };
-layout(set = 0, binding = 3) uniform texture2D uPalette; //!
+layout(set = 0, binding = 1) uniform _Projection {
+    mat4 uProjection;
+};
+layout(set = 0, binding = 2) uniform _View {
+    mat4 uView;
+};
 
 layout(set = 1, binding = 0) uniform texture2DArray uSprite; //!
 layout(set = 1, binding = 1) uniform sampler uSpriteSampler; //!
@@ -69,17 +67,24 @@ layout(set = 1, binding = 2) uniform _Uniform {
     uint _pad1;
 };
 
+// UAlbion.Core.SpriteRenderer.Vertex2DTextured
+layout(location = 0) in vec2 iPosition;
+layout(location = 1) in vec2 iTexCoords;
+
+// UAlbion.Core.SpriteRenderer.SpriteInstanceData
+layout(location = 2) in vec3 iTransform1;
+layout(location = 3) in vec3 iTransform2;
+layout(location = 4) in vec3 iTransform3;
+layout(location = 5) in vec3 iTransform4;
+layout(location = 6) in vec2 iTexOffset;
+layout(location = 7) in vec2 iTexSize;
+layout(location = 8) in uint iTexLayer;
+layout(location = 9) in uint iFlags;
+
 // UAlbion.Core.SpriteRenderer.SpriteIntermediateData
-layout(location = 0) in vec2 iTexPosition;
-layout(location = 1) in flat float iLayer;
-layout(location = 2) in flat uint iFlags;
-layout(location = 3) in vec2 iNormCoords;
-layout(location = 4) in vec3 iWorldPosition;
+layout(location = 0) out vec2 oTexPosition;
+layout(location = 1) out flat float oLayer;
+layout(location = 2) out flat uint oFlags;
+layout(location = 3) out vec2 oNormCoords;
+layout(location = 4) out vec3 oWorldPosition;
 
-// UAlbion.Core.SpriteRenderer.ColorOnly
-layout(location = 0) out vec4 oColor;
-
-");
-        }
-    }
-}

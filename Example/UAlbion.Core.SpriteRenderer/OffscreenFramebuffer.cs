@@ -1,7 +1,8 @@
-﻿using Veldrid;
+﻿using UAlbion.Core.Veldrid;
+using Veldrid;
 using VeldridGen.Interfaces;
 
-namespace UAlbion.Core.Veldrid
+namespace UAlbion.Core.SpriteRenderer
 {
     public partial class OffscreenFramebuffer : FramebufferHolder
     {
@@ -10,3 +11,4 @@ namespace UAlbion.Core.Veldrid
         public OffscreenFramebuffer(uint width, uint height) : base(width, height) { }
     }
 }
+

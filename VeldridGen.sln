@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UAlbion.Core.TestApp", "Exa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UAlbion.Core.SpriteRenderer", "Example\UAlbion.Core.SpriteRenderer\UAlbion.Core.SpriteRenderer.csproj", "{62178BA9-482F-4317-B6E8-EA1EEF84FA46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeldridGen.Tests", "VeldridGen.Tests\VeldridGen.Tests.csproj", "{0F5F60D4-1256-442B-8DEA-C9D4048D7744}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Tests", "VeldridGen.Tests\VeldridGen.Tests.csproj", "{0F5F60D4-1256-442B-8DEA-C9D4048D7744}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UAlbion.ShaderWriter", "Example\UAlbion.ShaderWriter\UAlbion.ShaderWriter.csproj", "{B091AE83-20A3-440D-A76B-8664B5CA1226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,9 +61,21 @@ Global
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B091AE83-20A3-440D-A76B-8664B5CA1226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B091AE83-20A3-440D-A76B-8664B5CA1226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B091AE83-20A3-440D-A76B-8664B5CA1226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B091AE83-20A3-440D-A76B-8664B5CA1226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9AAD77FA-FE52-4BAC-8A2D-2720C20B0BA0} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{4D7BDA45-C044-46B8-AC78-8428490775FF} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{CA94182C-028D-4E7C-817C-986D9BF55EB6} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{55F86488-E938-4165-AC8B-B42661EE41E7} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{62178BA9-482F-4317-B6E8-EA1EEF84FA46} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{B091AE83-20A3-440D-A76B-8664B5CA1226} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5EBD6E79-2548-40E6-A405-6382E973E16D}

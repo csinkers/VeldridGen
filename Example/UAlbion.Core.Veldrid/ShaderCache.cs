@@ -215,6 +215,7 @@ namespace UAlbion.Core.Veldrid
             lock (_syncRoot)
             {
                 var cacheKey = vertexName + fragmentName;
+                Exception compileException = null;
                 if (!_cache.TryGetValue(cacheKey, out var entry) || entry.VertexPath != vertexPath || entry.FragmentPath != fragmentPath)
                 {
                     try
@@ -225,11 +226,12 @@ namespace UAlbion.Core.Veldrid
                     catch (Exception e)
                     {
                         Error($"Error compiling shaders ({vertexName}, {fragmentName}): {e}");
+                        compileException = e;
                     }
                 }
 
                 if (entry == null)
-                    throw new InvalidOperationException($"No shader could be built for ({vertexName}, {fragmentName})");
+                    throw new InvalidOperationException($"No shader could be built for ({vertexName}, {fragmentName}): {compileException}");
 
                 var vertexShader = factory.CreateShader(entry.VertexShader);
                 var fragmentShader = factory.CreateShader(entry.FragmentShader);

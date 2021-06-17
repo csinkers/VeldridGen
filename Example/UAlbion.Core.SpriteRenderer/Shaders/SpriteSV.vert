@@ -1,4 +1,4 @@
-#include "SpriteSV.g.vert"
+#include "SpriteSV.h.vert"
 
 void main()
 {
@@ -20,7 +20,7 @@ void main()
 			0, 0, 0, 1);
 	}
 
-	vec4 worldSpace = transform * vec4(vPosition, 0, 1);
+	vec4 worldSpace = transform * vec4(iPosition, 0, 1);
 
 	vec4 normPosition = ((uFlags & SKF_NO_TRANSFORM) == 0)
 		? uProjection * uView * worldSpace
@@ -28,9 +28,9 @@ void main()
 
 	gl_Position = normPosition;
 
-	oTexPosition = vTexCoords * iTexSize + iTexOffset;
+	oTexPosition = iTexCoords * iTexSize + iTexOffset;
 	oLayer = float(iTexLayer);
 	oFlags = iFlags;
-	oNormCoords = vTexCoords;
+	oNormCoords = iTexCoords;
 	oWorldPosition = worldSpace.xyz;
 }

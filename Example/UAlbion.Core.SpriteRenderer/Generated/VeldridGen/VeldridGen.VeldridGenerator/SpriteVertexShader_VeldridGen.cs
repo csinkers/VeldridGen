@@ -5,8 +5,7 @@ namespace UAlbion.Core.SpriteRenderer
     {
         public static (string, string) ShaderSource()
         {
-            return ("SpriteSV.vert", @"
-//!#version 450 // Comments with //! are just for the VS GLSL plugin
+            return ("SpriteSV.h.vert", @"//!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 
 // SpriteFlags
@@ -76,25 +75,25 @@ layout(set = 1, binding = 2) uniform _Uniform {
 };
 
 // UAlbion.Core.SpriteRenderer.Vertex2DTextured
-layout(location = 0) in vec2 vPosition;
-layout(location = 1) in vec2 vTextCoords;
+layout(location = 0) in vec2 iPosition;
+layout(location = 1) in vec2 iTexCoords;
 
 // UAlbion.Core.SpriteRenderer.SpriteInstanceData
-layout(location = 2) in vec3 Transform1;
-layout(location = 3) in vec3 Transform2;
-layout(location = 4) in vec3 Transform3;
-layout(location = 5) in vec3 Transform4;
-layout(location = 6) in vec2 TexOffset;
-layout(location = 7) in vec2 TexSize;
-layout(location = 8) in uint TexLayer;
-layout(location = 9) in uint Flags;
+layout(location = 2) in vec3 iTransform1;
+layout(location = 3) in vec3 iTransform2;
+layout(location = 4) in vec3 iTransform3;
+layout(location = 5) in vec3 iTransform4;
+layout(location = 6) in vec2 iTexOffset;
+layout(location = 7) in vec2 iTexSize;
+layout(location = 8) in uint iTexLayer;
+layout(location = 9) in uint iFlags;
 
 // UAlbion.Core.SpriteRenderer.SpriteIntermediateData
-layout(location = 0) out vec2 TexPosition;
-layout(location = 1) out flat float Layer;
-layout(location = 2) out flat uint Flags;
-layout(location = 3) out vec2 NormCoords;
-layout(location = 4) out vec3 WorldPosition;
+layout(location = 0) out vec2 oTexPosition;
+layout(location = 1) out flat float oLayer;
+layout(location = 2) out flat uint oFlags;
+layout(location = 3) out vec2 oNormCoords;
+layout(location = 4) out vec3 oWorldPosition;
 
 ");
         }
