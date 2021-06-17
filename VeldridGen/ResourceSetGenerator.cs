@@ -7,7 +7,7 @@ namespace VeldridGen
 {
     static class ResourceSetGenerator
     {
-        public static void Generate(StringBuilder sb, VeldridTypeInfo type, Symbols symbols)
+        public static void Generate(StringBuilder sb, VeldridTypeInfo type, GenerationContext context)
         {
             /* e.g.
             new ResourceLayoutElementDescription("uSprite", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
@@ -30,9 +30,9 @@ namespace VeldridGen
 
             foreach (var member in type.Members.Where(x => (x.Flags & MemberFlags.IsResource) != 0))
             {
-                if (Equals(member.Resource.Kind, symbols.ResourceKind.UniformBuffer.ToDisplayString())) GenerateUniform(sb, member);
-                else if (Equals(member.Resource.Kind, symbols.ResourceKind.TextureReadOnly.ToDisplayString())) GenerateTexture(sb, member);
-                else if (Equals(member.Resource.Kind, symbols.ResourceKind.Sampler.ToDisplayString())) GenerateSampler(sb, member);
+                if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) GenerateUniform(sb, member);
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) GenerateTexture(sb, member);
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) GenerateSampler(sb, member);
                 else throw new ArgumentOutOfRangeException();
             }
 
@@ -59,9 +59,9 @@ namespace VeldridGen
                 sb.Append(field.Name);
                 sb.Append('.');
 
-                if (Equals(member.Resource.Kind, symbols.ResourceKind.UniformBuffer.ToDisplayString())) sb.Append("DeviceBuffer");
-                else if (Equals(member.Resource.Kind, symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("TextureView");
-                else if (Equals(member.Resource.Kind, symbols.ResourceKind.Sampler.ToDisplayString())) sb.Append("Sampler");
+                if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) sb.Append("DeviceBuffer");
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("TextureView");
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) sb.Append("Sampler");
                 else throw new ArgumentOutOfRangeException();
             }
 

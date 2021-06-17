@@ -63,15 +63,48 @@ namespace VeldridGen
             return result;
         }
         */
-        public static ITypeSymbol GetFieldOrPropertyType(ISymbol member)
+        public static INamedTypeSymbol GetFieldOrPropertyType(ISymbol member)
         {
             return member switch
             {
-                IFieldSymbol field => field.Type,
-                IPropertySymbol property => property.Type,
+                IFieldSymbol field => (INamedTypeSymbol)field.Type,
+                IPropertySymbol property => (INamedTypeSymbol)property.Type,
                 _ => throw new ArgumentOutOfRangeException(
                     "Member with a ResourceAttribute was neither a field nor a property")
             };
+        }
+
+        public static ISymbol VertexElementFormatForType(ISymbol member, Symbols symbols)
+        {
+            var type = GetFieldOrPropertyType(member);
+            if (type.TypeKind == TypeKind.Enum)
+                type = type.EnumUnderlyingType;
+
+            if (type.Equals(symbols.Int, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Int1;
+            if (type.Equals(symbols.UInt, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.UInt1;
+            if (type.Equals(symbols.Float, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float1;
+            if (type.Equals(symbols.Vector2, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float2;
+            if (type.Equals(symbols.Vector3, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float3;
+            if (type.Equals(symbols.Vector4, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float4;
+            throw new ArgumentOutOfRangeException($"Could not find an appropriate vertex element format for field of type {type.ToDisplayString()}");
+        }
+
+        public static string GetGlslType(INamedTypeSymbol type, Symbols symbols)
+        {
+            if (type.TypeKind == TypeKind.Enum)
+                type = type.EnumUnderlyingType;
+
+            if (type.Equals(symbols.Byte, SymbolEqualityComparer.Default)) return "byte";
+            if (type.Equals(symbols.Short, SymbolEqualityComparer.Default)) return "short";
+            if (type.Equals(symbols.UShort, SymbolEqualityComparer.Default)) return "ushort";
+            if (type.Equals(symbols.Int, SymbolEqualityComparer.Default)) return "int";
+            if (type.Equals(symbols.UInt, SymbolEqualityComparer.Default)) return "uint";
+            if (type.Equals(symbols.Float, SymbolEqualityComparer.Default)) return "float";
+            if (type.Equals(symbols.Vector2, SymbolEqualityComparer.Default)) return "vec2";
+            if (type.Equals(symbols.Vector3, SymbolEqualityComparer.Default)) return "vec3";
+            if (type.Equals(symbols.Vector4, SymbolEqualityComparer.Default)) return "vec4";
+            if (type.Equals(symbols.Matrix4x4, SymbolEqualityComparer.Default)) return "mat4";
+            throw new ArgumentOutOfRangeException(nameof(type), $"Type {type.ToDisplayString()} cannot be converted to a GLSL type");
         }
     }
 }

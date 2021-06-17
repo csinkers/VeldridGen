@@ -51,8 +51,12 @@ layout(set = 0, binding = 0) uniform _Shared {
 	uint _s_padding_3;   // 64
 };
 
-layout(set = 0, binding = 1) uniform _Projection { mat4 uProjection; };
-layout(set = 0, binding = 2) uniform _View { mat4 uView; };
+layout(set = 0, binding = 1) uniform _Projection {
+    mat4 uProjection; 
+};
+layout(set = 0, binding = 2) uniform _View {
+    mat4 uView; 
+};
 layout(set = 0, binding = 3) uniform texture2D uPalette; //! // vdspv_0_3
 
 layout(set = 1, binding = 0) uniform texture2DArray uSprite; //! // vdspv_1_0

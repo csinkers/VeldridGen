@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -6,34 +7,153 @@ namespace VeldridGen
 {
     static class ShaderGenerator
     {
-        public static void Generate(StringBuilder sb, VeldridTypeInfo shaderType, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        public static void Generate(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
         {
-            sb.AppendLine($@"
-        public static (string, string) ShaderSource()
+            sb.AppendLine($@"        public static (string, string) ShaderSource()
         {{
             return (""{shaderType.Shader.Filename}"", @""
 //!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 ");
-            ShaderEnumGenerator.EmitEnums(sb, shaderType, types);
-            EmitResourceSets(sb, shaderType, types);
-            EmitInputs(sb, shaderType, types);
-            EmitOutputs(sb, shaderType, types);
+            ShaderEnumGenerator.EmitEnums(sb, shaderType, context);
+            EmitResourceSets(sb, shaderType, context);
+            EmitInputs(sb, shaderType, context);
+            EmitOutputs(sb, shaderType, context);
 
             sb.AppendLine(@""");
         }");
         }
 
-        static void EmitResourceSets(StringBuilder sb, VeldridTypeInfo shaderType, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        static void EmitResourceSets(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
         {
+            var stageValue = EnumUtil.GetEnumValue((IFieldSymbol)(shaderType.Shader.ShaderType switch
+            {
+                ShaderType.Vertex => context.Symbols.ShaderStages.Vertex,
+                ShaderType.Fragment => context.Symbols.ShaderStages.Fragment,
+                ShaderType.Compute => context.Symbols.ShaderStages.Compute,
+                _ => throw new ArgumentOutOfRangeException()
+            }));
+
+            foreach (var set in shaderType.Shader.ResourceSets.OrderBy(x => x.Item1))
+            {
+                if (!context.Types.TryGetValue(set.Item2, out var setInfo))
+                    continue;
+
+                int binding = 0;
+                foreach (var resource in setInfo.Members)
+                {
+                    if (resource.Resource == null)
+                        continue;
+
+                    if ((resource.Resource.Stages & stageValue) != 0)
+                        EmitResource(sb, set.Item1, binding, setInfo, resource.Resource, context);
+
+                    binding++;
+                }
+
+                sb.AppendLine();
+            }
         }
 
-        static void EmitInputs(StringBuilder sb, VeldridTypeInfo shaderType, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        static void EmitResource(StringBuilder sb, int setNumber, int binding, VeldridTypeInfo setInfo, ResourceInfo resource, GenerationContext context)
         {
+            sb.Append("layout(set = ");
+            sb.Append(setNumber);
+            sb.Append(", binding = ");
+            sb.Append(binding);
+            sb.Append(") uniform ");
+            switch (resource.ResourceType)
+            {
+                case ResourceType.UniformBuffer:
+                    if (!context.Types.TryGetValue(resource.BufferType, out var bufferType))
+                    {
+                        throw new InvalidOperationException(
+                            $"Resource {resource.Name} in set {setInfo.Symbol.ToDisplayString()} was " +
+                            $"of unknown type {resource.BufferType.ToDisplayString()}. " +
+                            $"The buffer type must inherit from the {context.Symbols.UniformFormat.ToDisplayString()} interface");
+                    }
+
+                    sb.Append(resource.Name);
+                    sb.AppendLine(" {");
+                    EmitUniformBuffer(sb, bufferType, context);
+                    sb.AppendLine("};");
+                    break;
+                case ResourceType.Texture2D:
+                    sb.Append("texture2D ");
+                    sb.Append(resource.Name);
+                    sb.AppendLine("; //!");
+                    break;
+                case ResourceType.Texture2DArray:
+                    sb.Append("texture2DArray ");
+                    sb.Append(resource.Name);
+                    sb.AppendLine("; //!");
+                    break;
+                case ResourceType.Sampler:
+                    sb.Append("sampler ");
+                    sb.Append(resource.Name);
+                    sb.AppendLine("; //!");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
-        static void EmitOutputs(StringBuilder sb, VeldridTypeInfo shaderType, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        static void EmitUniformBuffer(StringBuilder sb, VeldridTypeInfo bufferType, GenerationContext context)
         {
+            foreach (var member in bufferType.Members)
+            {
+                var glslType = Util.GetGlslType(member.Type, context.Symbols);
+                sb.Append("    ");
+                sb.Append(glslType);
+                sb.Append(' ');
+                sb.Append(member.Uniform.Name);
+                sb.AppendLine(";");
+            }
+        }
+
+        static void EmitInputs(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
+        {
+            int location = 0;
+            foreach (var layout in shaderType.Shader.Inputs.OrderBy(x => x.Item1))
+                location = EmitVertexLayout(sb, context, layout.Item2, location, true);
+        }
+
+        static void EmitOutputs(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
+        {
+            int location = 0;
+            foreach (var layout in shaderType.Shader.Outputs.OrderBy(x => x.Item1))
+                location = EmitVertexLayout(sb, context, layout.Item2, location, false);
+        }
+
+        static int EmitVertexLayout(StringBuilder sb, GenerationContext context, INamedTypeSymbol layout, int location, bool isInput)
+        {
+            if (!context.Types.TryGetValue(layout, out var layoutInfo))
+                return location;
+
+            sb.Append("// ");
+            sb.AppendLine(layout.ToDisplayString());
+
+            foreach (var component in layoutInfo.Members)
+            {
+                if (component.Vertex == null)
+                    continue;
+
+                var glslType = Util.GetGlslType(component.Type, context.Symbols);
+
+                sb.Append("layout(location = ");
+                sb.Append(location);
+                sb.Append(isInput ? ") in " : ") out ");
+                if (component.Vertex.Flat)
+                    sb.Append("flat ");
+                sb.Append(glslType);
+                sb.Append(' ');
+                sb.Append(component.Vertex.Name);
+                sb.AppendLine(";");
+                location++;
+            }
+
+            sb.AppendLine();
+            return location;
         }
     }
 }

@@ -3,7 +3,6 @@ namespace UAlbion.Core.SpriteRenderer
 {
     public partial class SpriteVertexShader
     {
-
         public static (string, string) ShaderSource()
         {
             return ("SpriteSV.vert", @"
@@ -47,6 +46,55 @@ namespace UAlbion.Core.SpriteRenderer
 #define SKF_USE_PALETTE 0x4U
 #define SKF_NO_TRANSFORM 0x8U
 
+layout(set = 0, binding = 0) uniform _Shared {
+    vec3 uWorldSpacePosition;
+    uint _globalInfo_pad1;
+    vec3 uCameraLookDirection;
+    uint _globalInfo_pad2;
+    vec2 uResolution;
+    float uTime;
+    uint uEngineFlags;
+    float uPaletteBlend;
+    uint _globalInfo_pad3;
+    uint _globalInfo_pad4;
+    uint _globalInfo_pad5;
+};
+layout(set = 0, binding = 1) uniform _Projection {
+    mat4 uProjection;
+};
+layout(set = 0, binding = 2) uniform _View {
+    mat4 uView;
+};
+
+layout(set = 1, binding = 0) uniform texture2DArray uSprite; //!
+layout(set = 1, binding = 1) uniform sampler uSpriteSampler; //!
+layout(set = 1, binding = 2) uniform _Uniform {
+    uint uFlags;
+    float uTexSizeW;
+    float uTexSizeH;
+    uint _pad1;
+};
+
+// UAlbion.Core.SpriteRenderer.Vertex2DTextured
+layout(location = 0) in vec2 vPosition;
+layout(location = 1) in vec2 vTextCoords;
+
+// UAlbion.Core.SpriteRenderer.SpriteInstanceData
+layout(location = 2) in vec3 Transform1;
+layout(location = 3) in vec3 Transform2;
+layout(location = 4) in vec3 Transform3;
+layout(location = 5) in vec3 Transform4;
+layout(location = 6) in vec2 TexOffset;
+layout(location = 7) in vec2 TexSize;
+layout(location = 8) in uint TexLayer;
+layout(location = 9) in uint Flags;
+
+// UAlbion.Core.SpriteRenderer.SpriteIntermediateData
+layout(location = 0) out vec2 TexPosition;
+layout(location = 1) out flat float Layer;
+layout(location = 2) out flat uint Flags;
+layout(location = 3) out vec2 NormCoords;
+layout(location = 4) out vec3 WorldPosition;
 
 ");
         }

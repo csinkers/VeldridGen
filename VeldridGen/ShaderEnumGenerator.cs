@@ -8,9 +8,9 @@ namespace VeldridGen
 {
     static class ShaderEnumGenerator
     {
-        public static void EmitEnums(StringBuilder sb, VeldridTypeInfo shaderType, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        public static void EmitEnums(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
         {
-            var enumTypes = FindEnumTypes(shaderType, types);
+            var enumTypes = FindEnumTypes(shaderType, context);
             foreach (var kvp in enumTypes)
             {
                 sb.Append("// ");
@@ -18,7 +18,7 @@ namespace VeldridGen
                 var underlying = kvp.Key.EnumUnderlyingType.SpecialType;
                 var affix = EnumAffix(underlying);
 
-                foreach (var value in GetEnumValues(kvp.Key).OrderBy(x => x.value))
+                foreach (var value in EnumUtil.GetEnumValues(kvp.Key).OrderBy(x => x.value))
                 {
                     sb.Append("#define ");
                     sb.Append(TweakEnumMemberName(value.field.Name, kvp.Value));
@@ -31,36 +31,6 @@ namespace VeldridGen
             }
         }
 
-        static List<(IFieldSymbol field, ulong value)> GetEnumValues(INamedTypeSymbol enumType)
-        {
-            List<(IFieldSymbol field, ulong value)> results = new ();
-            var underlying = enumType.EnumUnderlyingType.SpecialType;
-            foreach (var field in enumType.GetMembers().OfType<IFieldSymbol>())
-            {
-                if (field is { HasConstantValue: true, ConstantValue: not null })
-                {
-                    var value = ConvertEnumValue(field.ConstantValue, underlying);
-                    results.Add((field, value));
-                }
-            }
-
-            return results;
-        }
-
-        static ulong ConvertEnumValue(object value, SpecialType underlyingType) =>
-            underlyingType switch
-            {
-                SpecialType.System_SByte => (ulong)(sbyte)value,
-                SpecialType.System_Int16 => (ulong)(short)value,
-                SpecialType.System_Int32 => (ulong)(int)value,
-                SpecialType.System_Int64 => (ulong)(long)value,
-                SpecialType.System_Byte => (byte)value,
-                SpecialType.System_UInt16 => (ushort)value,
-                SpecialType.System_UInt32 => (uint)value,
-                SpecialType.System_UInt64 => (ulong)value,
-                _ => throw new InvalidOperationException($"{underlyingType} is not a valid underlying type for an enum")
-            };
-
         static string EnumAffix(SpecialType underlyingType) =>
             underlyingType switch
             {
@@ -70,7 +40,7 @@ namespace VeldridGen
                 _ => ""
             };
 
-        static Dictionary<INamedTypeSymbol, string> FindEnumTypes(VeldridTypeInfo shaderType, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        static Dictionary<INamedTypeSymbol, string> FindEnumTypes(VeldridTypeInfo shaderType, GenerationContext context)
         {
             var allTypeSymbols = new List<INamedTypeSymbol>();
             allTypeSymbols.AddRange(shaderType.Shader.Inputs.Select(x => x.Item2));
@@ -78,7 +48,7 @@ namespace VeldridGen
 
             foreach (var resourceSetType in shaderType.Shader.ResourceSets.Select(x => x.Item2))
             {
-                if (!types.TryGetValue(resourceSetType, out var resourceSetTypeInfo))
+                if (!context.Types.TryGetValue(resourceSetType, out var resourceSetTypeInfo))
                     continue;
 
                 allTypeSymbols.AddRange(resourceSetTypeInfo.Members
@@ -89,7 +59,7 @@ namespace VeldridGen
             var enumTypes = new Dictionary<INamedTypeSymbol, string>(SymbolEqualityComparer.Default);
             foreach (var typeSymbol in allTypeSymbols)
             {
-                if (!types.TryGetValue(typeSymbol, out var typeInfo))
+                if (!context.Types.TryGetValue(typeSymbol, out var typeInfo))
                     continue;
 
                 foreach (var member in typeInfo.Members)

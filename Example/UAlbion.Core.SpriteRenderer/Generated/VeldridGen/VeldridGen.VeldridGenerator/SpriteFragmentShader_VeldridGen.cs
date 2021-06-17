@@ -3,7 +3,6 @@ namespace UAlbion.Core.SpriteRenderer
 {
     public partial class SpriteFragmentShader
     {
-
         public static (string, string) ShaderSource()
         {
             return ("SpriteSF.frag", @"
@@ -47,6 +46,39 @@ namespace UAlbion.Core.SpriteRenderer
 #define SKF_USE_PALETTE 0x4U
 #define SKF_NO_TRANSFORM 0x8U
 
+layout(set = 0, binding = 0) uniform _Shared {
+    vec3 uWorldSpacePosition;
+    uint _globalInfo_pad1;
+    vec3 uCameraLookDirection;
+    uint _globalInfo_pad2;
+    vec2 uResolution;
+    float uTime;
+    uint uEngineFlags;
+    float uPaletteBlend;
+    uint _globalInfo_pad3;
+    uint _globalInfo_pad4;
+    uint _globalInfo_pad5;
+};
+layout(set = 0, binding = 3) uniform texture2D uPalette; //!
+
+layout(set = 1, binding = 0) uniform texture2DArray uSprite; //!
+layout(set = 1, binding = 1) uniform sampler uSpriteSampler; //!
+layout(set = 1, binding = 2) uniform _Uniform {
+    uint uFlags;
+    float uTexSizeW;
+    float uTexSizeH;
+    uint _pad1;
+};
+
+// UAlbion.Core.SpriteRenderer.SpriteIntermediateData
+layout(location = 0) in vec2 TexPosition;
+layout(location = 1) in flat float Layer;
+layout(location = 2) in flat uint Flags;
+layout(location = 3) in vec2 NormCoords;
+layout(location = 4) in vec3 WorldPosition;
+
+// UAlbion.Core.SpriteRenderer.ColorOnly
+layout(location = 0) out vec4 Color;
 
 ");
         }

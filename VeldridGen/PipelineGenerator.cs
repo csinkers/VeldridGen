@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -9,12 +8,12 @@ namespace VeldridGen
     {
         static string LayoutHelperName(INamedTypeSymbol layout) => layout.Name + "Layout";
 
-        public static void Generate(StringBuilder sb, VeldridTypeInfo type, Dictionary<INamedTypeSymbol, VeldridTypeInfo> types)
+        public static void Generate(StringBuilder sb, VeldridTypeInfo type, GenerationContext context)
         {
             // TODO: Ensure the types actually exist, ensure that they're shaders of the appropriate type etc.
             // TODO: Ensure vertex shader outputs are compatible with fragment shader inputs
-            var vshader = types[type.Pipeline.VertexShader];
-            var fshader = types[type.Pipeline.FragmentShader];
+            var vshader = context.Types[type.Pipeline.VertexShader];
+            var fshader = context.Types[type.Pipeline.FragmentShader];
             foreach (var input in vshader.Shader.Inputs.Where(x => x.Item3 != 0))
             {
                 sb.AppendLine($@"        static VertexLayoutDescription {LayoutHelperName(input.Item2)}

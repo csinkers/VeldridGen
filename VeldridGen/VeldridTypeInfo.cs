@@ -30,6 +30,8 @@ namespace VeldridGen
                     Flags |= TypeFlags.IsBufferHolder;
                 else if (symbols.TextureHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsTextureHolder;
+                else if (symbols.TextureArrayHolder.Equals(iface, SymbolEqualityComparer.Default))
+                    Flags |= TypeFlags.IsTextureArrayHolder;
                 else if (symbols.VertexShader.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsVertexShader;
                 else if (symbols.FragmentShader.Equals(iface, SymbolEqualityComparer.Default))

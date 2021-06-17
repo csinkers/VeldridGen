@@ -7,7 +7,7 @@ using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {
-    public class Texture2DArrayHolder : Component, ITextureHolder
+    public class Texture2DArrayHolder : Component, ITextureArrayHolder
     {
         IArrayTexture _texture;
         Texture _deviceTexture;

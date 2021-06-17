@@ -68,10 +68,10 @@ layout(set = 0, binding = 1) uniform _Projection {
 layout(set = 0, binding = 2) uniform _View {
     mat4 uView; 
 };
-layout(set = 0, binding = 3) uniform texture2D uPalette; //! // vdspv_0_3
+layout(set = 0, binding = 3) uniform texture2D uPalette; //!
 
-layout(set = 1, binding = 0) uniform texture2DArray uSprite; //! // vdspv_1_0
-layout(set = 1, binding = 1) uniform sampler uSpriteSampler; //! // vdspv_1_1
+layout(set = 1, binding = 0) uniform texture2DArray uSprite; //!
+layout(set = 1, binding = 1) uniform sampler uSpriteSampler; //!
 
 layout(set = 1, binding = 2) uniform _Uniform {
 	uint uFlags;

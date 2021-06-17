@@ -12,6 +12,7 @@ namespace VeldridGen
         public INamedTypeSymbol ResourceSetHolder { get; }
         public INamedTypeSymbol SamplerHolder { get; }
         public INamedTypeSymbol TextureHolder { get; }
+        public INamedTypeSymbol TextureArrayHolder { get; }
         public INamedTypeSymbol UniformFormat { get; }
         public INamedTypeSymbol VertexFormat { get; }
         public INamedTypeSymbol VertexShader { get; }
@@ -30,12 +31,16 @@ namespace VeldridGen
         public INamedTypeSymbol VertexShaderAttrib { get; }
 
         // Built-in types
+        public INamedTypeSymbol Byte { get; }
+        public INamedTypeSymbol Short { get; }
+        public INamedTypeSymbol UShort { get; }
         public INamedTypeSymbol Int { get; }
         public INamedTypeSymbol UInt { get; }
         public INamedTypeSymbol Float { get; }
         public INamedTypeSymbol Vector2 { get; }
         public INamedTypeSymbol Vector3 { get; }
         public INamedTypeSymbol Vector4 { get; }
+        public INamedTypeSymbol Matrix4x4 { get; }
         public INamedTypeSymbol NotifyPropertyChanged { get; }
         public VertexElementFormatSymbols VertexElementFormat { get; }
         public ShaderStageSymbols ShaderStages { get; }
@@ -50,6 +55,7 @@ namespace VeldridGen
             ResourceSetHolder = Util.Resolve(compilation, "VeldridGen.Interfaces.IResourceSetHolder");
             SamplerHolder     = Util.Resolve(compilation, "VeldridGen.Interfaces.ISamplerHolder");
             TextureHolder     = Util.Resolve(compilation, "VeldridGen.Interfaces.ITextureHolder");
+            TextureArrayHolder= Util.Resolve(compilation, "VeldridGen.Interfaces.ITextureArrayHolder");
             UniformFormat     = Util.Resolve(compilation, "VeldridGen.Interfaces.IUniformFormat");
             VertexFormat      = Util.Resolve(compilation, "VeldridGen.Interfaces.IVertexFormat");
             VertexShader      = Util.Resolve(compilation, "VeldridGen.Interfaces.IVertexShader");
@@ -67,12 +73,16 @@ namespace VeldridGen
             UniformAttrib        = Util.Resolve(compilation, "VeldridGen.Interfaces.UniformAttribute");
             VertexShaderAttrib   = Util.Resolve(compilation, "VeldridGen.Interfaces.VertexShaderAttribute");
 
+            Byte = Util.Resolve(compilation, typeof(byte).FullName!);
+            Short = Util.Resolve(compilation, typeof(short).FullName!);
+            UShort = Util.Resolve(compilation, typeof(ushort).FullName!);
             Int = Util.Resolve(compilation, typeof(int).FullName!);
             UInt = Util.Resolve(compilation, typeof(uint).FullName!);
             Float = Util.Resolve(compilation, typeof(float).FullName!);
             Vector2 = Util.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
             Vector3 = Util.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
             Vector4 = Util.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
+            Matrix4x4 = Util.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
             NotifyPropertyChanged = Util.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
 
             VertexElementFormat = new VertexElementFormatSymbols(compilation);

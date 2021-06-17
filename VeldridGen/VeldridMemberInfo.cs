@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen
 {
@@ -8,6 +7,7 @@ namespace VeldridGen
         public VeldridMemberInfo(ISymbol symbol, Symbols symbols)
         {
             Symbol = symbol;
+            Type = Util.GetFieldOrPropertyType(symbol);
             foreach (var attrib in symbol.GetAttributes())
             {
                 if (attrib.AttributeClass == null)
@@ -42,6 +42,7 @@ namespace VeldridGen
         }
 
         public ISymbol Symbol { get; }
+        public INamedTypeSymbol Type { get; }
         public MemberFlags Flags { get; }
         public ColorAttachmentInfo ColorAttachment { get; }
         public DepthAttachmentInfo DepthAttachment { get; }
