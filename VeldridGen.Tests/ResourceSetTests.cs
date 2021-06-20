@@ -21,7 +21,7 @@ namespace VeldridGenTests
                 BaseClasses.ResourceSetHolderSource +
                 BaseClasses.SingleBufferSource +
                 BaseClasses.Texture2DHolderSource + @"
-    public struct GlobalInfo
+    public struct GlobalInfo: IUniformFormat
     {
         public Vector3 CameraPosition;
         public float Time;

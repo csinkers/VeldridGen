@@ -35,7 +35,7 @@ namespace VeldridGen.Tests
 ";
 
         public const string SingleBufferSource = @"
-    public class SingleBuffer<T> : IBufferHolder where T : struct // GPU buffer containing a single instance of T
+    public class SingleBuffer<T> : IBufferHolder<T> where T : struct // GPU buffer containing a single instance of T
     {
         readonly BufferUsage _usage;
         string _name;

@@ -44,7 +44,7 @@ namespace VeldridGen
                     return (ResourceType.Sampler, null);
             }
 
-            throw new ArgumentOutOfRangeException($"Unable to determine a resource kind for field {member.Name} of type {type}");
+            throw new ArgumentOutOfRangeException(nameof(member), $"Unable to determine a resource kind for field {member.Name} of type {type}");
             // TODO StructuredBufferReadOnly
             // TODO StructuredBufferReadWrite
             // TODO TextureReadWrite
