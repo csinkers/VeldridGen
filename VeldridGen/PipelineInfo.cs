@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
@@ -8,27 +7,35 @@ namespace VeldridGen
         public INamedTypeSymbol VertexShader { get; }
         public INamedTypeSymbol FragmentShader { get; }
 
-        public PipelineInfo(INamedTypeSymbol symbol, Symbols symbols)
+        public PipelineInfo(INamedTypeSymbol symbol, GenerationContext context)
         {
             foreach (var attrib in symbol.GetAttributes())
             {
                 if (attrib.AttributeClass == null)
                     continue;
 
-                if (attrib.AttributeClass.Equals(symbols.VertexShaderAttrib, SymbolEqualityComparer.Default))
+                if (attrib.AttributeClass.Equals(context.Symbols.VertexShaderAttrib, SymbolEqualityComparer.Default))
                 {
-                    if (VertexShader != null) throw new InvalidOperationException("Vertex shader already set for pipeline " + symbol.Name);
+                    if (VertexShader != null)
+                    {
+                        context.Report($"Vertex shader already set for pipeline {symbol.Name} (Pipeline holder types can only have a single VertexShader attribute)");
+                        continue;
+                    }
                     VertexShader = (INamedTypeSymbol)attrib.ConstructorArguments[0].Value;
                 }
-                else if (attrib.AttributeClass.Equals(symbols.FragmentShaderAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.FragmentShaderAttrib, SymbolEqualityComparer.Default))
                 {
-                    if (FragmentShader != null) throw new InvalidOperationException("Fragment shader already set for pipeline " + symbol.Name);
+                    if (FragmentShader != null)
+                    {
+                        context.Report($"Fragment shader already set for pipeline {symbol.Name} (Pipeline holder types can only have a single FragmentShader attribute)");
+                        continue;
+                    }
                     FragmentShader = (INamedTypeSymbol)attrib.ConstructorArguments[0].Value;
                 }
             }
 
             if (VertexShader == null || FragmentShader == null)
-                throw new InvalidOperationException($"Pipeline {symbol.Name} requires one or more shader attributes");
+                context.Report(DiagnosticSeverity.Warning, $"{symbol.Name} derives from IPipelineHolder, but does not contain any shader attributes");
         }
     }
 }

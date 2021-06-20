@@ -14,21 +14,17 @@ namespace VeldridGen
 
             if (depth != null)
             {
-                sb.Append("            ");
-                sb.Append(depth.Symbol.Name);
-                sb.AppendLine($@" = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                sb.AppendLine($@"            {depth.Symbol.Name} = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
                     Width, Height, 1, 1, 1,
                     global::{depth.DepthAttachment.Format}, TextureUsage.DepthStencil, TextureType.Texture2D));
 ");
             }
 
-            foreach (var member in type.Members.Where(member => member.ColorAttachment != null))
+            foreach (var color in type.Members.Where(member => member.ColorAttachment != null))
             {
-                sb.Append("            ");
-                sb.Append(member.Symbol.Name);
-                sb.AppendLine($@" = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                sb.AppendLine($@"            {color.Symbol.Name} = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
                     Width, Height, 1, 1, 1,
-                    global::{member.ColorAttachment.Format}, TextureUsage.RenderTarget, TextureType.Texture2D));
+                    global::{color.ColorAttachment.Format}, TextureUsage.RenderTarget, TextureType.Texture2D));
 ");
             }
 
@@ -62,7 +58,7 @@ namespace VeldridGen
 
             sb.AppendLine(@"        }");
         }
-        /*
+        /* e.g.
         public partial class OffscreenFramebuffer
         {
             protected override Framebuffer CreateFramebuffer(IVeldridInitEvent e)

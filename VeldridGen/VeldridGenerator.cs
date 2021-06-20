@@ -17,17 +17,24 @@ namespace VeldridGen
         {
             var receiver = (VeldridSyntaxReceiver)context.SyntaxContextReceiver;
             if (receiver == null)
-                throw new InvalidOperationException("Could not retrieve syntax receiver for VeldridGenerator");
-
-            var compilation = context.Compilation;
-            var genContext = new GenerationContext(compilation, receiver);
-            // var diag = compilation.GetDiagnostics();
-
-            foreach (var type in genContext.Types.Values.Where(x => x.Flags != 0))
             {
-                string source = GenerateType(type, genContext);
-                if (source != null)
-                    context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", source);
+                context.ReportDiagnostic(Diagnostic.Create(Diag.Generic, null, "Could not retrieve syntax receiver for VeldridGenerator"));
+                return;
+            }
+
+            try
+            {
+                var genContext = new GenerationContext(context.Compilation, receiver, context.ReportDiagnostic);
+                foreach (var type in genContext.Types.Values.Where(x => x.Flags != 0))
+                {
+                    string source = GenerateType(type, genContext);
+                    if (source != null)
+                        context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", source);
+                }
+            }
+            catch (Exception e)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Diag.Generic, null, e.ToString()));
             }
         }
 
@@ -56,7 +63,7 @@ namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
             if ((type.Flags & TypeFlags.IsShader) != 0)
                 ShaderGenerator.Generate(sb, type, context);
 
-            if (sb.Length == length)
+            if (sb.Length == length) // If none of the type-specific generators emitted anything then we don't need the file.
                 return null;
 
             sb.AppendLine("    }");

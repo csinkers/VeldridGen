@@ -7,7 +7,7 @@ namespace VeldridGen
     {
         public static void Generate(StringBuilder sb, VeldridTypeInfo type)
         {
-            var members = type.Members.Where(x => (x.Flags & MemberFlags.IsVertexComponent) != 0).ToList();
+            var members = type.Members.Where(x => (x.Vertex != null)).ToList();
             if (members.Count == 0)
                 return;
 

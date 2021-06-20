@@ -9,7 +9,7 @@ namespace VeldridGen
         public static string UnderscoreToTitleCase(string name)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentOutOfRangeException("Expected non-empty identifier");
+                throw new ArgumentOutOfRangeException(nameof(name), "Expected non-empty identifier");
 
             name = name.TrimStart('_');
             if (name.Length == 1)
@@ -25,8 +25,7 @@ namespace VeldridGen
                 var asByte = (byte)numeric;
                 var asShort = (ushort)numeric;
                 var asInt = numeric;
-                return
-                    sizeof(T) == 1 ? Unsafe.As<byte, T>(ref asByte)
+                return sizeof(T) == 1 ? Unsafe.As<byte, T>(ref asByte)
                     : sizeof(T) == 2 ? Unsafe.As<ushort, T>(ref asShort)
                     : sizeof(T) == 4 ? Unsafe.As<int, T>(ref asInt)
                     : throw new InvalidOperationException($"Type {typeof(T)} is of non-enum type, or has an unsupported underlying type");
@@ -69,8 +68,7 @@ namespace VeldridGen
             {
                 IFieldSymbol field => (INamedTypeSymbol)field.Type,
                 IPropertySymbol property => (INamedTypeSymbol)property.Type,
-                _ => throw new ArgumentOutOfRangeException(
-                    "Member with a ResourceAttribute was neither a field nor a property")
+                _ => throw new ArgumentOutOfRangeException(nameof(member), "Member with a ResourceAttribute was neither a field nor a property")
             };
         }
 
@@ -80,13 +78,16 @@ namespace VeldridGen
             if (type.TypeKind == TypeKind.Enum)
                 type = type.EnumUnderlyingType;
 
+            if (type == null)
+                throw new ArgumentNullException(nameof(member), $"Could not find an appropriate vertex element format for member \"{member.ToDisplayString()}\"");
+                
             if (type.Equals(symbols.Int, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Int1;
             if (type.Equals(symbols.UInt, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.UInt1;
             if (type.Equals(symbols.Float, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float1;
             if (type.Equals(symbols.Vector2, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float2;
             if (type.Equals(symbols.Vector3, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float3;
             if (type.Equals(symbols.Vector4, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float4;
-            throw new ArgumentOutOfRangeException($"Could not find an appropriate vertex element format for field of type {type.ToDisplayString()}");
+            throw new ArgumentOutOfRangeException(nameof(member), $"Could not find an appropriate vertex element format for field of type {type.ToDisplayString()}");
         }
 
         public static string GetGlslType(INamedTypeSymbol type, Symbols symbols)

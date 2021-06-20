@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -13,11 +12,14 @@ namespace VeldridGen
             var enumTypes = FindEnumTypes(shaderType, context);
             foreach (var kvp in enumTypes)
             {
+                var underlying = kvp.Key.EnumUnderlyingType;
+                if (underlying == null)
+                    continue;
+
                 sb.Append("// ");
                 sb.AppendLine(kvp.Key.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
-                var underlying = kvp.Key.EnumUnderlyingType.SpecialType;
-                var affix = EnumAffix(underlying);
 
+                var affix = EnumAffix(underlying.SpecialType);
                 foreach (var value in EnumUtil.GetEnumValues(kvp.Key).OrderBy(x => x.value))
                 {
                     sb.Append("#define ");
@@ -56,7 +58,10 @@ namespace VeldridGen
                     .Select(resourceType => resourceType.Resource.BufferType));
             }
 
+#pragma warning disable RS1024 // Compare symbols correctly
             var enumTypes = new Dictionary<INamedTypeSymbol, string>(SymbolEqualityComparer.Default);
+#pragma warning restore RS1024 // Compare symbols correctly
+
             foreach (var typeSymbol in allTypeSymbols)
             {
                 if (!context.Types.TryGetValue(typeSymbol, out var typeInfo))
@@ -83,9 +88,8 @@ namespace VeldridGen
                     {
                         if (existingPrefix != prefix)
                         {
-                            throw new InvalidOperationException(
-                                $"Member {member.Symbol.Name} of {typeSymbol.Name} was declared with enum " +
-                                $"prefix \"{prefix}\", but another attribute has already declared it as \"{existingPrefix}\"");
+                            context.Report($"Member {member.Symbol.Name} of {typeSymbol.Name} was declared with enum " +
+                                $"prefix \"{prefix}\", but another attribute has already declared it with the attribute \"{existingPrefix}\"");
                         }
                     }
                     else enumTypes[memberType] = prefix;

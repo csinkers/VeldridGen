@@ -6,9 +6,22 @@ namespace VeldridGen
 {
     class VeldridTypeInfo
     {
-        public VeldridTypeInfo(INamedTypeSymbol symbol, Symbols symbols)
+        public VeldridTypeInfo(INamedTypeSymbol symbol, GenerationContext context)
         {
+            T Try<T>(string locus, Func<T> func) where T : class
+            {
+                try { return func(); }
+                catch (Exception e)
+                {
+                    context.Report($"{symbol.ToDisplayString()} could not be initialised as a {locus}: {e.Message}");
+                    return null;
+                }
+            }
+
             Symbol = symbol ?? throw new ArgumentNullException(nameof(symbol));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            var symbols = context.Symbols;
+
             foreach (var iface in symbol.AllInterfaces)
             {
                 if (symbols.UniformFormat.Equals(iface, SymbolEqualityComparer.Default))
@@ -21,8 +34,9 @@ namespace VeldridGen
                     Flags |= TypeFlags.IsFramebufferHolder;
                 else if (symbols.PipelineHolder.Equals(iface, SymbolEqualityComparer.Default))
                 {
-                    Flags |= TypeFlags.IsPipelineHolder;
-                    Pipeline = new PipelineInfo(symbol, symbols);
+                    Pipeline = Try("pipeline", () => new PipelineInfo(symbol, context));
+                    if (Pipeline != null)
+                        Flags |= TypeFlags.IsPipelineHolder;
                 }
                 else if (symbols.SamplerHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsSamplerHolder;
@@ -40,14 +54,26 @@ namespace VeldridGen
 
             if ((Flags & TypeFlags.IsShader) != 0)
             {
-                var type = (Flags & TypeFlags.IsShader) switch
+                ShaderType type;
+                switch (Flags & TypeFlags.IsShader)
                 {
-                    TypeFlags.IsVertexShader => ShaderType.Vertex,
-                    TypeFlags.IsFragmentShader => ShaderType.Fragment,
-                    _ => throw new ArgumentOutOfRangeException(nameof(symbol), "Shader interface combinations are not supported")
-                };
+                    case TypeFlags.IsVertexShader: type = ShaderType.Vertex; break;
+                    case TypeFlags.IsFragmentShader: type = ShaderType.Fragment; break;
+                    default:
+                    {
+                        context.Report($"{symbol.ToDisplayString()} cannot be declared as multiple types of shader ({Flags & TypeFlags.IsShader})");
+                        Flags &= ~TypeFlags.IsShader;
+                        type = ShaderType.None;
+                        break;
+                    }
+                }
 
-                Shader = new ShaderInfo(type, symbol, symbols);
+                if (type != ShaderType.None)
+                {
+                    Shader = Try("shader", () => new ShaderInfo(type, symbol, context));
+                    if (Shader == null)
+                        Flags &= ~TypeFlags.IsShader;
+                }
             }
         }
 
@@ -57,10 +83,10 @@ namespace VeldridGen
         public ShaderInfo Shader { get; }
         public List<VeldridMemberInfo> Members { get; } = new();
 
-        public void AddMember(ISymbol memberSym, Symbols symbols)
+        public void AddMember(ISymbol memberSym, GenerationContext context)
         {
-            var info = new VeldridMemberInfo(memberSym, symbols);
-            if (info.Flags != 0)
+            var info = new VeldridMemberInfo(memberSym, context);
+            if (info.IsRelevant)
                 Members.Add(info);
         }
     }

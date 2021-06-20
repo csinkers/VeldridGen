@@ -2,6 +2,7 @@
 {
     enum ShaderType
     {
+        None,
         Vertex,
         Fragment,
         Compute

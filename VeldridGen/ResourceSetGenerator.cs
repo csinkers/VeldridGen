@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -28,12 +27,12 @@ namespace VeldridGen
             sb.AppendLine(");");
             sb.AppendLine();
 
-            foreach (var member in type.Members.Where(x => (x.Flags & MemberFlags.IsResource) != 0))
+            foreach (var member in type.Members.Where(x => x.Resource != null))
             {
-                if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) GenerateUniform(sb, member);
-                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) GenerateTexture(sb, member);
-                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) GenerateSampler(sb, member);
-                else throw new ArgumentOutOfRangeException();
+                if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) GenerateUniform(sb, member, context);
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) GenerateTexture(sb, member, context);
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) GenerateSampler(sb, member, context);
+                else context.Report($"Resource {member.Symbol.ToDisplayString()} in set {type.Symbol.ToDisplayString()} was of unexpected kind {member.Resource.Kind}");
             }
 
             /* e.g. protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
@@ -53,7 +52,10 @@ namespace VeldridGen
                 sb.AppendLine(",");
 
                 if (member.Symbol is not IFieldSymbol field)
-                    throw new ArgumentOutOfRangeException("Resource set backing members must be fields");
+                {
+                    context.Report($"Resource set backing members must be fields (member {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was a {member.Symbol.GetType().Name})");
+                    continue;
+                }
 
                 sb.Append("                ");
                 sb.Append(field.Name);
@@ -62,16 +64,20 @@ namespace VeldridGen
                 if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) sb.Append("DeviceBuffer");
                 else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("TextureView");
                 else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) sb.Append("Sampler");
-                else throw new ArgumentOutOfRangeException();
+                else context.Report($"Resource {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was of unexpected kind \"{member.Resource.Kind}\"");
             }
 
             sb.AppendLine("));");
         }
 
-        static void GenerateSampler(StringBuilder sb, VeldridMemberInfo member)
+        static void GenerateSampler(StringBuilder sb, VeldridMemberInfo member, GenerationContext context)
         {
             if (member.Symbol is not IFieldSymbol field)
-                throw new ArgumentOutOfRangeException("Resource set backing members must be fields");
+            {
+                context.Report($"Resource set backing members must be fields (member {member.Symbol.ToDisplayString()} in " +
+                               $"{member.Symbol.ContainingType.ToDisplayString()} was a {member.Symbol.GetType().Name})");
+                return;
+            }
 
             /* e.g.
         public SamplerHolder Sampler
@@ -108,10 +114,15 @@ namespace VeldridGen
 ");
         }
 
-        static void GenerateTexture(StringBuilder sb, VeldridMemberInfo member)
+        static void GenerateTexture(StringBuilder sb, VeldridMemberInfo member, GenerationContext context)
         {
             if (member.Symbol is not IFieldSymbol field)
-                throw new ArgumentOutOfRangeException("Resource set backing members must be fields");
+            {
+                context.Report($"Resource set backing members must be fields (member {member.Symbol.ToDisplayString()} in " +
+                               $"{member.Symbol.ContainingType.ToDisplayString()} was a {member.Symbol.GetType().Name})");
+                return;
+            }
+
             /* e.g.
         public Texture2DHolder Palette
         {
@@ -146,10 +157,14 @@ namespace VeldridGen
 ");
         }
 
-        static void GenerateUniform(StringBuilder sb, VeldridMemberInfo member)
+        static void GenerateUniform(StringBuilder sb, VeldridMemberInfo member, GenerationContext context)
         {
             if (member.Symbol is not IFieldSymbol field)
-                throw new ArgumentOutOfRangeException("Resource set backing members must be fields");
+            {
+                context.Report($"Resource set backing members must be fields (member {member.Symbol.ToDisplayString()} in " +
+                               $"{member.Symbol.ContainingType.ToDisplayString()} was a {member.Symbol.GetType().Name})");
+                return;
+            }
 
             /* e.g.
             public SingleBuffer<GlobalInfo> GlobalInfo

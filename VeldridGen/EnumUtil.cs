@@ -21,24 +21,25 @@ namespace VeldridGen
 
         public static ulong? GetEnumValue(IFieldSymbol symbol)
         {
-            if (symbol is { HasConstantValue: true, ConstantValue: not null })
-            {
-                var underlying = symbol.ContainingType.EnumUnderlyingType.SpecialType;
-                return underlying switch
-                {
-                    SpecialType.System_SByte => (ulong)(sbyte)symbol.ConstantValue,
-                    SpecialType.System_Int16 => (ulong)(short)symbol.ConstantValue,
-                    SpecialType.System_Int32 => (ulong)(int)symbol.ConstantValue,
-                    SpecialType.System_Int64 => (ulong)(long)symbol.ConstantValue,
-                    SpecialType.System_Byte => (byte)symbol.ConstantValue,
-                    SpecialType.System_UInt16 => (ushort)symbol.ConstantValue,
-                    SpecialType.System_UInt32 => (uint)symbol.ConstantValue,
-                    SpecialType.System_UInt64 => (ulong)symbol.ConstantValue,
-                    _ => throw new InvalidOperationException($"{underlying} is not a valid underlying type for an enum")
-                };
-            }
+            if (symbol is not {HasConstantValue: true, ConstantValue: not null}) 
+                return null;
 
-            return null;
+            var underlyingType = symbol.ContainingType.EnumUnderlyingType;
+            if (underlyingType == null) 
+                return null;
+
+            return underlyingType.SpecialType switch
+            {
+                SpecialType.System_SByte => (ulong)(sbyte)symbol.ConstantValue,
+                SpecialType.System_Int16 => (ulong)(short)symbol.ConstantValue,
+                SpecialType.System_Int32 => (ulong)(int)symbol.ConstantValue,
+                SpecialType.System_Int64 => (ulong)(long)symbol.ConstantValue,
+                SpecialType.System_Byte => (byte)symbol.ConstantValue,
+                SpecialType.System_UInt16 => (ushort)symbol.ConstantValue,
+                SpecialType.System_UInt32 => (uint)symbol.ConstantValue,
+                SpecialType.System_UInt64 => (ulong)symbol.ConstantValue,
+                _ => throw new InvalidOperationException($"{underlyingType} is not a valid underlying type for an enum")
+            };
         }
     }
 }

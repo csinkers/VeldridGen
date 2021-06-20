@@ -34,7 +34,7 @@ namespace VeldridGen
                 ShaderType.Vertex => context.Symbols.ShaderStages.Vertex,
                 ShaderType.Fragment => context.Symbols.ShaderStages.Fragment,
                 ShaderType.Compute => context.Symbols.ShaderStages.Compute,
-                _ => throw new ArgumentOutOfRangeException()
+                _ => throw new ArgumentOutOfRangeException(nameof(shaderType), $"\"{shaderType}\" shaders are currently unsupported.")
             }));
 
             foreach (var set in shaderType.Shader.ResourceSets.OrderBy(x => x.Item1))
@@ -70,7 +70,7 @@ namespace VeldridGen
                 case ResourceType.UniformBuffer:
                     if (!context.Types.TryGetValue(resource.BufferType, out var bufferType))
                     {
-                        throw new InvalidOperationException(
+                        context.Report(
                             $"Resource {resource.Name} in set {setInfo.Symbol.ToDisplayString()} was " +
                             $"of unknown type {resource.BufferType.ToDisplayString()}. " +
                             $"The buffer type must inherit from the {context.Symbols.UniformFormat.ToDisplayString()} interface");
@@ -97,7 +97,8 @@ namespace VeldridGen
                     sb.AppendLine("; //!");
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    context.Report($"Resource {resource.Name} in {setInfo.Symbol.ToDisplayString()} was of unhandled type {resource.ResourceType}");
+                    break;
             }
         }
 

@@ -62,7 +62,7 @@ namespace VeldridGen
 
             sb.AppendLine(@"        { }");
 
-            /* e.g.
+        /* e.g.
         static VertexLayoutDescription SpriteInstanceDataLayout
         {
             get
@@ -78,7 +78,7 @@ namespace VeldridGen
             new[] { typeof(CommonSet), typeof(SpriteArraySet) })
         {
         }
-             */
+        */
         }
     }
 }

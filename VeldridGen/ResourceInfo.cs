@@ -5,7 +5,7 @@ namespace VeldridGen
 {
     class ResourceInfo
     {
-        public ResourceInfo(AttributeData attrib, ISymbol member, Symbols symbols)
+        public ResourceInfo(AttributeData attrib, ISymbol member, GenerationContext context)
         {
             // matching "public ResourceAttribute(string name, ShaderStages stages)", second param optional
             Name = (string)attrib.ConstructorArguments[0].Value;
@@ -14,33 +14,33 @@ namespace VeldridGen
                 ? (byte)attrib.ConstructorArguments[1].Value
                 : (byte)17; // Fragment | Vertex
 
-            (ResourceType, BufferType) = GetKind(member, symbols);
+            (ResourceType, BufferType) = GetKind(member, context);
             Kind = ResourceType switch
             {
-                ResourceType.UniformBuffer  => symbols.ResourceKind.UniformBuffer.ToDisplayString(),
-                ResourceType.Texture2D      => symbols.ResourceKind.TextureReadOnly.ToDisplayString(),
-                ResourceType.Texture2DArray => symbols.ResourceKind.TextureReadOnly.ToDisplayString(),
-                ResourceType.Sampler        => symbols.ResourceKind.Sampler.ToDisplayString(),
-                _ => throw new ArgumentOutOfRangeException()
+                ResourceType.UniformBuffer  => context.Symbols.ResourceKind.UniformBuffer.ToDisplayString(),
+                ResourceType.Texture2D      => context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString(),
+                ResourceType.Texture2DArray => context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString(),
+                ResourceType.Sampler        => context.Symbols.ResourceKind.Sampler.ToDisplayString(),
+                _ => throw new ArgumentOutOfRangeException(nameof(ResourceType), $"Unhandled ResourceType: {ResourceType}")
             };
 
         }
 
-        static (ResourceType, INamedTypeSymbol) GetKind(ISymbol member, Symbols symbols)
+        static (ResourceType, INamedTypeSymbol) GetKind(ISymbol member, GenerationContext context)
         {
             var type = Util.GetFieldOrPropertyType(member);
             foreach (var iface in type.AllInterfaces)
             {
-                if (iface.IsGenericType && iface.OriginalDefinition.Equals(symbols.BufferHolder, SymbolEqualityComparer.Default))
+                if (iface.IsGenericType && iface.OriginalDefinition.Equals(context.Symbols.BufferHolder, SymbolEqualityComparer.Default))
                     return (ResourceType.UniformBuffer, (INamedTypeSymbol)iface.TypeArguments[0]);
 
-                if (iface.Equals(symbols.TextureHolder, SymbolEqualityComparer.Default))
+                if (iface.Equals(context.Symbols.TextureHolder, SymbolEqualityComparer.Default))
                     return (ResourceType.Texture2D, null);
 
-                if (iface.Equals(symbols.TextureArrayHolder, SymbolEqualityComparer.Default))
+                if (iface.Equals(context.Symbols.TextureArrayHolder, SymbolEqualityComparer.Default))
                     return (ResourceType.Texture2DArray, null);
 
-                if (iface.Equals(symbols.SamplerHolder, SymbolEqualityComparer.Default))
+                if (iface.Equals(context.Symbols.SamplerHolder, SymbolEqualityComparer.Default))
                     return (ResourceType.Sampler, null);
             }
 

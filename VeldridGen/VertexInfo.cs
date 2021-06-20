@@ -6,13 +6,13 @@ namespace VeldridGen
 {
     class VertexInfo
     {
-        public VertexInfo(AttributeData attrib, ISymbol symbol, Symbols symbols)
+        public VertexInfo(AttributeData attrib, ISymbol symbol, GenerationContext context)
         {
             // matching "public InputParamAttribute(string name, VertexElementFormat format)" (second param optional)
             Name = (string)attrib.ConstructorArguments[0].Value;
             Format = attrib.ConstructorArguments.Length > 1 && attrib.ConstructorArguments[1].Value != null
                 ? attrib.ConstructorArguments[1].ToCSharpString()
-                : Util.VertexElementFormatForType(symbol, symbols).ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                : Util.VertexElementFormatForType(symbol, context.Symbols).ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
             Flat = 
                 (bool?)attrib.NamedArguments
                 .Where(x => x.Key == "Flat")

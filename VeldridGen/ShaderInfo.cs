@@ -13,7 +13,7 @@ namespace VeldridGen
         public List<(int, INamedTypeSymbol)> Outputs { get; } = new(); // slot, type
         public List<(int, INamedTypeSymbol)> ResourceSets { get; } = new(); // slot, type
 
-        public ShaderInfo(ShaderType shaderType, INamedTypeSymbol symbol, Symbols symbols)
+        public ShaderInfo(ShaderType shaderType, INamedTypeSymbol symbol, GenerationContext context)
         {
             ShaderType = shaderType;
 
@@ -22,11 +22,11 @@ namespace VeldridGen
                 if (attrib.AttributeClass == null)
                     continue;
 
-                if (attrib.AttributeClass.Equals(symbols.NameAttrib, SymbolEqualityComparer.Default))
+                if (attrib.AttributeClass.Equals(context.Symbols.NameAttrib, SymbolEqualityComparer.Default))
                 {
                     Filename = (string)attrib.ConstructorArguments[0].Value;
                 }
-                else if (attrib.AttributeClass.Equals(symbols.InputAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.InputAttrib, SymbolEqualityComparer.Default))
                 {
                     var stepArgument =
                         attrib.NamedArguments
@@ -39,13 +39,13 @@ namespace VeldridGen
                         (INamedTypeSymbol)attrib.ConstructorArguments[1].Value,
                         (int?)stepArgument?.Value ?? 0));
                 }
-                else if (attrib.AttributeClass.Equals(symbols.OutputAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.OutputAttrib, SymbolEqualityComparer.Default))
                 {
                     Outputs.Add((
                         (int)attrib.ConstructorArguments[0].Value,
                         (INamedTypeSymbol)attrib.ConstructorArguments[1].Value));
                 }
-                else if (attrib.AttributeClass.Equals(symbols.ResourceSetAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.ResourceSetAttrib, SymbolEqualityComparer.Default))
                 {
                     ResourceSets.Add((
                         (int)attrib.ConstructorArguments[0].Value,
@@ -59,7 +59,7 @@ namespace VeldridGen
             if (Filename == null)
                 throw new InvalidOperationException("No name supplied for shader " + symbol.Name);
 
-            if(Filename.Contains('"') || Filename.Contains('\\'))
+            if (Filename.Contains('"') || Filename.Contains('\\'))
                 throw new InvalidOperationException($"Filename of shader {symbol.Name} ({Filename}) contains invalid character (\\ or \")");
         }
     }
