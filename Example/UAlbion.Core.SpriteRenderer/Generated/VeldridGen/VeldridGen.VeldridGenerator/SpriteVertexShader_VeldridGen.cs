@@ -36,8 +36,7 @@ namespace UAlbion.Core.SpriteRenderer
 #define EF_FLIP_YSPACE 0x8U
 #define EF_VSYNC 0x10U
 #define EF_HIGHLIGHT_SELECTION 0x20U
-#define EF_USE_CYL_BILLBOARDS 0x40U
-#define EF_RENDER_DEPTH 0x80U
+#define EF_RENDER_DEPTH 0x40U
 
 // SpriteKeyFlags
 #define SKF_NO_DEPTH_TEST 0x1U

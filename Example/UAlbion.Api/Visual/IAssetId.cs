@@ -3,6 +3,5 @@
     public interface IAssetId
     {
         uint ToUInt32();
-        string ToStringNumeric();
     }
 }

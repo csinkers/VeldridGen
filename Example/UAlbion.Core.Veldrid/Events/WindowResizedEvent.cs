@@ -2,7 +2,7 @@
 
 namespace UAlbion.Core.Veldrid.Events
 {
-    class WindowResizedEvent : Event
+    class WindowResizedEvent : IEvent
     {
         public int Width { get; }
         public int Height { get; }

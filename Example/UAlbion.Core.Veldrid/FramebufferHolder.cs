@@ -37,7 +37,7 @@ namespace UAlbion.Core.Veldrid
 
         protected override void Subscribed() => Dirty();
         protected override void Unsubscribed() => Dispose();
-        protected abstract Framebuffer CreateFramebuffer(IVeldridInitEvent e);
+        protected abstract Framebuffer CreateFramebuffer(GraphicsDevice device);
         protected virtual void Dispose(bool disposing)
         {
             Framebuffer?.Dispose();
@@ -47,7 +47,7 @@ namespace UAlbion.Core.Veldrid
         void Dirty() => On<PrepareFrameResourcesEvent>(e =>
         {
             Dispose();
-            Framebuffer = CreateFramebuffer(e);
+            Framebuffer = CreateFramebuffer(e.Device);
             _width = Framebuffer.Width;
             _height = Framebuffer.Height;
             Off<PrepareFrameResourcesEvent>();

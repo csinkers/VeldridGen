@@ -10,7 +10,7 @@ namespace UAlbion.Core.Veldrid
         ResourceSet _resourceSet;
         string _name;
 
-        public ResourceSetHolder()
+        protected ResourceSetHolder()
         {
             On<DeviceCreatedEvent>(_ => Dirty());
             On<DestroyDeviceObjectsEvent>(_ => Dispose());
@@ -33,7 +33,6 @@ namespace UAlbion.Core.Veldrid
         protected override void Unsubscribed() => Dispose();
         protected void Dirty() => On<PrepareFrameResourceSetsEvent>(Update);
         protected void PropertyDirty(object sender, PropertyChangedEventArgs _) => Dirty();
-
         protected abstract ResourceSet Build(GraphicsDevice device, ResourceLayout layout);
 
         void Update(IVeldridInitEvent e)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using UAlbion.Core.Veldrid.Events;
 using Veldrid;
-using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.Veldrid
 {

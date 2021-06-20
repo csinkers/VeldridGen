@@ -3,5 +3,5 @@
 namespace UAlbion.Core.Events
 {
     [Event("cls", "Clear the console history.")]
-    public class ClearConsoleEvent : Event { }
+    public class ClearConsoleEvent : IEvent { }
 }

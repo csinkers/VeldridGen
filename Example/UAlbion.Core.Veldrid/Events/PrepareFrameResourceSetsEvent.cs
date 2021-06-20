@@ -1,10 +1,9 @@
 ﻿using System;
-using UAlbion.Api;
 using Veldrid;
 
 namespace UAlbion.Core.Veldrid.Events
 {
-    public class PrepareFrameResourceSetsEvent : Event, IVeldridInitEvent
+    public class PrepareFrameResourceSetsEvent : IVeldridInitEvent
     {
         public PrepareFrameResourceSetsEvent(GraphicsDevice device, CommandList commandList)
         {

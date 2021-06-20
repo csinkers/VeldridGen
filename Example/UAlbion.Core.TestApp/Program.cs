@@ -8,7 +8,6 @@ using UAlbion.Core.SpriteRenderer;
 using UAlbion.Core.Sprites;
 using UAlbion.Core.Veldrid;
 using Veldrid;
-using VeldridGen.Interfaces;
 
 namespace UAlbion.Core.TestApp
 {
@@ -41,7 +40,7 @@ namespace UAlbion.Core.TestApp
             var palette = BuildPalette();
             var texture = BuildTexture();
             var scene = new SpriteScene(palette, framebuffer);
-            var engine = new Engine(GraphicsBackend.Direct3D11, true, scene);
+            var engine = new Engine(GraphicsBackend.Direct3D11, true, false, scene);
 
             shaderCache.AddShaderPath(Path.Combine(rootDir, @"UAlbion.Core.SpriteRenderer\Shaders"));
 

@@ -9,12 +9,12 @@ namespace VeldridGen
         {
             // TODO: Decouple from UAlbion.Core etc, make more flexible
             var depth = type.Members.SingleOrDefault(x => x.DepthAttachment != null);
-            sb.AppendLine(@"        protected override Framebuffer CreateFramebuffer(global::UAlbion.Core.Veldrid.Events.IVeldridInitEvent e)
+            sb.AppendLine(@"        protected override Framebuffer CreateFramebuffer(global::Veldrid.GraphicsDevice device)
         {");
 
             if (depth != null)
             {
-                sb.AppendLine($@"            {depth.Symbol.Name} = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                sb.AppendLine($@"            {depth.Symbol.Name} = device.ResourceFactory.CreateTexture(new TextureDescription(
                     Width, Height, 1, 1, 1,
                     global::{depth.DepthAttachment.Format}, TextureUsage.DepthStencil, TextureType.Texture2D));
 ");
@@ -22,7 +22,7 @@ namespace VeldridGen
 
             foreach (var color in type.Members.Where(member => member.ColorAttachment != null))
             {
-                sb.AppendLine($@"            {color.Symbol.Name} = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                sb.AppendLine($@"            {color.Symbol.Name} = device.ResourceFactory.CreateTexture(new TextureDescription(
                     Width, Height, 1, 1, 1,
                     global::{color.ColorAttachment.Format}, TextureUsage.RenderTarget, TextureType.Texture2D));
 ");
@@ -38,7 +38,7 @@ namespace VeldridGen
             }
 
             sb.AppendLine(@");
-            return e.Device.ResourceFactory.CreateFramebuffer(ref description);
+            return device.ResourceFactory.CreateFramebuffer(ref description);
         }
 
         protected override void Dispose(bool disposing)
@@ -61,18 +61,18 @@ namespace VeldridGen
         /* e.g.
         public partial class OffscreenFramebuffer
         {
-            protected override Framebuffer CreateFramebuffer(IVeldridInitEvent e)
+            protected override Framebuffer CreateFramebuffer(GraphicsDevice device)
             {
-                _depth = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                _depth = device.ResourceFactory.CreateTexture(new TextureDescription(
                     Width, Height, 1, 1, 1,
                     PixelFormat.R32_Float, TextureUsage.DepthStencil, TextureType.Texture2D));
 
-                _color = e.Device.ResourceFactory.CreateTexture(new TextureDescription(
+                _color = device.ResourceFactory.CreateTexture(new TextureDescription(
                     Width, Height, 1, 1, 1,
                     PixelFormat.B8_G8_R8_A8_UNorm, TextureUsage.RenderTarget, TextureType.Texture2D));
 
                 var description = new FramebufferDescription(_depth, _color);
-                return e.Device.ResourceFactory.CreateFramebuffer(ref description);
+                return device.ResourceFactory.CreateFramebuffer(ref description);
             }
 
             protected override void Dispose(bool disposing)

@@ -54,7 +54,10 @@ namespace UAlbion.Core.Veldrid
                 _disk.CreateDirectory(_shaderCachePath);
         }
 
-        protected override void Unsubscribed() => Exchange.Unregister(typeof(IShaderCache), this);
+        protected override void Unsubscribed()
+        {
+            Exchange.Unregister(typeof(IShaderCache), this);
+        }
 
         public IShaderCache AddShaderPath(string path)
         {

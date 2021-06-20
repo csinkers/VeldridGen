@@ -2,13 +2,12 @@
 {
     public enum EngineFlags : uint
     {
-        ShowBoundingBoxes = 0X1,
-        ShowCentre = 0X2,
-        FlipDepthRange = 0X4,
-        FlipYSpace = 0X8,
-        Vsync = 0X10,
-        HighlightSelection = 0X20,
-        UseCylBillboards = 0X40,
-        RenderDepth = 0X80
+        ShowBoundingBoxes = 0x1,
+        ShowCentre = 0x2,
+        FlipDepthRange = 0x4,
+        FlipYSpace = 0x8,
+        Vsync = 0x10,
+        HighlightSelection = 0x20,
+        RenderDepth = 0x40
     }
 }

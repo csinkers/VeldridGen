@@ -2,5 +2,5 @@
 
 namespace UAlbion.Core.Veldrid.Events
 {
-    public class WindowClosedEvent : Event { }
+    public class WindowClosedEvent : IEvent { }
 }

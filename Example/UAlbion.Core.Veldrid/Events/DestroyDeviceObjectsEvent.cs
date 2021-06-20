@@ -2,5 +2,5 @@
 
 namespace UAlbion.Core.Veldrid.Events
 {
-    public class DestroyDeviceObjectsEvent : Event { }
+    public class DestroyDeviceObjectsEvent : IEvent { }
 }

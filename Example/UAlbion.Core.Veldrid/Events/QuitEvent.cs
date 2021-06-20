@@ -2,5 +2,5 @@
 
 namespace UAlbion.Core.Veldrid.Events
 {
-    public class QuitEvent : Event { }
+    public class QuitEvent : IEvent { }
 }

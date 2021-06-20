@@ -2,5 +2,5 @@
 
 namespace UAlbion.Core.Veldrid.Events
 {
-    public class DeviceCreatedEvent : Event { }
+    public class DeviceCreatedEvent : IEvent { }
 }

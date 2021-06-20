@@ -3,7 +3,7 @@
 namespace UAlbion.Core.Events
 {
     [Event("help", "Display help on the available console commands.", "?", "usage")]
-    public class HelpEvent : Event
+    public class HelpEvent : IEvent
     {
         public HelpEvent(string commandName)
         {
