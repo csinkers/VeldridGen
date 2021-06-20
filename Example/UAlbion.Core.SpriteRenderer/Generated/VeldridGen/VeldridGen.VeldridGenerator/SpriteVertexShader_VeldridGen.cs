@@ -5,7 +5,10 @@ namespace UAlbion.Core.SpriteRenderer
     {
         public static (string, string) ShaderSource()
         {
-            return ("SpriteSV.h.vert", @"//!#version 450 // Comments with //! are just for the VS GLSL plugin
+            return ("SpriteSV.h.vert", @"// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! This file was auto-generated using VeldridGen. It should not be edited by hand. !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 
 // SpriteFlags

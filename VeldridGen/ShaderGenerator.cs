@@ -15,7 +15,10 @@ namespace VeldridGen
 
             sb.AppendLine($@"        public static (string, string) ShaderSource()
         {{
-            return (""{headerFilename}"", @""//!#version 450 // Comments with //! are just for the VS GLSL plugin
+            return (""{headerFilename}"", @""// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! This file was auto-generated using VeldridGen. It should not be edited by hand. !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!#version 450 // Comments with //! are just for the VS GLSL plugin
 //!#extension GL_KHR_vulkan_glsl: enable
 ");
             ShaderEnumGenerator.EmitEnums(sb, shaderType, context);

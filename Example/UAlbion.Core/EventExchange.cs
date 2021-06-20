@@ -20,7 +20,6 @@ namespace UAlbion.Core
     {
         static readonly Action<object> DummyContinuation = _ => { };
         readonly object _syncRoot = new();
-        readonly ILogExchange _logExchange;
         readonly Stack<List<Handler>> _dispatchLists = new();
         readonly Queue<(IEvent, object)> _queuedEvents = new();
         readonly IDictionary<Type, object> _registrations = new Dictionary<Type, object>();
@@ -48,13 +47,6 @@ namespace UAlbion.Core
             }
         }
 #endif
-
-        public EventExchange(ILogExchange logExchange = null)
-        {
-            _logExchange = logExchange;
-            if (_logExchange != null)
-                Attach(_logExchange);
-        }
 
         public void Dispose()
         {
@@ -120,7 +112,6 @@ namespace UAlbion.Core
             if (!verbose)
             { // Nesting level helps identify which events were caused by other events when reading the console window
                 Interlocked.Increment(ref _nesting);
-                _logExchange?.Receive(e, sender);
             }
 
 #if DEBUG // Keep track of which events have been fired this frame for debugging
