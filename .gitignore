@@ -1,12 +1,3 @@
-/albion_sr/
-/ALBION/
-/data/*.XLD/
-/data/ShaderCache/
-/data/exported/
-/data/settings.json
-/re/
-/deps/
-
 .vs/
 .vscode/
 /BenchmarkDotNet.Artifacts
@@ -14,6 +5,7 @@ Debug/
 bin/
 obj/
 packages/
+nuget/
 
 *.filters
 *.gpr
@@ -23,15 +15,4 @@ packages/
 *.DotSettings
 *.code-workspace
 launchSettings.json
-imgui.ini
-global.json
-r.bat
 
-mods/*
-!mods/Base/
-!mods/Shaders/
-!mods/Test/
-!mods/Repacked/
-mods/Repacked/Albion/*
-!mods/Unpacked/
-mods/Unpacked/Assets/*

@@ -51,9 +51,8 @@ namespace UAlbion.Core.Veldrid
                 if (_newBackend == null)
                     _done = true;
             });
-            On<QuitEvent>(e => _done = true);
+            On<QuitEvent>(_ => _done = true);
             On<WindowResizedEvent>(e => _graphicsDevice.ResizeMainWindow((uint)e.Width, (uint)e.Height));
-
             /*
             On<LoadRenderDocEvent>(e =>
             {
@@ -61,24 +60,9 @@ namespace UAlbion.Core.Veldrid
                 _newBackend = GraphicsDevice.BackendType;
                 _recreateWindow = true;
             });
-            On<GarbageCollectionEvent>(e => GC.Collect());
             On<RunRenderDocEvent>(e => _renderDoc?.LaunchReplayUI());
-            On<SetCursorPositionEvent>(e => _pendingCursorUpdate = new Vector2(e.X, e.Y));
-            On<ToggleFullscreenEvent>(e => ToggleFullscreenState());
-            On<ToggleHardwareCursorEvent>(e => { if (_window != null) _window.CursorVisible = !_window.CursorVisible; });
-            On<ToggleResizableEvent>(e => { if (_window != null) _window.Resizable = !_window.Resizable; });
-            On<ToggleVisibleBorderEvent>(e => { if (_window != null) _window.BorderVisible = !_window.BorderVisible; });
-            On<RecreateWindowEvent>(e => { _recreateWindow = true; _newBackend = GraphicsDevice.BackendType; });
-            On<SetBackendEvent>(e => _newBackend = e.Value);
             On<TriggerRenderDocEvent>(e => _renderDoc?.TriggerCapture());
-            On<ConfineMouseToWindowEvent>(e => { if (_window != null) Sdl2Native.SDL_SetWindowGrab(_window.SdlWindowHandle, e.Enabled); });
-            On<SetRelativeMouseModeEvent>(e =>
-            {
-                if (_window == null) return;
-                Sdl2Native.SDL_SetRelativeMouseMode(e.Enabled);
-                if (!e.Enabled)
-                    Sdl2Native.SDL_WarpMouseInWindow(_window.SdlWindowHandle, _window.Width / 2, _window.Height / 2);
-            });
+            On<SetBackendEvent>(e => _newBackend = e.Value);
             On<SetVSyncEvent>(e =>
             {
                 if (_vsync == e.Value) return;
@@ -90,12 +74,17 @@ namespace UAlbion.Core.Veldrid
 
         protected override void Subscribed()
         {
-            var shaderCache = Resolve<IShaderCache>();
-            if(shaderCache == null)
-                throw new InvalidOperationException("An instance of IShaderCache must be registered.");
-            shaderCache.ShadersUpdated += (_, _) => _newBackend = _graphicsDevice?.BackendType;
+            Resolve<IShaderCache>().ShadersUpdated += OnShadersUpdated;
             base.Subscribed();
         }
+
+        protected override void Unsubscribed()
+        {
+            Resolve<IShaderCache>().ShadersUpdated -= OnShadersUpdated;
+            base.Unsubscribed();
+        }
+
+        void OnShadersUpdated(object _, EventArgs eventArgs) => _newBackend = _graphicsDevice?.BackendType;
 
         public void Run()
         {

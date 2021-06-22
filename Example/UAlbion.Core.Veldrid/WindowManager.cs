@@ -11,6 +11,25 @@ namespace UAlbion.Core.Veldrid
         Sdl2Window _window;
         public Sdl2Window Window => _window;
 
+        public WindowManager()
+        {
+            /*
+            On<SetCursorPositionEvent>(e => _pendingCursorUpdate = new Vector2(e.X, e.Y));
+            On<ToggleFullscreenEvent>(e => ToggleFullscreenState());
+            On<ToggleHardwareCursorEvent>(e => { if (_window != null) _window.CursorVisible = !_window.CursorVisible; });
+            On<ToggleResizableEvent>(e => { if (_window != null) _window.Resizable = !_window.Resizable; });
+            On<ToggleVisibleBorderEvent>(e => { if (_window != null) _window.BorderVisible = !_window.BorderVisible; });
+            On<RecreateWindowEvent>(e => { _recreateWindow = true; _newBackend = GraphicsDevice.BackendType; });
+            On<ConfineMouseToWindowEvent>(e => { if (_window != null) Sdl2Native.SDL_SetWindowGrab(_window.SdlWindowHandle, e.Enabled); });
+            On<SetRelativeMouseModeEvent>(e =>
+            {
+                if (_window == null) return;
+                Sdl2Native.SDL_SetRelativeMouseMode(e.Enabled);
+                if (!e.Enabled)
+                    Sdl2Native.SDL_WarpMouseInWindow(_window.SdlWindowHandle, _window.Width / 2, _window.Height / 2);
+            }); */
+        }
+
         public void CreateWindow(int x, int y, int width, int height)
         {
             if (_window != null)

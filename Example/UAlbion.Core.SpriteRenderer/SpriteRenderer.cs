@@ -50,8 +50,8 @@ namespace UAlbion.Core.SpriteRenderer
             cl.SetGraphicsResourceSet(0, commonSet.ResourceSet);
             cl.SetGraphicsResourceSet(1, batch.SpriteResources.ResourceSet);
             cl.SetVertexBuffer(0, _vertexBuffer.DeviceBuffer);
-            cl.SetIndexBuffer(_indexBuffer.DeviceBuffer, IndexFormat.UInt16);
             cl.SetVertexBuffer(1, batch.Instances.DeviceBuffer);
+            cl.SetIndexBuffer(_indexBuffer.DeviceBuffer, IndexFormat.UInt16);
             cl.SetFramebuffer(framebuffer.Framebuffer);
 
             cl.DrawIndexed((uint)Indices.Length, (uint)batch.ActiveInstances, 0, 0, 0);
