@@ -60,7 +60,7 @@ namespace UAlbion.Core.SpriteRenderer
         protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
             device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
                 layout,
-                _texture.TextureView,
+                _texture.DeviceTexture,
                 _sampler.Sampler,
                 _uniform.DeviceBuffer));
     }

@@ -13,14 +13,14 @@
     <PackageTags>code-generator veldrid graphics-programming</PackageTags>
     <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup Condition="!Exists('..\veldrid\')">
+  <ItemGroup Condition="!Exists('..\..\veldrid\')">
     <PackageReference Include="Veldrid" Version="4.8.0" />
   </ItemGroup>
-  <ItemGroup Condition="Exists('..\veldrid\')">
-    <ProjectReference Include="..\veldrid\src\Veldrid\Veldrid.csproj" />
+  <ItemGroup Condition="Exists('..\..\veldrid\')">
+    <ProjectReference Include="..\..\veldrid\src\Veldrid\Veldrid.csproj" />
   </ItemGroup>
 </Project>

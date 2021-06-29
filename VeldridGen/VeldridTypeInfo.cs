@@ -25,7 +25,7 @@ namespace VeldridGen
             foreach (var iface in symbol.AllInterfaces)
             {
                 if (symbols.UniformFormat.Equals(iface, SymbolEqualityComparer.Default))
-                    Flags |= TypeFlags.IsUniformFormat;
+                    Flags |= TypeFlags.IsUniformFormat; // Verify size is a 16-byte multiple, verify no vectors cross 16-byte boundaries etc
                 else if (symbols.VertexFormat.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsVertexFormat;
                 else if (symbols.ResourceSetHolder.Equals(iface, SymbolEqualityComparer.Default))

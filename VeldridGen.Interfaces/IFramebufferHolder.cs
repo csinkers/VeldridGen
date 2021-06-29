@@ -9,5 +9,6 @@ namespace VeldridGen.Interfaces
         uint Width { get; set; }
         uint Height { get; set; }
         Framebuffer Framebuffer { get; }
+        OutputDescription? OutputDescription { get; }
     }
 }

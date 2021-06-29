@@ -41,7 +41,7 @@ namespace VeldridGen
                     _globalInfo.DeviceBuffer,
                     _projection.DeviceBuffer,
                     _view.DeviceBuffer,
-                    _palette.TextureView)); */
+                    _palette.DeviceTexture)); */
 
             sb.Append(@"        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
             device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
@@ -62,7 +62,7 @@ namespace VeldridGen
                 sb.Append('.');
 
                 if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) sb.Append("DeviceBuffer");
-                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("TextureView");
+                else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("DeviceTexture");
                 else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) sb.Append("Sampler");
                 else context.Report($"Resource {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was of unexpected kind \"{member.Resource.Kind}\"");
             }

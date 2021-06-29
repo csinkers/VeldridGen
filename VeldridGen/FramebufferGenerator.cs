@@ -10,7 +10,8 @@ namespace VeldridGen
             // TODO: Decouple from UAlbion.Core etc, make more flexible
             var depth = type.Members.SingleOrDefault(x => x.DepthAttachment != null);
             sb.AppendLine(@"        protected override Framebuffer CreateFramebuffer(global::Veldrid.GraphicsDevice device)
-        {");
+        {
+            if (device == null) throw new System.ArgumentNullException(nameof(device));");
 
             if (depth != null)
             {
@@ -37,8 +38,30 @@ namespace VeldridGen
                 sb.Append(member.Symbol.Name);
             }
 
-            sb.AppendLine(@");
+            sb.AppendLine($@");
             return device.ResourceFactory.CreateFramebuffer(ref description);
+        }}
+
+        public override OutputDescription? OutputDescription
+        {{
+            get
+            {{
+                OutputAttachmentDescription? depthAttachment = {(depth == null ? "null" : $"new(global::{depth.DepthAttachment.Format})")};
+                OutputAttachmentDescription[] colorAttachments =
+                {{");
+            bool first = true;
+            foreach (var color in type.Members.Where(x => x.ColorAttachment != null))
+            {
+                if (!first)
+                    sb.AppendLine(",");
+                sb.Append($"                    new(global::{color.ColorAttachment.Format})");
+                first = false;
+            }
+
+            sb.AppendLine(@"
+                };
+                return new OutputDescription(depthAttachment, colorAttachments);
+            }
         }
 
         protected override void Dispose(bool disposing)

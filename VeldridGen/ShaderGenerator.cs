@@ -77,6 +77,7 @@ namespace VeldridGen
                             $"Resource {resource.Name} in set {setInfo.Symbol.ToDisplayString()} was " +
                             $"of unknown type {resource.BufferType.ToDisplayString()}. " +
                             $"The buffer type must inherit from the {context.Symbols.UniformFormat.ToDisplayString()} interface");
+                        return;
                     }
 
                     sb.Append(resource.Name);

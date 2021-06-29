@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid" Version="4.8.0" />
+    <PackageReference Include="Veldrid" Version="4.9.0-gffcf1cdb33" />
     <PackageReference Include="Veldrid.ImageSharp" Version="4.8.0" />
     <PackageReference Include="Veldrid.ImGui" Version="5.72.0" />
     <PackageReference Include="Veldrid.RenderDoc" Version="1.0.1" />

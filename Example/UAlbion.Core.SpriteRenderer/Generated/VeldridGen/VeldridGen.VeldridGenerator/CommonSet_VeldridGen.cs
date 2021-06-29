@@ -69,6 +69,6 @@ namespace UAlbion.Core.SpriteRenderer
                 _globalInfo.DeviceBuffer,
                 _projection.DeviceBuffer,
                 _view.DeviceBuffer,
-                _palette.TextureView));
+                _palette.DeviceTexture));
     }
 }

@@ -216,7 +216,7 @@ namespace UAlbion.Core.Veldrid
             _frameCommands = _graphicsDevice.ResourceFactory.CreateCommandList();
             _frameCommands.Name = "Frame Commands List";
 
-            Raise(new DeviceCreatedEvent());
+            Raise(new DeviceCreatedEvent(_graphicsDevice));
         }
 
         void DestroyAllObjects()
