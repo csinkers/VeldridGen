@@ -6,6 +6,7 @@ namespace VeldridGen.Interfaces
 {
     public interface ITextureArrayHolder : IDisposable, INotifyPropertyChanged
     {
-        public Texture DeviceTexture { get; }
+        Texture DeviceTexture { get; }
+        string Name { get; }
     }
 }

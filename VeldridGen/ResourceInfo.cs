@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
@@ -29,7 +30,10 @@ namespace VeldridGen
         static (ResourceType, INamedTypeSymbol) GetKind(ISymbol member, GenerationContext context)
         {
             var type = Util.GetFieldOrPropertyType(member);
-            foreach (var iface in type.AllInterfaces)
+            var interfaces = new List<INamedTypeSymbol> { type };
+            interfaces.AddRange(type.AllInterfaces);
+
+            foreach (var iface in interfaces)
             {
                 if (iface.IsGenericType && iface.OriginalDefinition.Equals(context.Symbols.BufferHolder, SymbolEqualityComparer.Default))
                     return (ResourceType.UniformBuffer, (INamedTypeSymbol)iface.TypeArguments[0]);

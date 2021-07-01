@@ -11,7 +11,7 @@ namespace VeldridGen
             if (members.Count == 0)
                 return;
 
-            sb.AppendLine(@"        public static VertexLayoutDescription Layout = new(");
+            sb.AppendLine(@"        public static VertexLayoutDescription Layout { get; } = new(");
             bool first = true;
             foreach (var member in members)
             {
