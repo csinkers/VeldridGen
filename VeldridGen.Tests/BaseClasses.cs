@@ -80,7 +80,8 @@ namespace VeldridGen.Tests
     public class Texture2DHolder : ITextureHolder
     {
         Texture _deviceTexture;
-        TextureView _textureView;
+
+        public string Name { get;set; }
 
         public Texture DeviceTexture
         {
@@ -91,18 +92,6 @@ namespace VeldridGen.Tests
                     return;
                 _deviceTexture = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DeviceTexture)));
-            }
-        }
-
-        public TextureView TextureView
-        {
-            get => _textureView;
-            private set
-            {
-                if (_textureView == value)
-                    return;
-                _textureView = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextureView)));
             }
         }
 
