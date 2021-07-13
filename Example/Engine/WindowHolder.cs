@@ -27,7 +27,7 @@ namespace VeldridGen.Example.Engine
                 WindowWidth = _window?.Width ?? width,
                 WindowHeight = _window?.Height ?? height,
                 WindowInitialState = _window?.WindowState ?? WindowState.Normal,
-                WindowTitle = "UAlbion"
+                WindowTitle = "VeldridGen-Example"
             };
 
             _window = VeldridStartup.CreateWindow(ref windowInfo);

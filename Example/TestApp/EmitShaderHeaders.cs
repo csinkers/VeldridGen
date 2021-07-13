@@ -7,9 +7,6 @@ namespace VeldridGen.Example.TestApp
     static class ShaderHeaderEmitter
     {
         const string AutoGenMessage = "This file was auto-generated using VeldridGen. It should not be edited by hand.";
-        /*
-
-         */
         public static int EmitAll(string path)
         {
             if(string.IsNullOrEmpty(path))
@@ -17,7 +14,6 @@ namespace VeldridGen.Example.TestApp
 
             if (!Directory.Exists(path))
             {
-                Console.WriteLine("Usage: UAlbion.ShaderWriter \"full path of shader directory\"");
                 Console.WriteLine($"Directory \"{path}\" not found");
                 return 1;
             }

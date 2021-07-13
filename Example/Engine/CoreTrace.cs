@@ -5,7 +5,7 @@ using T = System.Diagnostics.Tracing;
 
 namespace VeldridGen.Example.Engine
 {
-    [EventSource(Name = "UAlbion-CoreTrace")]
+    [EventSource(Name = "VeldridGen-Example")]
     public class CoreTrace : EventSource
     {
         public static CoreTrace Log { get; } = new CoreTrace();

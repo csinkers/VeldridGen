@@ -7,7 +7,6 @@ namespace VeldridGen.Example.Engine.CodeGen
     {
         public static void Generate(StringBuilder sb, VeldridTypeInfo type)
         {
-            // TODO: Decouple from UAlbion.Core etc, make more flexible
             var depth = type.Members.SingleOrDefault(x => x.DepthAttachment != null);
             sb.AppendLine(@"        protected override Framebuffer CreateFramebuffer(global::Veldrid.GraphicsDevice device)
         {
