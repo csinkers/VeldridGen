@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\VeldridGen\VeldridGen.csproj" PrivateAssets="all" />
-    <!-- <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" /> -->
   </ItemGroup>
   <ItemGroup>
     <None Remove="bin\Debug\netstandard2.0\$(AssemblyName).dll" />

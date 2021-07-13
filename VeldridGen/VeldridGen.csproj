@@ -13,11 +13,9 @@
     <PackageTags>code-generator veldrid graphics-programming</PackageTags>
     <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>0.1.4</Version>
+    <Version>0.1.5</Version>
     <LangVersion>9.0</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <IsRoslynComponent>true</IsRoslynComponent>
   </PropertyGroup>
 
   <ItemGroup>
