@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen
 {
-    class ColorAttachmentInfo
+    public class ColorAttachmentInfo
     {
         public ColorAttachmentInfo(AttributeData attrib)
         {

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace VeldridGen
 {
-    class GenerationContext
+    public class GenerationContext
     {
         readonly Action<Diagnostic> _reportFunc;
         public Symbols Symbols { get; }

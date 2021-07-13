@@ -48,42 +48,42 @@ namespace VeldridGen
 
         public Symbols(Compilation compilation)
         {
-            BufferHolder      = Util.Resolve(compilation, "VeldridGen.Interfaces.IBufferHolder`1");
-            FragmentShader    = Util.Resolve(compilation, "VeldridGen.Interfaces.IFragmentShader");
-            FramebufferHolder = Util.Resolve(compilation, "VeldridGen.Interfaces.IFramebufferHolder");
-            PipelineHolder    = Util.Resolve(compilation, "VeldridGen.Interfaces.IPipelineHolder");
-            ResourceSetHolder = Util.Resolve(compilation, "VeldridGen.Interfaces.IResourceSetHolder");
-            SamplerHolder     = Util.Resolve(compilation, "VeldridGen.Interfaces.ISamplerHolder");
-            TextureHolder     = Util.Resolve(compilation, "VeldridGen.Interfaces.ITextureHolder");
-            TextureArrayHolder= Util.Resolve(compilation, "VeldridGen.Interfaces.ITextureArrayHolder");
-            UniformFormat     = Util.Resolve(compilation, "VeldridGen.Interfaces.IUniformFormat");
-            VertexFormat      = Util.Resolve(compilation, "VeldridGen.Interfaces.IVertexFormat");
-            VertexShader      = Util.Resolve(compilation, "VeldridGen.Interfaces.IVertexShader");
+            BufferHolder      = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IBufferHolder`1");
+            FragmentShader    = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IFragmentShader");
+            FramebufferHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IFramebufferHolder");
+            PipelineHolder    = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IPipelineHolder");
+            ResourceSetHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IResourceSetHolder");
+            SamplerHolder     = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ISamplerHolder");
+            TextureHolder     = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ITextureHolder");
+            TextureArrayHolder= VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ITextureArrayHolder");
+            UniformFormat     = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IUniformFormat");
+            VertexFormat      = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IVertexFormat");
+            VertexShader      = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IVertexShader");
 
-            ColorAttachmentAttrib = Util.Resolve(compilation, "VeldridGen.Interfaces.ColorAttachmentAttribute");
-            DepthAttachmentAttrib = Util.Resolve(compilation, "VeldridGen.Interfaces.DepthAttachmentAttribute");
-            VertexAttrib          = Util.Resolve(compilation, "VeldridGen.Interfaces.VertexAttribute");
-            ResourceAttrib        = Util.Resolve(compilation, "VeldridGen.Interfaces.ResourceAttribute");
+            ColorAttachmentAttrib = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ColorAttachmentAttribute");
+            DepthAttachmentAttrib = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.DepthAttachmentAttribute");
+            VertexAttrib          = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.VertexAttribute");
+            ResourceAttrib        = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ResourceAttribute");
 
-            FragmentShaderAttrib = Util.Resolve(compilation, "VeldridGen.Interfaces.FragmentShaderAttribute");
-            InputAttrib          = Util.Resolve(compilation, "VeldridGen.Interfaces.InputAttribute");
-            NameAttrib           = Util.Resolve(compilation, "VeldridGen.Interfaces.NameAttribute");
-            OutputAttrib         = Util.Resolve(compilation, "VeldridGen.Interfaces.OutputAttribute");
-            ResourceSetAttrib    = Util.Resolve(compilation, "VeldridGen.Interfaces.ResourceSetAttribute");
-            UniformAttrib        = Util.Resolve(compilation, "VeldridGen.Interfaces.UniformAttribute");
-            VertexShaderAttrib   = Util.Resolve(compilation, "VeldridGen.Interfaces.VertexShaderAttribute");
+            FragmentShaderAttrib = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.FragmentShaderAttribute");
+            InputAttrib          = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.InputAttribute");
+            NameAttrib           = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.NameAttribute");
+            OutputAttrib         = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.OutputAttribute");
+            ResourceSetAttrib    = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ResourceSetAttribute");
+            UniformAttrib        = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.UniformAttribute");
+            VertexShaderAttrib   = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.VertexShaderAttribute");
 
-            Byte = Util.Resolve(compilation, typeof(byte).FullName!);
-            Short = Util.Resolve(compilation, typeof(short).FullName!);
-            UShort = Util.Resolve(compilation, typeof(ushort).FullName!);
-            Int = Util.Resolve(compilation, typeof(int).FullName!);
-            UInt = Util.Resolve(compilation, typeof(uint).FullName!);
-            Float = Util.Resolve(compilation, typeof(float).FullName!);
-            Vector2 = Util.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
-            Vector3 = Util.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
-            Vector4 = Util.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
-            Matrix4x4 = Util.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
-            NotifyPropertyChanged = Util.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
+            Byte = VeldridGenUtil.Resolve(compilation, typeof(byte).FullName!);
+            Short = VeldridGenUtil.Resolve(compilation, typeof(short).FullName!);
+            UShort = VeldridGenUtil.Resolve(compilation, typeof(ushort).FullName!);
+            Int = VeldridGenUtil.Resolve(compilation, typeof(int).FullName!);
+            UInt = VeldridGenUtil.Resolve(compilation, typeof(uint).FullName!);
+            Float = VeldridGenUtil.Resolve(compilation, typeof(float).FullName!);
+            Vector2 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
+            Vector3 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
+            Vector4 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
+            Matrix4x4 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
+            NotifyPropertyChanged = VeldridGenUtil.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
 
             VertexElementFormat = new VertexElementFormatSymbols(compilation);
             ShaderStages = new ShaderStageSymbols(compilation);

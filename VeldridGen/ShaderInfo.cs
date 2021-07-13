@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    class ShaderInfo
+    public class ShaderInfo
     {
         public string Filename { get; }
         public ShaderType ShaderType { get; }

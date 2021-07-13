@@ -6,7 +6,7 @@ namespace VeldridGen
     {
         public ShaderStageSymbols(Compilation compilation)
         {
-            Type = Util.Resolve(compilation, "Veldrid.ShaderStages");
+            Type = VeldridGenUtil.Resolve(compilation, "Veldrid.ShaderStages");
             foreach (var member in Type.GetMembers())
             {
                 switch (member.Name)

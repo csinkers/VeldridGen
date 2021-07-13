@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen
 {
-    class DepthAttachmentInfo
+    public class DepthAttachmentInfo
     {
         public DepthAttachmentInfo(AttributeData attrib)
         {

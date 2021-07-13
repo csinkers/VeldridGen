@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <EmitCompilerGeneratedFiles>True</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\VeldridGen.Interfaces\VeldridGen.Interfaces.csproj" />
+    <ProjectReference Include="..\Engine.CodeGen\VeldridGen.Example.Engine.CodeGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" SetTargetFramework="TargetFramework=netstandard2.0" />
+    <ProjectReference Include="..\Engine\VeldridGen.Example.Engine.csproj" />
+  </ItemGroup>
+
+  <Target Name="RemoveGenerated" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <Compile Remove="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

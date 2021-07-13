@@ -3,7 +3,7 @@
 namespace VeldridGen
 {
     [Flags]
-    enum TypeFlags
+    public enum TypeFlags
     {
         IsShader = IsVertexShader | IsFragmentShader,
 

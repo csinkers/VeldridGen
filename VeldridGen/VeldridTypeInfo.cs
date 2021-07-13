@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    class VeldridTypeInfo
+    public class VeldridTypeInfo
     {
         public VeldridTypeInfo(INamedTypeSymbol symbol, GenerationContext context)
         {

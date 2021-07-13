@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    class UniformInfo
+    public class UniformInfo
     {
         public UniformInfo(AttributeData attrib)
         {

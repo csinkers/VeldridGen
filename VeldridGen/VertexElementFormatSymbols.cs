@@ -6,7 +6,7 @@ namespace VeldridGen
     {
         public VertexElementFormatSymbols(Compilation compilation)
         {
-            Type = Util.Resolve(compilation, "Veldrid.VertexElementFormat");
+            Type = VeldridGenUtil.Resolve(compilation, "Veldrid.VertexElementFormat");
             foreach (var member in Type.GetMembers())
             {
                 if (member.Name == "Int1") Int1 = member;

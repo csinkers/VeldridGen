@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen
 {
-    class VertexInfo
+    public class VertexInfo
     {
         public VertexInfo(AttributeData attrib, ISymbol symbol, GenerationContext context)
         {
@@ -12,7 +12,7 @@ namespace VeldridGen
             Name = (string)attrib.ConstructorArguments[0].Value;
             Format = attrib.ConstructorArguments.Length > 1 && attrib.ConstructorArguments[1].Value != null
                 ? attrib.ConstructorArguments[1].ToCSharpString()
-                : Util.VertexElementFormatForType(symbol, context.Symbols).ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                : VeldridGenUtil.VertexElementFormatForType(symbol, context.Symbols).ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
             Flat = 
                 (bool?)attrib.NamedArguments
                 .Where(x => x.Key == "Flat")

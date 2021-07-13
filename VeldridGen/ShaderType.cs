@@ -1,6 +1,6 @@
 ﻿namespace VeldridGen
 {
-    enum ShaderType
+    public enum ShaderType
     {
         None,
         Vertex,

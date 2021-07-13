@@ -5,8 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    [Generator]
-    public class VeldridGenerator : ISourceGenerator
+    public abstract class VeldridGenerator : ISourceGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {
@@ -38,7 +37,7 @@ namespace VeldridGen
             }
         }
 
-        static string GenerateType(VeldridTypeInfo type, GenerationContext context)
+        string GenerateType(VeldridTypeInfo type, GenerationContext context)
         {
             var kword = type.Symbol.IsReferenceType
                 ? type.Symbol.IsRecord ? "record" : "class"
@@ -53,15 +52,15 @@ namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
 
             int length = sb.Length;
             if ((type.Flags & TypeFlags.IsResourceSetHolder) != 0)
-                ResourceSetGenerator.Generate(sb, type, context);
+                GenerateResourceSet(sb, type, context);
             if ((type.Flags & TypeFlags.IsVertexFormat) != 0)
-                VertexFormatGenerator.Generate(sb, type);
+                GenerateVertexFormat(sb, type, context);
             if ((type.Flags & TypeFlags.IsFramebufferHolder) != 0)
-                FramebufferGenerator.Generate(sb, type);
+                GenerateFramebuffer(sb, type, context);
             if ((type.Flags & TypeFlags.IsPipelineHolder) != 0)
-                PipelineGenerator.Generate(sb, type, context);
+                GeneratePipeline(sb, type, context);
             if ((type.Flags & TypeFlags.IsShader) != 0)
-                ShaderGenerator.Generate(sb, type, context);
+                GenerateShader(sb, type, context);
 
             if (sb.Length == length) // If none of the type-specific generators emitted anything then we don't need the file.
                 return null;
@@ -70,5 +69,12 @@ namespace {type.Symbol.ContainingNamespace.ToDisplayString()}
             sb.AppendLine("}");
             return sb.ToString();
         }
+
+        protected abstract void GenerateResourceSet(StringBuilder sb, VeldridTypeInfo type, GenerationContext context);
+        protected abstract void GenerateVertexFormat(StringBuilder sb, VeldridTypeInfo type, GenerationContext context);
+        protected abstract void GenerateFramebuffer(StringBuilder sb, VeldridTypeInfo type, GenerationContext context);
+        protected abstract void GeneratePipeline(StringBuilder sb, VeldridTypeInfo type, GenerationContext context);
+        protected abstract void GenerateShader(StringBuilder sb, VeldridTypeInfo type, GenerationContext context);
     }
 }
+

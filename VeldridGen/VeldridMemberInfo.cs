@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    class VeldridMemberInfo
+    public class VeldridMemberInfo
     {
         public VeldridMemberInfo(ISymbol symbol, GenerationContext context)
         {
@@ -18,7 +18,7 @@ namespace VeldridGen
             }
 
             Symbol = symbol;
-            Type = Util.GetFieldOrPropertyType(symbol);
+            Type = VeldridGenUtil.GetFieldOrPropertyType(symbol);
             foreach (var attrib in symbol.GetAttributes())
             {
                 if (attrib.AttributeClass == null)

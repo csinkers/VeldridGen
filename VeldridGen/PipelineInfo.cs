@@ -2,7 +2,7 @@
 
 namespace VeldridGen
 {
-    class PipelineInfo
+    public class PipelineInfo
     {
         public INamedTypeSymbol VertexShader { get; }
         public INamedTypeSymbol FragmentShader { get; }

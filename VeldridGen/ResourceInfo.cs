@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    class ResourceInfo
+    public class ResourceInfo
     {
         public ResourceInfo(AttributeData attrib, ISymbol member, GenerationContext context)
         {
@@ -29,7 +29,7 @@ namespace VeldridGen
 
         static (ResourceType, INamedTypeSymbol) GetKind(ISymbol member, GenerationContext context)
         {
-            var type = Util.GetFieldOrPropertyType(member);
+            var type = VeldridGenUtil.GetFieldOrPropertyType(member);
             var interfaces = new List<INamedTypeSymbol> { type };
             interfaces.AddRange(type.AllInterfaces);
 

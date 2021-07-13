@@ -6,7 +6,7 @@ namespace VeldridGen
     {
         public ResourceKindSymbols(Compilation compilation)
         {
-            Type = Util.Resolve(compilation, "Veldrid.ResourceKind");
+            Type = VeldridGenUtil.Resolve(compilation, "Veldrid.ResourceKind");
             foreach (var member in Type.GetMembers())
             {
                 if (member.Name == "UniformBuffer") UniformBuffer = member;
