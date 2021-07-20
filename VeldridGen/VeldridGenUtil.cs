@@ -107,5 +107,47 @@ namespace VeldridGen
             if (type.Equals(symbols.Matrix4x4, SymbolEqualityComparer.Default)) return "mat4";
             throw new ArgumentOutOfRangeException(nameof(type), $"Type {type.ToDisplayString()} cannot be converted to a GLSL type");
         }
+
+        public static string GetGlslTypeForColorAttachment(string format)
+        {
+            return format switch
+            {
+                "Veldrid.PixelFormat.R8_SNorm" => "uint",
+                "Veldrid.PixelFormat.R8_UInt" => "uint",
+                "Veldrid.PixelFormat.R8_UNorm" => "uint",
+                "Veldrid.PixelFormat.R16_UInt" => "uint",
+                "Veldrid.PixelFormat.R16_UNorm" => "uint",
+                "Veldrid.PixelFormat.R32_UInt" => "uint",
+
+                "Veldrid.PixelFormat.R8_SInt" => "int",
+                "Veldrid.PixelFormat.R16_SNorm" => "int",
+                "Veldrid.PixelFormat.R16_SInt" => "int",
+                "Veldrid.PixelFormat.R32_SInt" => "int",
+
+                "Veldrid.PixelFormat.R16_Float" => "float",
+                "Veldrid.PixelFormat.R32_Float" => "float",
+
+                "Veldrid.PixelFormat.R11_G11_B10_Float" => "vec3",
+
+                "Veldrid.PixelFormat.R8_G8_B8_A8_UInt" => "vec4",
+                "Veldrid.PixelFormat.R8_G8_B8_A8_SInt" => "vec4",
+                "Veldrid.PixelFormat.R8_G8_B8_A8_SNorm" => "vec4",
+                "Veldrid.PixelFormat.R8_G8_B8_A8_UNorm" => "vec4",
+                "Veldrid.PixelFormat.B8_G8_R8_A8_UNorm" => "vec4",
+                "Veldrid.PixelFormat.R8_G8_B8_A8_UNorm_SRgb" => "vec4",
+                "Veldrid.PixelFormat.B8_G8_R8_A8_UNorm_SRgb" => "vec4",
+                "Veldrid.PixelFormat.R10_G10_B10_A2_UNorm" => "vec4",
+                "Veldrid.PixelFormat.R10_G10_B10_A2_UInt" => "vec4",
+                "Veldrid.PixelFormat.R16_G16_B16_A16_UNorm" => "vec4",
+                "Veldrid.PixelFormat.R16_G16_B16_A16_SNorm" => "vec4",
+                "Veldrid.PixelFormat.R16_G16_B16_A16_UInt" => "vec4",
+                "Veldrid.PixelFormat.R16_G16_B16_A16_SInt" => "vec4",
+                "Veldrid.PixelFormat.R16_G16_B16_A16_Float" => "vec4",
+                "Veldrid.PixelFormat.R32_G32_B32_A32_Float" => "vec4",
+                "Veldrid.PixelFormat.R32_G32_B32_A32_SInt" => "vec4",
+                "Veldrid.PixelFormat.R32_G32_B32_A32_UInt" => "vec4",
+                _ => throw new FormatException($"Unhandled pixel format \"{format}\"")
+            };
+        }
     }
 }
