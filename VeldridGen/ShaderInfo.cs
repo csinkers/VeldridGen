@@ -9,9 +9,9 @@ namespace VeldridGen
     {
         public string Filename { get; }
         public ShaderType ShaderType { get; }
-        public List<(int, INamedTypeSymbol, int)> Inputs { get; } = new(); // slot, type, instance step
-        public List<(int, INamedTypeSymbol)> Outputs { get; } = new(); // slot, type
-        public List<(int, INamedTypeSymbol)> ResourceSets { get; } = new(); // slot, type
+        public List<(int slot, INamedTypeSymbol type, int instanceStep)> Inputs { get; } = new(); // slot, type, instance step
+        public List<(int slot, INamedTypeSymbol type)> Outputs { get; } = new(); // slot, type
+        public List<(int slot, INamedTypeSymbol type)> ResourceSets { get; } = new(); // slot, type
 
         public ShaderInfo(ShaderType shaderType, INamedTypeSymbol symbol, GenerationContext context)
         {
