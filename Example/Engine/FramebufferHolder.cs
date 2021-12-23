@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Veldrid;
 using VeldridGen.Example.Engine.Events;
@@ -8,10 +9,23 @@ namespace VeldridGen.Example.Engine
 {
     public abstract class FramebufferHolder : Component, IFramebufferHolder
     {
+        class Holder : ITextureHolder
+        {
+            readonly Func<Texture> _getter;
+            public Holder(Func<Texture> getter) => _getter = getter ?? throw new ArgumentNullException(nameof(getter));
+            public event PropertyChangedEventHandler PropertyChanged;
+            public Texture DeviceTexture => _getter();
+            public string Name => _getter()?.Name;
+        }
+
+        readonly object _syncRoot = new();
+        readonly List<Holder> _colorHolders = new();
+        Framebuffer _framebuffer;
+        Holder _depthHolder;
         uint _width;
         uint _height;
-        Framebuffer _framebuffer;
 
+        public string Name { get; }
         public uint Width { get => _width; set { if (_width == value) return;  _width = value; Dirty(); } } 
         public uint Height { get => _height; set { if (_height == value) return; _height = value; Dirty(); } }
 
@@ -32,18 +46,39 @@ namespace VeldridGen.Example.Engine
             GC.SuppressFinalize(this);
         }
 
-        protected FramebufferHolder(uint width, uint height)
+        protected FramebufferHolder(uint width, uint height, string name = null)
         {
             On<DeviceCreatedEvent>(e => Update(e.Device));
             On<DestroyDeviceObjectsEvent>(_ => Dispose());
             _width = width;
             _height = height;
+            Name = name;
         }
 
         protected override void Subscribed() => Dirty();
         protected override void Unsubscribed() => Dispose();
         protected abstract Framebuffer CreateFramebuffer(GraphicsDevice device);
         public abstract OutputDescription? OutputDescription { get; }
+
+        public ITextureHolder DepthTexture
+        {
+            get
+            {
+                lock (_syncRoot)
+                    return _depthHolder ??= new Holder(() => Framebuffer.DepthTarget?.Target);
+            }
+        }
+
+        public ITextureHolder GetColorTexture(int index)
+        {
+            lock (_syncRoot)
+            {
+                while(_colorHolders.Count <= index)
+                    _colorHolders.Add(new Holder(() => Framebuffer.ColorTargets[index].Target));
+                return _colorHolders[index];
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             Framebuffer?.Dispose();

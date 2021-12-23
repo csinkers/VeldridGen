@@ -10,5 +10,7 @@ namespace VeldridGen.Interfaces
         uint Height { get; set; }
         Framebuffer Framebuffer { get; }
         OutputDescription? OutputDescription { get; }
+        ITextureHolder DepthTexture { get; }
+        ITextureHolder GetColorTexture(int index);
     }
 }
