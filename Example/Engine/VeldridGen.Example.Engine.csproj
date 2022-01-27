@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid" Version="4.9.0-gd78f9f8afb" />
+    <PackageReference Include="Veldrid" Version="4.9.0-gf94814eecc" />
     <PackageReference Include="Veldrid.ImageSharp" Version="4.9.0-gac88c7210e" />
     <PackageReference Include="Veldrid.ImGui" Version="5.72.0-gac88c7210e" />
     <PackageReference Include="Veldrid.RenderDoc" Version="1.0.1-gac88c7210e" />

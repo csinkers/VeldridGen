@@ -183,7 +183,7 @@ namespace VeldridGen.Example.Engine
             var gdOptions = new GraphicsDeviceOptions(
                 _renderDoc != null,
                 PixelFormat.R32_Float,
-                true,
+                false,
                 ResourceBindingModel.Improved,
                 true,
                 true,
