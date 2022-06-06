@@ -22,11 +22,11 @@ namespace VeldridGen
                 if (attrib.AttributeClass == null)
                     continue;
 
-                if (attrib.AttributeClass.Equals(context.Symbols.NameAttrib, SymbolEqualityComparer.Default))
+                if (attrib.AttributeClass.Equals(context.Symbols.Attributes.Name, SymbolEqualityComparer.Default))
                 {
                     Filename = (string)attrib.ConstructorArguments[0].Value;
                 }
-                else if (attrib.AttributeClass.Equals(context.Symbols.InputAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.Attributes.Input, SymbolEqualityComparer.Default))
                 {
                     var stepArgument =
                         attrib.NamedArguments
@@ -39,13 +39,13 @@ namespace VeldridGen
                         (INamedTypeSymbol)attrib.ConstructorArguments[1].Value,
                         (int?)stepArgument?.Value ?? 0));
                 }
-                else if (attrib.AttributeClass.Equals(context.Symbols.OutputAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.Attributes.Output, SymbolEqualityComparer.Default))
                 {
                     Outputs.Add((
                         (int)attrib.ConstructorArguments[0].Value,
                         (INamedTypeSymbol)attrib.ConstructorArguments[1].Value));
                 }
-                else if (attrib.AttributeClass.Equals(context.Symbols.ResourceSetAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.Attributes.ResourceSet, SymbolEqualityComparer.Default))
                 {
                     ResourceSets.Add((
                         (int)attrib.ConstructorArguments[0].Value,
@@ -62,5 +62,16 @@ namespace VeldridGen
             if (Filename.Contains('"') || Filename.Contains('\\'))
                 throw new InvalidOperationException($"Filename of shader {symbol.Name} ({Filename}) contains invalid character (\\ or \")");
         }
+
+        public ulong? GetStageFlags(GenerationContext context)
+            => EnumUtil.GetEnumValue((IFieldSymbol)(
+                ShaderType switch
+                {
+                    ShaderType.Vertex => context.Symbols.Veldrid.ShaderStages.Vertex,
+                    ShaderType.Fragment => context.Symbols.Veldrid.ShaderStages.Fragment,
+                    ShaderType.Compute => context.Symbols.Veldrid.ShaderStages.Compute,
+                    _ => throw new ArgumentOutOfRangeException(nameof(ShaderInfo), $"\"{ShaderType}\" shaders are currently unsupported.")
+                }));
+
     }
 }

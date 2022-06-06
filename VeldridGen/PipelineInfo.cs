@@ -14,7 +14,7 @@ namespace VeldridGen
                 if (attrib.AttributeClass == null)
                     continue;
 
-                if (attrib.AttributeClass.Equals(context.Symbols.VertexShaderAttrib, SymbolEqualityComparer.Default))
+                if (attrib.AttributeClass.Equals(context.Symbols.Attributes.VertexShader, SymbolEqualityComparer.Default))
                 {
                     if (VertexShader != null)
                     {
@@ -23,7 +23,7 @@ namespace VeldridGen
                     }
                     VertexShader = (INamedTypeSymbol)attrib.ConstructorArguments[0].Value;
                 }
-                else if (attrib.AttributeClass.Equals(context.Symbols.FragmentShaderAttrib, SymbolEqualityComparer.Default))
+                else if (attrib.AttributeClass.Equals(context.Symbols.Attributes.FragmentShader, SymbolEqualityComparer.Default))
                 {
                     if (FragmentShader != null)
                     {

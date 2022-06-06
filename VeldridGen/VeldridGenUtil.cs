@@ -72,7 +72,7 @@ namespace VeldridGen
             };
         }
 
-        public static ISymbol VertexElementFormatForType(ISymbol member, Symbols symbols)
+        public static ISymbol VertexElementFormatForType(ISymbol member, AllSymbols symbols)
         {
             var type = GetFieldOrPropertyType(member);
             if (type.TypeKind == TypeKind.Enum)
@@ -81,30 +81,32 @@ namespace VeldridGen
             if (type == null)
                 throw new ArgumentNullException(nameof(member), $"Could not find an appropriate vertex element format for member \"{member.ToDisplayString()}\"");
                 
-            if (type.Equals(symbols.Int, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Int1;
-            if (type.Equals(symbols.UInt, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.UInt1;
-            if (type.Equals(symbols.Float, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float1;
-            if (type.Equals(symbols.Vector2, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float2;
-            if (type.Equals(symbols.Vector3, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float3;
-            if (type.Equals(symbols.Vector4, SymbolEqualityComparer.Default)) return symbols.VertexElementFormat.Float4;
+            if (type.Equals(symbols.BuiltIn.Int, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.Int1;
+            if (type.Equals(symbols.BuiltIn.UInt, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.UInt1;
+            if (type.Equals(symbols.BuiltIn.Float, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.Float1;
+            if (type.Equals(symbols.BuiltIn.Double, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.Float1;
+            if (type.Equals(symbols.BuiltIn.Vector2, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.Float2;
+            if (type.Equals(symbols.BuiltIn.Vector3, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.Float3;
+            if (type.Equals(symbols.BuiltIn.Vector4, SymbolEqualityComparer.Default)) return symbols.Veldrid.VertexElementFormat.Float4;
             throw new ArgumentOutOfRangeException(nameof(member), $"Could not find an appropriate vertex element format for field of type {type.ToDisplayString()}");
         }
 
-        public static string GetGlslType(INamedTypeSymbol type, Symbols symbols)
+        public static string GetGlslType(INamedTypeSymbol type, AllSymbols symbols)
         {
             if (type.TypeKind == TypeKind.Enum)
                 type = type.EnumUnderlyingType;
 
-            if (type.Equals(symbols.Byte, SymbolEqualityComparer.Default)) return "byte";
-            if (type.Equals(symbols.Short, SymbolEqualityComparer.Default)) return "short";
-            if (type.Equals(symbols.UShort, SymbolEqualityComparer.Default)) return "ushort";
-            if (type.Equals(symbols.Int, SymbolEqualityComparer.Default)) return "int";
-            if (type.Equals(symbols.UInt, SymbolEqualityComparer.Default)) return "uint";
-            if (type.Equals(symbols.Float, SymbolEqualityComparer.Default)) return "float";
-            if (type.Equals(symbols.Vector2, SymbolEqualityComparer.Default)) return "vec2";
-            if (type.Equals(symbols.Vector3, SymbolEqualityComparer.Default)) return "vec3";
-            if (type.Equals(symbols.Vector4, SymbolEqualityComparer.Default)) return "vec4";
-            if (type.Equals(symbols.Matrix4x4, SymbolEqualityComparer.Default)) return "mat4";
+            if (type.Equals(symbols.BuiltIn.Byte, SymbolEqualityComparer.Default)) return "uint";
+            if (type.Equals(symbols.BuiltIn.Short, SymbolEqualityComparer.Default)) return "int";
+            if (type.Equals(symbols.BuiltIn.UShort, SymbolEqualityComparer.Default)) return "uint";
+            if (type.Equals(symbols.BuiltIn.Int, SymbolEqualityComparer.Default)) return "int";
+            if (type.Equals(symbols.BuiltIn.UInt, SymbolEqualityComparer.Default)) return "uint";
+            if (type.Equals(symbols.BuiltIn.Float, SymbolEqualityComparer.Default)) return "float";
+            if (type.Equals(symbols.BuiltIn.Double, SymbolEqualityComparer.Default)) return "double";
+            if (type.Equals(symbols.BuiltIn.Vector2, SymbolEqualityComparer.Default)) return "vec2";
+            if (type.Equals(symbols.BuiltIn.Vector3, SymbolEqualityComparer.Default)) return "vec3";
+            if (type.Equals(symbols.BuiltIn.Vector4, SymbolEqualityComparer.Default)) return "vec4";
+            if (type.Equals(symbols.BuiltIn.Matrix4x4, SymbolEqualityComparer.Default)) return "mat4";
             throw new ArgumentOutOfRangeException(nameof(type), $"Type {type.ToDisplayString()} cannot be converted to a GLSL type");
         }
 

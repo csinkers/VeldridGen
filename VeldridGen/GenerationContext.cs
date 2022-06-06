@@ -9,7 +9,7 @@ namespace VeldridGen
     public class GenerationContext
     {
         readonly Action<Diagnostic> _reportFunc;
-        public Symbols Symbols { get; }
+        public AllSymbols Symbols { get; }
         public Dictionary<INamedTypeSymbol, VeldridTypeInfo> Types { get; }
 
         public GenerationContext(Compilation compilation, VeldridSyntaxReceiver receiver, Action<Diagnostic> reportFunc)
@@ -17,7 +17,7 @@ namespace VeldridGen
             _reportFunc = reportFunc ?? throw new ArgumentNullException(nameof(reportFunc));
             try
             {
-                Symbols = new Symbols(compilation);
+                Symbols = new AllSymbols(compilation);
             }
             catch (TypeResolutionException e)
             {

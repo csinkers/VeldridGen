@@ -55,17 +55,37 @@ namespace VeldridGenTests
                 {
                     if (!first) sb.AppendLine(",");
                     var shaderStages = member.Resource.Stages.ToString();
-                    sb.Append($"            new ResourceLayoutElementDescription(\"{member.Resource.Name}\", global::{member.Resource.Kind}, (ShaderStages){shaderStages})");
+                    var kindString = context.Symbols.Veldrid.ResourceKind.KnownKindString(member.Resource.Kind);
+                    sb.Append($"            new ResourceLayoutElementDescription(\"{member.Resource.Name}\", global::{kindString}, (ShaderStages){shaderStages})");
                     first = false;
                 }
                 sb.AppendLine(");");
                 sb.AppendLine();
                 foreach (var member in type.Members.Where(x => x.Resource != null))
                 {
-                    if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) GenerateUniform(sb, member, context);
-                    else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) GenerateTexture(sb, member, context);
-                    else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) GenerateSampler(sb, member, context);
-                    else context.Report($"Resource {member.Symbol.ToDisplayString()} in set {type.Symbol.ToDisplayString()} was of unexpected kind {member.Resource.Kind}");
+                    switch (member.Resource.Kind)
+                    {
+                        case KnownResourceKind.UniformBuffer:
+                        case KnownResourceKind.StructuredBufferReadOnly:
+                        case KnownResourceKind.StructuredBufferReadWrite:
+                            GenerateUniform(sb, member, context);
+                            break;
+
+                        case KnownResourceKind.TextureReadOnly:
+                        case KnownResourceKind.TextureReadWrite:
+                            GenerateTexture(sb, member, context);
+                            break;
+
+                        case KnownResourceKind.Sampler:
+                            GenerateSampler(sb, member, context);
+                            break;
+
+                        case KnownResourceKind.Unknown:
+                        default:
+                            context.Report($"Resource {member.Symbol.ToDisplayString()} in set {type.Symbol.ToDisplayString()} was of unexpected kind {member.Resource.Kind}");
+                            break;
+                    }
+
                 }
                 sb.Append(@"        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
             device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
@@ -83,10 +103,26 @@ namespace VeldridGenTests
                     sb.Append(field.Name);
                     sb.Append('.');
 
-                    if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.UniformBuffer.ToDisplayString())) sb.Append("DeviceBuffer");
-                    else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.TextureReadOnly.ToDisplayString())) sb.Append("DeviceTexture");
-                    else if (Equals(member.Resource.Kind, context.Symbols.ResourceKind.Sampler.ToDisplayString())) sb.Append("Sampler");
-                    else context.Report($"Resource {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was of unexpected kind \"{member.Resource.Kind}\"");
+                    switch (member.Resource.Kind)
+                    {
+                        case KnownResourceKind.UniformBuffer:
+                        case KnownResourceKind.StructuredBufferReadOnly:
+                        case KnownResourceKind.StructuredBufferReadWrite:
+                            sb.Append("DeviceBuffer");
+                            break;
+                        case KnownResourceKind.TextureReadOnly:
+                        case KnownResourceKind.TextureReadWrite:
+                            sb.Append("DeviceTexture");
+                            break;
+                        case KnownResourceKind.Sampler:
+                            sb.Append("Sampler");
+                            break;
+
+                        case KnownResourceKind.Unknown:
+                        default:
+                            context.Report($"Resource {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was of unexpected kind \"{member.Resource.Kind}\"");
+                            break;
+                    }
                 }
 
                 sb.AppendLine("));");

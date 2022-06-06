@@ -24,31 +24,33 @@ namespace VeldridGen
 
             foreach (var iface in symbol.AllInterfaces)
             {
-                if (symbols.UniformFormat.Equals(iface, SymbolEqualityComparer.Default))
+                if (symbols.Interfaces.UniformFormat.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsUniformFormat; // Verify size is a 16-byte multiple, verify no vectors cross 16-byte boundaries etc
-                else if (symbols.VertexFormat.Equals(iface, SymbolEqualityComparer.Default))
+                else if  (symbols.Interfaces.StructuredFormat.Equals(iface, SymbolEqualityComparer.Default))
+                    Flags |= TypeFlags.IsStructuredFormat;
+                else if (symbols.Interfaces.VertexFormat.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsVertexFormat;
-                else if (symbols.ResourceSetHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.ResourceSetHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsResourceSetHolder;
-                else if (symbols.FramebufferHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.FramebufferHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsFramebufferHolder;
-                else if (symbols.PipelineHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.PipelineHolder.Equals(iface, SymbolEqualityComparer.Default))
                 {
                     Pipeline = Try("pipeline", () => new PipelineInfo(symbol, context));
                     if (Pipeline != null)
                         Flags |= TypeFlags.IsPipelineHolder;
                 }
-                else if (symbols.SamplerHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.SamplerHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsSamplerHolder;
-                else if (symbols.BufferHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.BufferHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsBufferHolder;
-                else if (symbols.TextureHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.TextureHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsTextureHolder;
-                else if (symbols.TextureArrayHolder.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.TextureArrayHolder.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsTextureArrayHolder;
-                else if (symbols.VertexShader.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.VertexShader.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsVertexShader;
-                else if (symbols.FragmentShader.Equals(iface, SymbolEqualityComparer.Default))
+                else if (symbols.Interfaces.FragmentShader.Equals(iface, SymbolEqualityComparer.Default))
                     Flags |= TypeFlags.IsFragmentShader;
             }
 

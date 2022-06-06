@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace VeldridGen
+namespace VeldridGen.Symbols
 {
     public class VertexElementFormatSymbols
     {

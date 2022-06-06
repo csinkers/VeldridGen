@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -23,8 +23,11 @@ namespace VeldridGen
 
             try
             {
+                // if (!Debugger.IsAttached) // Uncomment to prompt for debugger during build
+                //     Debugger.Launch();
+
                 var genContext = new GenerationContext(context.Compilation, receiver, context.ReportDiagnostic);
-                foreach (var type in genContext.Types.Values.Where(x => x.Flags != 0))
+                foreach (var type in genContext.Types.Values)
                 {
                     string source = GenerateType(type, genContext);
                     if (source != null)
@@ -39,6 +42,16 @@ namespace VeldridGen
 
         string GenerateType(VeldridTypeInfo type, GenerationContext context)
         {
+            if ((type.Flags & (
+                    TypeFlags.IsResourceSetHolder |
+                    TypeFlags.IsVertexFormat |
+                    TypeFlags.IsFramebufferHolder |
+                    TypeFlags.IsPipelineHolder |
+                    TypeFlags.IsShader)) == 0)
+            {
+                return null;
+            }
+
             var kword = type.Symbol.IsReferenceType
                 ? type.Symbol.IsRecord ? "record" : "class"
                 : "struct";

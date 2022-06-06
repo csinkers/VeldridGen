@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen
 {
-    public class UniformInfo
+    public class UniformMemberInfo
     {
-        public UniformInfo(AttributeData attrib)
+        public UniformMemberInfo(AttributeData attrib)
         {
             Name = (string)attrib.ConstructorArguments[0].Value;
             EnumPrefix = 
