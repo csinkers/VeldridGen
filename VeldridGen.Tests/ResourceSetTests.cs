@@ -30,8 +30,8 @@ namespace VeldridGenTests
 
     public sealed partial class CommonSet : ResourceSetHolder
     {
-        [Resource(""_Shared"")]                         SingleBuffer<GlobalInfo>     _globalInfo; 
-        [Resource(""uPalette"", ShaderStages.Fragment)] Texture2DHolder              _palette;
+        [UniformBuffer(""_Shared"")]                   SingleBuffer<GlobalInfo> _globalInfo; 
+        [Texture(""uPalette"", ShaderStages.Fragment)] Texture2DHolder          _palette;
     }
 }
 ";
