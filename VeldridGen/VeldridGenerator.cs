@@ -59,9 +59,9 @@ namespace VeldridGen
             var sb = new StringBuilder();
             sb.AppendLine("using Veldrid;");
             sb.AppendLine($@"namespace {type.Symbol.ContainingNamespace.ToDisplayString()}");
-            sb.AppendLine("{{");
+            sb.AppendLine("{");
             sb.AppendLine($@"    {type.Symbol.DeclaredAccessibility.ToString().ToLower()} partial {kword} {type.Symbol.Name}");
-            sb.AppendLine("    {{");
+            sb.AppendLine("    {");
 
             int length = sb.Length;
             if ((type.Flags & TypeFlags.IsResourceSetHolder) != 0)
