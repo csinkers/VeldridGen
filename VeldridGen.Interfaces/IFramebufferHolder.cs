@@ -6,6 +6,7 @@ namespace VeldridGen.Interfaces
 {
     public interface IFramebufferHolder : IDisposable, INotifyPropertyChanged
     {
+        string Name { get; }
         uint Width { get; set; }
         uint Height { get; set; }
         Framebuffer Framebuffer { get; }
