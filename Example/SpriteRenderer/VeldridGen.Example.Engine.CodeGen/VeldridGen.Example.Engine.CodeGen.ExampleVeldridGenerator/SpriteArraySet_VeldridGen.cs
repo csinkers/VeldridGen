@@ -57,12 +57,20 @@ namespace VeldridGen.Example.SpriteRenderer
             }
         }
 
-        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
-            device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
+        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout)
+        {
+#if DEBUG
+                if (_texture.DeviceTexture == null) throw new System.InvalidOperationException("Tried to construct SpriteArraySet, but Texture has not been initialised. It may not have been attached to the exchange.");
+                if (_sampler.Sampler == null) throw new System.InvalidOperationException("Tried to construct SpriteArraySet, but Sampler has not been initialised. It may not have been attached to the exchange.");
+                if (_uniform.DeviceBuffer == null) throw new System.InvalidOperationException("Tried to construct SpriteArraySet, but Uniform has not been initialised. It may not have been attached to the exchange.");
+#endif
+
+            return device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
                 layout,
                 _texture.DeviceTexture,
                 _sampler.Sampler,
                 _uniform.DeviceBuffer));
+        }
 
         protected override void Resubscribe()
         {

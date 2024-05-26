@@ -4,9 +4,8 @@ using VeldridGen.Example.Engine.Visual;
 
 namespace VeldridGen.Example.TestApp
 {
-    public class PaletteManager : ServiceComponent<IPaletteManager>, IPaletteManager
+    public class PaletteManager(ITexture paletteTexture) : ServiceComponent<IPaletteManager>, IPaletteManager
     {
-        public PaletteManager(ITexture paletteTexture) => PaletteTexture = paletteTexture ?? throw new ArgumentNullException(nameof(paletteTexture));
-        public ITexture PaletteTexture { get; }
+        public ITexture PaletteTexture { get; } = paletteTexture ?? throw new ArgumentNullException(nameof(paletteTexture));
     }
 }

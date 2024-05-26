@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Interfaces
-{
-    public interface IVertexShader {}
-}
+﻿namespace VeldridGen.Interfaces;
+
+public interface IVertexShader { }

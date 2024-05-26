@@ -1,4 +1,4 @@
-﻿    using Veldrid;
+﻿using Veldrid;
 using VeldridGen.Example.Engine;
 using VeldridGen.Example.Engine.Visual;
 using VeldridGen.Interfaces;

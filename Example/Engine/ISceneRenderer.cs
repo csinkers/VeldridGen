@@ -1,11 +1,10 @@
 ﻿using Veldrid;
 using VeldridGen.Interfaces;
 
-namespace VeldridGen.Example.Engine
+namespace VeldridGen.Example.Engine;
+
+public interface ISceneRenderer
 {
-    public interface ISceneRenderer
-    {
-        void Render(GraphicsDevice device, CommandList cl);
-        IFramebufferHolder Framebuffer { get; }
-    }
+    void Render(GraphicsDevice device, CommandList cl);
+    IFramebufferHolder Framebuffer { get; }
 }

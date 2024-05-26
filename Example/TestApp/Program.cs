@@ -44,7 +44,7 @@ namespace VeldridGen.Example.TestApp
             var layoutSource = new ResourceLayoutSource();
             var samplerSource = new SpriteSamplerSource();
             var textureSource = new TextureSource();
-            var framebuffer = new MainFramebuffer();
+            var framebuffer = new MainFramebuffer("FB_Main");
             var spriteManager = new SpriteManager();
             var spriteFactory = new SpriteFactory();
             var palette = BuildPalette();
@@ -54,6 +54,7 @@ namespace VeldridGen.Example.TestApp
                 .AddRenderer(new SpriteRenderer.SpriteRenderer(framebuffer), typeof(VeldridSpriteBatch))
                 .AddSource(spriteManager)
                 ;
+
             var camera = new PerspectiveCamera();
             var engine = new VeldridEngine(GraphicsBackend.Direct3D11, false, scene);
 
@@ -74,13 +75,16 @@ namespace VeldridGen.Example.TestApp
                 .Attach(spriteFactory)
                 ;
 
+            // Make a few thousand small sprites to demonstrate instancing
             var key = new SpriteKey(texture, SpriteSampler.Linear, 1, SpriteKeyFlags.UsePalette);
             var width = 200;
             var height = 100;
             var lease = spriteManager.Borrow(key, 5 * width * height, null);
+
             for (int j = 0; j < height; j++)
                 for (int i = 0; i < width; i++)
                     Set(i, j, width, height, lease, texture);
+
             engine.Run();
             return 0;
         }

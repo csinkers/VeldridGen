@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Example.Engine.Events
-{
-    public class WindowClosedEvent : IEvent { }
-}
+﻿namespace VeldridGen.Example.Engine.Events;
+
+public class WindowClosedEvent : IEvent { }

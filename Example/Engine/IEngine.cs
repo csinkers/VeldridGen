@@ -1,7 +1,6 @@
-﻿namespace VeldridGen.Example.Engine
+﻿namespace VeldridGen.Example.Engine;
+
+public interface IEngine
 {
-    public interface IEngine
-    {
-        string FrameTimeText { get; }
-    }
+    string FrameTimeText { get; }
 }

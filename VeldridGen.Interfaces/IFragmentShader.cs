@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Interfaces
-{
-    public interface IFragmentShader {}
-}
+﻿namespace VeldridGen.Interfaces;
+
+public interface IFragmentShader {}

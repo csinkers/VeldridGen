@@ -1,10 +1,9 @@
 ﻿using System;
 using Veldrid;
 
-namespace VeldridGen.Example.Engine
+namespace VeldridGen.Example.Engine;
+
+public interface IResourceLayoutSource
 {
-    public interface IResourceLayoutSource
-    {
-        ResourceLayout GetLayout(Type type, GraphicsDevice device);
-    }
+    ResourceLayout GetLayout(Type type, GraphicsDevice device);
 }

@@ -32,9 +32,9 @@ namespace VeldridGen.Example.SpriteRenderer
 
     internal sealed partial class SpriteArraySet : ResourceSetHolder
     {
-        [Resource("uSprite")] ITextureArrayHolder _texture;
-        [Resource("uSpriteSampler")] ISamplerHolder _sampler;
-        [Resource("_Uniform")] IBufferHolder<SpriteUniform> _uniform;
+        [TextureArray("uSprite")] ITextureArrayHolder _texture;
+        [Sampler("uSpriteSampler")] ISamplerHolder _sampler;
+        [UniformBuffer("_Uniform")] IBufferHolder<SpriteUniform> _uniform;
     }
 
     [StructLayout(LayoutKind.Sequential)]

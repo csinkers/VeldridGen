@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
 using Veldrid;
 
-namespace VeldridGen.Interfaces
+namespace VeldridGen.Interfaces;
+
+public interface ITextureHolder : INotifyPropertyChanged
 {
-    public interface ITextureHolder : INotifyPropertyChanged
-    {
-        Texture DeviceTexture { get; }
-        string Name { get; }
-    }
+    Texture DeviceTexture { get; }
+    string Name { get; }
 }

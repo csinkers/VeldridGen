@@ -1,8 +1,7 @@
-﻿namespace VeldridGen.Example.Engine.Visual.Sprites
+﻿namespace VeldridGen.Example.Engine.Visual.Sprites;
+
+public enum SpriteSampler
 {
-    public enum SpriteSampler
-    {
-        Linear,
-        Point
-    }
+    Linear,
+    Point
 }

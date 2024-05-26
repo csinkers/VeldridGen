@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Interfaces
-{
-    public interface IUniformFormat { }
-}
+﻿namespace VeldridGen.Interfaces;
+
+public interface IUniformFormat { }

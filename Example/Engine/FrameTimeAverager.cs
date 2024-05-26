@@ -1,41 +1,43 @@
-﻿namespace VeldridGen.Example.Engine
+﻿namespace VeldridGen.Example.Engine;
+
+public class FrameTimeAverager
 {
-    public class FrameTimeAverager
+    const double DecayRate = .3;
+    readonly double _averagingIntervalSeconds;
+    double _accumulatedTime;
+    int _frameCount;
+
+    public double CurrentAverageFrameTimeSeconds { get; private set; }
+    public double CurrentAverageFrameTimeMilliseconds => CurrentAverageFrameTimeSeconds * 1000.0;
+    public double CurrentAverageFramesPerSecond => 1 / CurrentAverageFrameTimeSeconds;
+
+    public FrameTimeAverager(double averagingIntervalSeconds)
     {
-        const double DecayRate = .3;
-        readonly double _averagingIntervalSeconds;
-        double _accumulatedTime;
-        int _frameCount;
+        _averagingIntervalSeconds = averagingIntervalSeconds;
+    }
 
-        public double CurrentAverageFrameTimeSeconds { get; private set; }
-        public double CurrentAverageFrameTimeMilliseconds => CurrentAverageFrameTimeSeconds * 1000.0;
-        public double CurrentAverageFramesPerSecond => 1 / CurrentAverageFrameTimeSeconds;
+    public void Reset()
+    {
+        _accumulatedTime = 0;
+        _frameCount = 0;
+    }
 
-        public FrameTimeAverager(double averagingIntervalSeconds) { _averagingIntervalSeconds = averagingIntervalSeconds; }
+    public void AddTime(double seconds)
+    {
+        _accumulatedTime += seconds;
+        _frameCount++;
+        if (_accumulatedTime >= _averagingIntervalSeconds)
+            Average();
+    }
 
-        public void Reset()
-        {
-            _accumulatedTime = 0;
-            _frameCount = 0;
-        }
+    void Average()
+    {
+        double total = _accumulatedTime;
+        CurrentAverageFrameTimeSeconds =
+            CurrentAverageFrameTimeSeconds * DecayRate
+            + (total / _frameCount) * (1 - DecayRate);
 
-        public void AddTime(double seconds)
-        {
-            _accumulatedTime += seconds;
-            _frameCount++;
-            if (_accumulatedTime >= _averagingIntervalSeconds)
-                Average();
-        }
-
-        void Average()
-        {
-            double total = _accumulatedTime;
-            CurrentAverageFrameTimeSeconds =
-                CurrentAverageFrameTimeSeconds * DecayRate
-                + (total / _frameCount) * (1 - DecayRate);
-
-            _accumulatedTime = 0;
-            _frameCount = 0;
-        }
+        _accumulatedTime = 0;
+        _frameCount = 0;
     }
 }

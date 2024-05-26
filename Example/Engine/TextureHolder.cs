@@ -1,27 +1,29 @@
 ﻿using System.ComponentModel;
 using Veldrid;
 
-namespace VeldridGen.Example.Engine
+namespace VeldridGen.Example.Engine;
+
+public abstract class TextureHolder
 {
-    public abstract class TextureHolder
+    Texture _deviceTexture;
+
+    public string Name { get; set; }
+    protected TextureHolder(string name) => Name = name;
+    protected abstract void Validate(Texture texture);
+
+    public Texture DeviceTexture
     {
-        Texture _deviceTexture;
-
-        public string Name { get; }
-        protected TextureHolder(string name) => Name = name;
-
-        public Texture DeviceTexture
+        get => _deviceTexture;
+        set
         {
-            get => _deviceTexture;
-            internal set
-            {
-                if (_deviceTexture == value)
-                    return;
-                _deviceTexture = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DeviceTexture)));
-            }
-        }
+            if (_deviceTexture == value)
+                return;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+            Validate(value);
+            _deviceTexture = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DeviceTexture)));
+        }
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }

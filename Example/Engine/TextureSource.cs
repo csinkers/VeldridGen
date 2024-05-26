@@ -4,81 +4,104 @@ using Veldrid;
 using VeldridGen.Example.Engine.Events;
 using VeldridGen.Example.Engine.Visual;
 using VeldridGen.Interfaces;
+using static System.FormattableString;
 
-namespace VeldridGen.Example.Engine
+namespace VeldridGen.Example.Engine;
+
+public sealed class TextureSource : ServiceComponent<ITextureSource>, ITextureSource, IDisposable
 {
-    public class TextureSource : ServiceComponent<ITextureSource>, ITextureSource
+    const double CacheCheckIntervalSeconds = 30.0;
+    static void Checkerboard(Span<byte> span)
     {
-        const double CacheCheckIntervalSeconds = 5.0;
-        readonly TextureCache<Texture2DHolder> _simple = new(x => new Texture2DHolder(x.Name), CreateSimple);
-        readonly TextureCache<Texture2DArrayHolder> _array = new(x => new Texture2DArrayHolder(x.Name), CreateArray);
-        float _lastCleanup;
-        float _totalTime;
+        for (int j = 0; j < 64; j++)
+            for (int i = 0; i < 64; i++)
+                span[j * 64 + i] = (byte)(j >= 32 ^ i >= 32 ? 255 : 1);
+    }
 
-        public TextureSource()
-        {
-            AttachChild(_simple);
-            AttachChild(_array);
-            On<EngineUpdateEvent>(OnUpdate);
-        }
+    static ITexture BuildDefaultArray()
+    {
+        var result = new ArrayTexture<byte>(null, 64, 64, 2);
+        Checkerboard(result.GetMutableLayerBuffer(0).Buffer);
+        Checkerboard(result.GetMutableLayerBuffer(1).Buffer);
+        return result;
+    }
 
-        public ITextureHolder GetSimpleTexture(ITexture texture, int version = 0) => _simple.GetTextureHolder(texture, version);
-        public ITextureArrayHolder GetArrayTexture(ITexture texture, int version = 0) => _array.GetTextureHolder(texture, version);
+    static ITexture BuildDefault()
+    {
+        var result = new SimpleTexture<byte>(null, 64, 64);
+        Checkerboard(result.GetMutableLayerBuffer(0).Buffer);
+        return result;
+    }
 
-        string Stats()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("Texture Statistics:");
-            sb.AppendLine($"    Total Time: {_totalTime} Last Cleanup: {_lastCleanup}");
+    static readonly ITexture DefaultTexture = BuildDefault();
+    static readonly ITexture DefaultArrayTexture = BuildDefaultArray();
+    readonly TextureCache<Texture2DHolder> _simple = new(x => new Texture2DHolder(x.Name), CreateTexture, DefaultTexture);
+    readonly TextureCache<Texture2DArrayHolder> _array = new(x => new Texture2DArrayHolder(x.Name), CreateTexture, DefaultArrayTexture);
+    readonly ITexture _dummySimple = new SimpleTexture<byte>(null, "Dummy Texture", 1, 1, new byte[] { 0 });
+    readonly ITexture _dummyArray = new ArrayTexture<byte>(null, "Dummy ArrayTexture", 1, 1, 2, new byte[] { 0, 0 });
+    float _lastCleanup;
+    float _totalTime;
 
-            sb.AppendLine("Simple textures:");
-            _simple.DumpStats(sb);
-            sb.AppendLine("Array textures:");
-            _array.DumpStats(sb);
+    public TextureSource()
+    {
+        AttachChild(_simple);
+        AttachChild(_array);
+        On<EngineUpdateEvent>(OnUpdate);
+    }
 
-            return sb.ToString();
-        }
+    public ITextureHolder GetSimpleTexture(ITexture texture) => _simple.GetTextureHolder(texture);
+    public ITextureArrayHolder GetArrayTexture(ITexture texture) => _array.GetTextureHolder(texture);
+    public ITextureHolder GetDummySimpleTexture() => GetSimpleTexture(_dummySimple);
+    public ITextureArrayHolder GetDummyArrayTexture() => GetArrayTexture(_dummyArray);
 
-        void OnUpdate(EngineUpdateEvent e)
-        {
-            _totalTime += (float)e.DeltaSeconds;
+    string Stats()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("Texture Statistics:");
+        sb.AppendLine(Invariant($"    Total Time: {_totalTime} Last Cleanup: {_lastCleanup}"));
 
-            if (_totalTime - _lastCleanup <= CacheCheckIntervalSeconds)
-                return;
+        sb.AppendLine("Simple textures:");
+        _simple.DumpStats(sb);
+        sb.AppendLine("Array textures:");
+        _array.DumpStats(sb);
 
-            _simple.Cleanup();
-            _array.Cleanup();
-            _lastCleanup = _totalTime;
-        }
+        return sb.ToString();
+    }
 
-        protected override void Unsubscribed()
-        {
-            _simple.Dispose();
-            _array.Dispose();
-        }
+    void OnUpdate(EngineUpdateEvent e)
+    {
+        _totalTime += e.DeltaSeconds;
+        if (_totalTime - _lastCleanup <= CacheCheckIntervalSeconds)
+            return;
 
-        static Texture CreateSimple(GraphicsDevice device, ITexture texture)
-        {
-            var deviceTexture = texture switch
-                { // Note: No automatic mip-mapping for 8-bit, blending/interpolation in palette-based images typically results in nonsense.
-                  // TODO: Custom mip-mapping using nearest matches in the palette
-                    IReadOnlyTexture<byte> eightBit => VeldridTexture.CreateSimpleTexture(device, TextureUsage.Sampled, eightBit),
-                    IReadOnlyTexture<uint> trueColor => VeldridTexture.CreateSimpleTexture(
-                        device,
-                        TextureUsage.Sampled | ((trueColor.Height == 1) ? 0 : TextureUsage.GenerateMipmaps),
-                        trueColor),
-                    _ => throw new NotSupportedException($"Image format {texture.GetType().GetGenericArguments()[0].Name} not currently supported")
-                };
-            return deviceTexture;
-        }
+        _simple.Cleanup();
+        _array.Cleanup();
+        _lastCleanup = _totalTime;
+    }
 
-        static Texture CreateArray(GraphicsDevice device, ITexture texture) =>
-            texture switch
-            { // Note: No automatic mip-mapping for 8-bit, blending/interpolation in palette-based images typically results in nonsense.
-                // TODO: Custom mip-mapping using nearest matches in the palette
-                IReadOnlyTexture<byte> eightBitArray => VeldridTexture.CreateArrayTexture(device, TextureUsage.Sampled, eightBitArray),
-                IReadOnlyTexture<uint> trueColorArray => VeldridTexture.CreateArrayTexture(device, TextureUsage.Sampled | TextureUsage.GenerateMipmaps, trueColorArray),
-                _ => throw new NotSupportedException($"Image format {texture.GetType().GetGenericArguments()[0].Name} not currently supported")
-            };
+
+    protected override void Unsubscribed()
+    {
+        _simple.Dispose();
+        _array.Dispose();
+    }
+
+    static Texture CreateTexture(GraphicsDevice device, ITexture texture)
+    {
+        var deviceTexture = texture switch
+        { // Note: No automatic mip-mapping for 8-bit, blending/interpolation in palette-based images typically results in nonsense.
+            // TODO: Custom mip-mapping using nearest matches in the palette
+            IReadOnlyTexture<byte> eightBit => VeldridTexture.Create(device, TextureUsage.Sampled, eightBit),
+            IReadOnlyTexture<uint> trueColor => VeldridTexture.Create(device, TextureUsage.Sampled, trueColor),
+            _ => throw new NotSupportedException($"Image format {texture.GetType().GetGenericArguments()[0].Name} not currently supported")
+        };
+        return deviceTexture;
+    }
+
+    public void Dispose()
+    {
+        _simple?.Dispose();
+        _array?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

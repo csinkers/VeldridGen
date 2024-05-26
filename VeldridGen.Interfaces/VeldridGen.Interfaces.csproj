@@ -1,26 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Cam Sinclair</Authors>
-    <Company />
-    <Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
-    <Copyright>2021 Cam Sinclair</Copyright>
-    <PackageId>VeldridGen.Interfaces</PackageId>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
-    <PackageTags>code-generator veldrid graphics-programming</PackageTags>
-    <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <Version>0.2.2</Version>
-    <LangVersion>9.0</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Cam Sinclair</Authors>
+		<Company />
+		<Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
+		<Copyright>2021 Cam Sinclair</Copyright>
+		<PackageId>VeldridGen.Interfaces</PackageId>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>code-generator veldrid graphics-programming</PackageTags>
+		<RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<Version>0.2.3</Version>
+		<LangVersion>12.0</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup Condition="!Exists('..\..\veldrid\')">
-    <PackageReference Include="Veldrid" Version="4.9.0" />
-  </ItemGroup>
-  <ItemGroup Condition="Exists('..\..\veldrid\')">
-    <ProjectReference Include="..\..\veldrid\src\Veldrid\Veldrid.csproj" />
-  </ItemGroup>
+	<ItemGroup Condition="!Exists('..\..\veldrid\')">
+		<PackageReference Include="Veldrid" Version="4.9.0" />
+	</ItemGroup>
+	<ItemGroup Condition="Exists('..\..\veldrid\')">
+		<ProjectReference Include="..\..\veldrid\src\Veldrid\Veldrid.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 </Project>

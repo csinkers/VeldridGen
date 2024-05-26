@@ -2,16 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\VeldridGen\VeldridGen.csproj" PrivateAssets="all" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Remove="bin\Debug\netstandard2.0\$(AssemblyName).dll" />
+    <None Remove="bin\Debug\netstandard2.0\\VeldridGen.Example.Engine.CodeGen.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 

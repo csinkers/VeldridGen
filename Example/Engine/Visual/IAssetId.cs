@@ -1,7 +1,6 @@
-﻿namespace VeldridGen.Example.Engine.Visual
+﻿namespace VeldridGen.Example.Engine.Visual;
+
+public interface IAssetId
 {
-    public interface IAssetId
-    {
-        uint ToUInt32();
-    }
+    uint ToUInt32();
 }

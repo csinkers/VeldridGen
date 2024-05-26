@@ -4,7 +4,7 @@ using VeldridGen.Example.SpriteRenderer;
 
 namespace VeldridGen.Example.TestApp
 {
-    static class ShaderHeaderEmitter
+    internal static class ShaderHeaderEmitter
     {
         const string AutoGenMessage = "This file was auto-generated using VeldridGen. It should not be edited by hand.";
         public static int EmitAll(string path)

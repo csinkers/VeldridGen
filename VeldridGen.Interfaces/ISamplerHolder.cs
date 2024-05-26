@@ -2,10 +2,9 @@
 using System.ComponentModel;
 using Veldrid;
 
-namespace VeldridGen.Interfaces
+namespace VeldridGen.Interfaces;
+
+public interface ISamplerHolder : INotifyPropertyChanged, IDisposable
 {
-    public interface ISamplerHolder : INotifyPropertyChanged, IDisposable
-    {
-        Sampler Sampler { get; }
-    }
+    Sampler Sampler { get; }
 }

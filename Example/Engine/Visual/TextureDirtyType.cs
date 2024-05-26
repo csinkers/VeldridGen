@@ -1,10 +1,9 @@
-﻿namespace VeldridGen.Example.Engine.Visual
+﻿namespace VeldridGen.Example.Engine.Visual;
+
+public enum TextureDirtyType
 {
-    public enum TextureDirtyType
-    {
-        None,
-        All,
-        Region,
-        Layer
-    }
+    None,
+    All,
+    Region,
+    Layer
 }

@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Interfaces
-{
-    public interface IVertexFormat { }
-}
+﻿namespace VeldridGen.Interfaces;
+
+public interface IVertexFormat { }

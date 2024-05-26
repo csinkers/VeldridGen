@@ -1,11 +1,10 @@
 ﻿using System;
 using Veldrid;
 
-namespace VeldridGen.Interfaces
+namespace VeldridGen.Interfaces;
+
+public class DepthAttachmentAttribute : Attribute
 {
-    public class DepthAttachmentAttribute : Attribute
-    {
-        public PixelFormat Format { get; }
-        public DepthAttachmentAttribute(PixelFormat format) => Format = format;
-    }
+    public PixelFormat Format { get; }
+    public DepthAttachmentAttribute(PixelFormat format) => Format = format;
 }
