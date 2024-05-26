@@ -11,7 +11,7 @@ static class VertexFormatGenerator
         if (members.Count == 0)
             return;
 
-        sb.AppendLine(@"        public static VertexLayoutDescription GetLayout(bool input) => new(");
+        sb.AppendLine("        public static VertexLayoutDescription GetLayout(bool input) => new(");
         bool first = true;
         foreach (var member in members)
         {

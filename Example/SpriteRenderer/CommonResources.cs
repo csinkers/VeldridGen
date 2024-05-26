@@ -17,7 +17,7 @@ namespace VeldridGen.Example.SpriteRenderer
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public partial struct GlobalInfo : IUniformFormat
+    public struct GlobalInfo : IUniformFormat
     {
         [Uniform("uWorldSpacePosition")] public Vector3 WorldSpacePosition;
         [Uniform("_globalInfo_pad1")] readonly uint _padding1;
@@ -31,16 +31,14 @@ namespace VeldridGen.Example.SpriteRenderer
         [Uniform("_global_pad2")] readonly uint _pad2;
     }
 
-    public partial struct ProjectionMatrix : IUniformFormat
+    public readonly struct ProjectionMatrix(Matrix4x4 matrix) : IUniformFormat
     {
-        public ProjectionMatrix(Matrix4x4 matrix) => Matrix = matrix;
-        [Uniform("uProjection")] public Matrix4x4 Matrix { get; }
+        [Uniform("uProjection")] public Matrix4x4 Matrix { get; } = matrix;
     }
 
-    public partial struct ViewMatrix : IUniformFormat
+    public readonly struct ViewMatrix(Matrix4x4 matrix) : IUniformFormat
     {
-        public ViewMatrix(Matrix4x4 matrix) => Matrix = matrix;
-        [Uniform("uView")] public Matrix4x4 Matrix { get; }
+        [Uniform("uView")] public Matrix4x4 Matrix { get; } = matrix;
     }
 }
 #pragma warning restore CA1051 // Do not declare visible instance fields
