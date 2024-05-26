@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Example.Engine.Events
-{
-    public class DestroyDeviceObjectsEvent : IEvent { }
-}
+﻿namespace VeldridGen.Example.Engine.Events;
+
+public class DestroyDeviceObjectsEvent : IEvent { }

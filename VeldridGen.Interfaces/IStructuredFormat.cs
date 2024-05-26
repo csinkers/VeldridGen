@@ -1,4 +1,3 @@
-﻿namespace VeldridGen.Interfaces
-{
-    public interface IStructuredFormat { }
-}
+﻿namespace VeldridGen.Interfaces;
+
+public interface IStructuredFormat { }

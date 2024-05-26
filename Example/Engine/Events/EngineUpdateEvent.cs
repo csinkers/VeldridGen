@@ -1,8 +1,7 @@
-﻿namespace VeldridGen.Example.Engine.Events
+﻿namespace VeldridGen.Example.Engine.Events;
+
+class EngineUpdateEvent : IVerboseEvent
 {
-    class EngineUpdateEvent : IVerboseEvent
-    {
-        public double DeltaSeconds { get; }
-        public EngineUpdateEvent(double deltaSeconds) => DeltaSeconds = deltaSeconds;
-    }
+    public float DeltaSeconds { get; }
+    public EngineUpdateEvent(float deltaSeconds) => DeltaSeconds = deltaSeconds;
 }

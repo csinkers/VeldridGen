@@ -1,11 +1,10 @@
 ﻿using System;
 using Veldrid;
 
-namespace VeldridGen.Interfaces
+namespace VeldridGen.Interfaces;
+
+public class ColorAttachmentAttribute : Attribute
 {
-    public class ColorAttachmentAttribute : Attribute
-    {
-        public PixelFormat Format { get; }
-        public ColorAttachmentAttribute(PixelFormat format) => Format = format;
-    }
+    public PixelFormat Format { get; }
+    public ColorAttachmentAttribute(PixelFormat format) => Format = format;
 }

@@ -82,7 +82,7 @@ namespace VeldridGenTests
 
                         case KnownResourceKind.Unknown:
                         default:
-                            context.Report($"Resource {member.Symbol.ToDisplayString()} in set {type.Symbol.ToDisplayString()} was of unexpected kind {member.Resource.Kind}");
+                            context.Error($"Resource {member.Symbol.ToDisplayString()} in set {type.Symbol.ToDisplayString()} was of unexpected kind {member.Resource.Kind}");
                             break;
                     }
 
@@ -96,7 +96,7 @@ namespace VeldridGenTests
                     sb.AppendLine(",");
                     if (member.Symbol is not IFieldSymbol field)
                     {
-                        context.Report($"Resource set backing members must be fields (member {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was a {member.Symbol.GetType().Name})");
+                        context.Error($"Resource set backing members must be fields (member {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was a {member.Symbol.GetType().Name})");
                         continue;
                     }
                     sb.Append("                ");
@@ -120,7 +120,7 @@ namespace VeldridGenTests
 
                         case KnownResourceKind.Unknown:
                         default:
-                            context.Report($"Resource {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was of unexpected kind \"{member.Resource.Kind}\"");
+                            context.Error($"Resource {member.Symbol.ToDisplayString()} in {type.Symbol.ToDisplayString()} was of unexpected kind \"{member.Resource.Kind}\"");
                             break;
                     }
                 }
@@ -205,7 +205,7 @@ namespace VeldridGenTests
             static IFieldSymbol AsField(ISymbol symbol, GenerationContext context)
             {
                 if (symbol is IFieldSymbol field) return field;
-                context.Report(
+                context.Error(
                     $"Resource set backing members must be fields (member {symbol.ToDisplayString()} in " +
                     $"{symbol.ContainingType.ToDisplayString()} was a {symbol.GetType().Name})");
                 return null;

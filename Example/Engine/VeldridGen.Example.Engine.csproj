@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -11,13 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid" Version="4.9.0-gf94814eecc" />
-    <PackageReference Include="Veldrid.ImageSharp" Version="4.9.0-gac88c7210e" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Veldrid" Version="4.9.0" />
+    <PackageReference Include="Veldrid.ImageSharp" Version="4.9.0" />
     <PackageReference Include="Veldrid.ImGui" Version="5.72.0-gac88c7210e" />
-    <PackageReference Include="Veldrid.RenderDoc" Version="1.0.1-gac88c7210e" />
-    <PackageReference Include="Veldrid.SDL2" Version="4.9.0-gac88c7210e" />
-    <PackageReference Include="Veldrid.StartupUtilities" Version="4.9.0-gac88c7210e" />
-    <PackageReference Include="Veldrid.Utilities" Version="4.9.0-gf94814eecc" />
+    <PackageReference Include="Veldrid.RenderDoc" Version="1.0.1" />
+    <PackageReference Include="Veldrid.SDL2" Version="4.9.0" />
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.9.0" />
+    <PackageReference Include="Veldrid.Utilities" Version="4.9.0" />
     <PackageReference Include="Veldrid.SPIRV" Version="1.0.14" />
   </ItemGroup>
 
@@ -26,14 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
   <ItemGroup Condition="!Exists('..\..\deps\Newtonsoft.Json\')">
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup Condition="Exists('..\..\deps\Newtonsoft.Json\')">
     <ProjectReference Include="..\..\deps\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj" />

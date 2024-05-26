@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace VeldridGen.Example.Engine.Visual
+namespace VeldridGen.Example.Engine.Visual;
+
+public interface IRenderableSource
 {
-    public interface IRenderableSource
-    {
-        void Collect(List<IRenderable> renderables);
-    }
+    void Collect(List<IRenderable> renderables);
 }

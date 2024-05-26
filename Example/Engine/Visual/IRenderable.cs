@@ -1,8 +1,7 @@
-﻿namespace VeldridGen.Example.Engine.Visual
+﻿namespace VeldridGen.Example.Engine.Visual;
+
+public interface IRenderable
 {
-    public interface IRenderable
-    {
-        string Name { get; }
-        uint RenderOrder { get; }
-    }
+    string Name { get; }
+    uint RenderOrder { get; }
 }

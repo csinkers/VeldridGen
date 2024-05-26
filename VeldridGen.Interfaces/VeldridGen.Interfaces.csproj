@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <Version>0.2.2</Version>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition="!Exists('..\..\veldrid\')">

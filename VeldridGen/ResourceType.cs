@@ -1,12 +1,11 @@
-﻿namespace VeldridGen
+﻿namespace VeldridGen;
+
+public enum ResourceType
 {
-    public enum ResourceType
-    {
-        Unknown,
-        UniformBuffer,
-        StructuredBuffer,
-        Texture2D,
-        Texture2DArray,
-        Sampler,
-    }
+    Unknown,
+    UniformBuffer,
+    StructuredBuffer,
+    Texture2D,
+    Texture2DArray,
+    Sampler,
 }

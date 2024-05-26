@@ -44,7 +44,7 @@ namespace VeldridGen.Example.TestApp
             var layoutSource = new ResourceLayoutSource();
             var samplerSource = new SpriteSamplerSource();
             var textureSource = new TextureSource();
-            var framebuffer = new MainFramebuffer();
+            var framebuffer = new MainFramebuffer("FB_Main");
             var spriteManager = new SpriteManager();
             var spriteFactory = new SpriteFactory();
             var palette = BuildPalette();

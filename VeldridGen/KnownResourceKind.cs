@@ -1,13 +1,12 @@
-﻿namespace VeldridGen
+﻿namespace VeldridGen;
+
+public enum KnownResourceKind
 {
-    public enum KnownResourceKind
-    {
-        Unknown,
-        UniformBuffer,
-        StructuredBufferReadOnly,
-        StructuredBufferReadWrite,
-        TextureReadOnly,
-        TextureReadWrite,
-        Sampler,
-    }
+    Unknown,
+    UniformBuffer,
+    StructuredBufferReadOnly,
+    StructuredBufferReadWrite,
+    TextureReadOnly,
+    TextureReadWrite,
+    Sampler,
 }

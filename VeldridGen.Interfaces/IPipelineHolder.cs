@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace VeldridGen.Interfaces
+namespace VeldridGen.Interfaces;
+
+public interface IPipelineHolder : IDisposable
 {
-    public interface IPipelineHolder : IDisposable
-    {
-        public Veldrid.Pipeline Pipeline { get; }
-        public string Name { get; set; }
-    }
+    public Veldrid.Pipeline Pipeline { get; }
+    public string Name { get; set; }
 }

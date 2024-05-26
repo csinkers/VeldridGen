@@ -63,13 +63,22 @@ namespace VeldridGen.Example.SpriteRenderer
             }
         }
 
-        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
-            device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
+        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout)
+        {
+#if DEBUG
+                if (_globalInfo.DeviceBuffer == null) throw new System.InvalidOperationException("Tried to construct CommonSet, but GlobalInfo has not been initialised. It may not have been attached to the exchange.");
+                if (_projection.DeviceBuffer == null) throw new System.InvalidOperationException("Tried to construct CommonSet, but Projection has not been initialised. It may not have been attached to the exchange.");
+                if (_view.DeviceBuffer == null) throw new System.InvalidOperationException("Tried to construct CommonSet, but View has not been initialised. It may not have been attached to the exchange.");
+                if (_palette.DeviceTexture == null) throw new System.InvalidOperationException("Tried to construct CommonSet, but Palette has not been initialised. It may not have been attached to the exchange.");
+#endif
+
+            return device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
                 layout,
                 _globalInfo.DeviceBuffer,
                 _projection.DeviceBuffer,
                 _view.DeviceBuffer,
                 _palette.DeviceTexture));
+        }
 
         protected override void Resubscribe()
         {

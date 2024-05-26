@@ -1,11 +1,10 @@
-﻿namespace VeldridGen.Example.Engine
+﻿namespace VeldridGen.Example.Engine;
+
+public enum LogLevel
 {
-    public enum LogLevel
-    {
-        Verbose,
-        Info,
-        Warning,
-        Error,
-        Critical
-    }
+    Verbose,
+    Info,
+    Warning,
+    Error,
+    Critical
 }

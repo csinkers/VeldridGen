@@ -1,7 +1,6 @@
-﻿namespace VeldridGen.Example.Engine.Visual.Sprites
+﻿namespace VeldridGen.Example.Engine.Visual.Sprites;
+
+public interface ISpriteFactory
 {
-    public interface ISpriteFactory
-    {
-        SpriteBatch CreateSpriteBatch(SpriteKey key);
-    }
+    SpriteBatch CreateSpriteBatch(SpriteKey key);
 }

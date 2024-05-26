@@ -1,10 +1,9 @@
-﻿namespace VeldridGen
+﻿namespace VeldridGen;
+
+public enum ShaderType
 {
-    public enum ShaderType
-    {
-        None,
-        Vertex,
-        Fragment,
-        Compute
-    }
+    None,
+    Vertex,
+    Fragment,
+    Compute
 }
