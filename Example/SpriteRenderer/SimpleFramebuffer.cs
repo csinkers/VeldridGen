@@ -10,4 +10,3 @@ namespace VeldridGen.Example.SpriteRenderer
         [ColorAttachment(PixelFormat.B8_G8_R8_A8_UNorm)] public Texture2DHolder Color { get; }
     }
 }
-

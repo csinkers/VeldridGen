@@ -11,7 +11,10 @@ public class FrameTimeAverager
     public double CurrentAverageFrameTimeMilliseconds => CurrentAverageFrameTimeSeconds * 1000.0;
     public double CurrentAverageFramesPerSecond => 1 / CurrentAverageFrameTimeSeconds;
 
-    public FrameTimeAverager(double averagingIntervalSeconds) { _averagingIntervalSeconds = averagingIntervalSeconds; }
+    public FrameTimeAverager(double averagingIntervalSeconds)
+    {
+        _averagingIntervalSeconds = averagingIntervalSeconds;
+    }
 
     public void Reset()
     {
