@@ -93,6 +93,9 @@ public static class VeldridGenUtil
 
     public static string GetGlslType(INamedTypeSymbol type, AllSymbols symbols)
     {
+        if (type == null)
+            throw new ArgumentNullException(nameof(type));
+
         if (type.TypeKind == TypeKind.Enum)
             type = type.EnumUnderlyingType;
 
