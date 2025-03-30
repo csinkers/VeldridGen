@@ -3,12 +3,11 @@ using Veldrid;
 
 namespace VeldridGen.Example.Engine;
 
-public abstract class TextureHolder
+public abstract class TextureHolder(string name)
 {
     Texture _deviceTexture;
 
-    public string Name { get; set; }
-    protected TextureHolder(string name) => Name = name;
+    public string Name { get; set; } = name;
     protected abstract void Validate(Texture texture);
 
     public Texture DeviceTexture

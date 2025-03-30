@@ -3,8 +3,7 @@ using Veldrid;
 
 namespace VeldridGen.Example.Engine.Events;
 
-public class DeviceCreatedEvent : IEvent
+public class DeviceCreatedEvent(GraphicsDevice device) : IEvent
 {
-    public DeviceCreatedEvent(GraphicsDevice device) => Device = device ?? throw new ArgumentNullException(nameof(device));
-    public GraphicsDevice Device { get; }
+    public GraphicsDevice Device { get; } = device ?? throw new ArgumentNullException(nameof(device));
 }

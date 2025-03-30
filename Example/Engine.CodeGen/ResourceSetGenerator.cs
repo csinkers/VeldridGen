@@ -12,10 +12,10 @@ static class ResourceSetGenerator
 
     public static void Generate(StringBuilder sb, VeldridTypeInfo type, GenerationContext context)
     {
-        /* e.g.
-        new ResourceLayoutElementDescription("uSprite", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
-        new ResourceLayoutElementDescription("uSpriteSampler", ResourceKind.Sampler, ShaderStages.Fragment),
-        new ResourceLayoutElementDescription("_Uniform", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment));
+        /* e.g.
+        new ResourceLayoutElementDescription("uSprite", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
+        new ResourceLayoutElementDescription("uSpriteSampler", ResourceKind.Sampler, ShaderStages.Fragment),
+        new ResourceLayoutElementDescription("_Uniform", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment));
         */
         sb.AppendLine("        public static readonly ResourceLayoutDescription Layout = new(");
         bool first = true;
@@ -62,12 +62,12 @@ static class ResourceSetGenerator
             }
         }
 
-        /* e.g. protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
-            device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
-                layout,
-                _globalInfo.DeviceBuffer,
-                _projection.DeviceBuffer,
-                _view.DeviceBuffer,
+        /* e.g. protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout) =>
+            device.ResourceFactory.CreateResourceSet(new ResourceSetDescription(
+                layout,
+                _globalInfo.DeviceBuffer,
+                _projection.DeviceBuffer,
+                _view.DeviceBuffer,
                 _palette.DeviceTexture)); */
 
         sb.AppendLine(@"        protected override ResourceSet Build(GraphicsDevice device, ResourceLayout layout)
@@ -182,18 +182,18 @@ static class ResourceSetGenerator
             return;
         }
 
-        /* e.g.
-    public SamplerHolder Sampler
-    {
-        get => _sampler;
-        set
-        {
+        /* e.g.
+    public SamplerHolder Sampler
+    {
+        get => _sampler;
+        set
+        {
             if (_sampler == value) return; 
             if (_sampler != null) _sampler.PropertyChanged -= PropertyDirty; 
             _sampler = value; 
-            if (_sampler != null) _sampler.PropertyChanged += PropertyDirty;
-            Dirty();
-        }
+            if (_sampler != null) _sampler.PropertyChanged += PropertyDirty;
+            Dirty();
+        }
     } */
         var propertyName = VeldridGenUtil.UnderscoreToTitleCase(field.Name);
         sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {propertyName}
@@ -226,18 +226,18 @@ static class ResourceSetGenerator
             return;
         }
 
-        /* e.g.
-    public Texture2DHolder Palette
-    {
-        get => _palette;
-        set
-        {
-            if (_palette == value) return;
-            if (_palette != null) _palette.PropertyChanged -= PropertyDirty;
-            _palette = value;
-            if (_palette != null) _palette.PropertyChanged += PropertyDirty;
-            Dirty();
-        }
+        /* e.g.
+    public Texture2DHolder Palette
+    {
+        get => _palette;
+        set
+        {
+            if (_palette == value) return;
+            if (_palette != null) _palette.PropertyChanged -= PropertyDirty;
+            _palette = value;
+            if (_palette != null) _palette.PropertyChanged += PropertyDirty;
+            Dirty();
+        }
     } */
         var propertyName = VeldridGenUtil.UnderscoreToTitleCase(field.Name);
         sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {propertyName}
@@ -269,17 +269,17 @@ static class ResourceSetGenerator
             return;
         }
 
-        /* e.g.
-        public SingleBuffer<GlobalInfo> GlobalInfo
-        {
-            get => _globalInfo;
-            set
-            {
-                if (_globalInfo == value)
-                    return;
-                _globalInfo = value;
-                Dirty();
-            }
+        /* e.g.
+        public SingleBuffer<GlobalInfo> GlobalInfo
+        {
+            get => _globalInfo;
+            set
+            {
+                if (_globalInfo == value)
+                    return;
+                _globalInfo = value;
+                Dirty();
+            }
         }*/
         var propertyName = VeldridGenUtil.UnderscoreToTitleCase(field.Name);
         sb.AppendLine($@"        public {field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {propertyName}

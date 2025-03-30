@@ -13,16 +13,15 @@ namespace VeldridGen.Tests
     {
         public static Compilation CreateCompilation(string source, OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary)
             => CSharpCompilation.Create("compilation",
-                new[] { CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview)) },
-                new[]
-                {
+                [CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview))],
+                [
                     MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location),
                     MetadataReference.CreateFromFile(AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "netstandard").Location),
                     MetadataReference.CreateFromFile(AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "System.Runtime").Location),
                     MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location),
                     MetadataReference.CreateFromFile(typeof(IUniformFormat).GetTypeInfo().Assembly.Location),
                     MetadataReference.CreateFromFile(typeof(Veldrid.GraphicsDevice).GetTypeInfo().Assembly.Location)
-                },
+                ],
                 new CSharpCompilationOptions(outputKind));
 
         static GeneratorDriver CreateDriver(Compilation c, params ISourceGenerator[] generators)

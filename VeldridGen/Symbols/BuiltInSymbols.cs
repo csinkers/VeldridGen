@@ -2,35 +2,19 @@
 
 namespace VeldridGen.Symbols;
 
-public class BuiltInSymbols
+public class BuiltInSymbols(Compilation compilation)
 {
     // Built-in types
-    public INamedTypeSymbol Byte { get; }
-    public INamedTypeSymbol Short { get; }
-    public INamedTypeSymbol UShort { get; }
-    public INamedTypeSymbol Int { get; }
-    public INamedTypeSymbol UInt { get; }
-    public INamedTypeSymbol Float { get; }
-    public INamedTypeSymbol Double { get; }
-    public INamedTypeSymbol Vector2 { get; }
-    public INamedTypeSymbol Vector3 { get; }
-    public INamedTypeSymbol Vector4 { get; }
-    public INamedTypeSymbol Matrix4x4 { get; }
-    public INamedTypeSymbol NotifyPropertyChanged { get; }
-
-    public BuiltInSymbols(Compilation compilation)
-    {
-        Byte = VeldridGenUtil.Resolve(compilation, typeof(byte).FullName!);
-        Short = VeldridGenUtil.Resolve(compilation, typeof(short).FullName!);
-        UShort = VeldridGenUtil.Resolve(compilation, typeof(ushort).FullName!);
-        Int = VeldridGenUtil.Resolve(compilation, typeof(int).FullName!);
-        UInt = VeldridGenUtil.Resolve(compilation, typeof(uint).FullName!);
-        Float = VeldridGenUtil.Resolve(compilation, typeof(float).FullName!);
-        Double = VeldridGenUtil.Resolve(compilation, typeof(double).FullName!);
-        Vector2 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
-        Vector3 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
-        Vector4 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
-        Matrix4x4 = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
-        NotifyPropertyChanged = VeldridGenUtil.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
-    }
+    public INamedTypeSymbol Byte { get; } = VeldridGenUtil.Resolve(compilation, typeof(byte).FullName!);
+    public INamedTypeSymbol Short { get; } = VeldridGenUtil.Resolve(compilation, typeof(short).FullName!);
+    public INamedTypeSymbol UShort { get; } = VeldridGenUtil.Resolve(compilation, typeof(ushort).FullName!);
+    public INamedTypeSymbol Int { get; } = VeldridGenUtil.Resolve(compilation, typeof(int).FullName!);
+    public INamedTypeSymbol UInt { get; } = VeldridGenUtil.Resolve(compilation, typeof(uint).FullName!);
+    public INamedTypeSymbol Float { get; } = VeldridGenUtil.Resolve(compilation, typeof(float).FullName!);
+    public INamedTypeSymbol Double { get; } = VeldridGenUtil.Resolve(compilation, typeof(double).FullName!);
+    public INamedTypeSymbol Vector2 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
+    public INamedTypeSymbol Vector3 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
+    public INamedTypeSymbol Vector4 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
+    public INamedTypeSymbol Matrix4x4 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
+    public INamedTypeSymbol NotifyPropertyChanged { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
 }

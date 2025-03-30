@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen.Example.Engine.CodeGen;
 
-static class ShaderStructGenerator
+internal static class ShaderStructGenerator
 {
     public static void EmitStructs(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
     {

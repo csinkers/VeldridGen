@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Veldrid;
 using VeldridGen.Example.Engine.Events;
 using VeldridGen.Interfaces;
@@ -8,7 +9,7 @@ namespace VeldridGen.Example.Engine;
 
 public class PipelineHolder : Component, IPipelineHolder
 {
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly string _vertexShaderName;
     readonly string _fragmentShaderName;
     readonly VertexLayoutDescription[] _vertexLayouts;
@@ -93,7 +94,7 @@ public class PipelineHolder : Component, IPipelineHolder
             var shaderSetDescription = new ShaderSetDescription(
                 _vertexLayouts,
                 _shaders,
-                Array.Empty<SpecializationConstant>()); // TODO: Add specialisation constant support
+                []); // TODO: Add specialisation constant support
 
             var pipelineDescription = new GraphicsPipelineDescription(
                 AlphaBlend,

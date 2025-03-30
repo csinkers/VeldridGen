@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Veldrid;
 using VeldridGen.Example.Engine.Events;
 using VeldridGen.Interfaces;
@@ -8,7 +9,7 @@ namespace VeldridGen.Example.Engine;
 
 public sealed class MultiBuffer<T> : Component, IBufferHolder<T> where T : unmanaged // GPU buffer containing an array of Ts
 {
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly BufferUsage _usage;
     string _name;
     T[] _buffer;

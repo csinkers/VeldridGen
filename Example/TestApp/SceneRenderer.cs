@@ -14,9 +14,9 @@ namespace VeldridGen.Example.TestApp
     public sealed class SceneRenderer : ServiceComponent<ISceneRenderer>, ISceneRenderer, IDisposable
     {
         readonly Dictionary<Type, IRenderer> _rendererLookup = new();
-        readonly List<IRenderer> _renderers = new();
-        readonly List<IRenderable> _renderList = new();
-        readonly List<IRenderableSource> _sources = new();
+        readonly List<IRenderer> _renderers = [];
+        readonly List<IRenderable> _renderList = [];
+        readonly List<IRenderableSource> _sources = [];
         readonly SingleBuffer<GlobalInfo> _globalInfo;
         readonly SingleBuffer<ProjectionMatrix> _projection;
         readonly SingleBuffer<ViewMatrix> _view;
@@ -40,6 +40,7 @@ namespace VeldridGen.Example.TestApp
                 Projection = _projection,
                 View = _view,
             };
+
             AttachChild(_projection);
             AttachChild(_view);
             AttachChild(_globalInfo);
@@ -48,7 +49,7 @@ namespace VeldridGen.Example.TestApp
 
         public SceneRenderer AddRenderer(IRenderer renderer, params Type[] types)
         {
-            if (renderer == null) throw new ArgumentNullException(nameof(renderer));
+            ArgumentNullException.ThrowIfNull(renderer);
             if (!_renderers.Contains(renderer))
             {
                 _renderers.Add(renderer);
@@ -71,7 +72,7 @@ namespace VeldridGen.Example.TestApp
 
         public SceneRenderer AddSource(IRenderableSource source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
             _sources.Add(source);
             return this;
         }
@@ -81,8 +82,8 @@ namespace VeldridGen.Example.TestApp
         public override string ToString() => $"Scene:{Name}";
         public void Render(GraphicsDevice device, CommandList cl)
         {
-            if (device == null) throw new ArgumentNullException(nameof(device));
-            if (cl == null) throw new ArgumentNullException(nameof(cl));
+            ArgumentNullException.ThrowIfNull(device);
+            ArgumentNullException.ThrowIfNull(cl);
 
             // Sort:
             // Opaque, front-to-back (map, then sprites)
@@ -99,14 +100,14 @@ namespace VeldridGen.Example.TestApp
                 cl.ClearDepthStencil(device.IsDepthRangeZeroToOne ? 1f : 0f);
 
                 _renderList.Clear();
-                foreach(var source in _sources)
+                foreach (var source in _sources)
                     source.Collect(_renderList);
 
                 _renderList.Sort((x, y) => x.RenderOrder.CompareTo(y.RenderOrder));
 
                 foreach (var renderable in _renderList)
                 {
-                    if(_rendererLookup.TryGetValue(renderable.GetType(), out var renderer))
+                    if (_rendererLookup.TryGetValue(renderable.GetType(), out var renderer))
                         renderer.Render(renderable, _commonSet, Framebuffer, cl, device);
                 }
             }
@@ -131,7 +132,7 @@ namespace VeldridGen.Example.TestApp
             {
                 WorldSpacePosition = camera.Position,
                 CameraDirection = new Vector2(camera.Pitch, camera.Yaw),
-                Resolution =  new Vector2(Framebuffer.Width, Framebuffer.Height),
+                Resolution = new Vector2(Framebuffer.Width, Framebuffer.Height),
                 Time = (float)(DateTime.Now - DateTime.UnixEpoch).TotalSeconds,
                 EngineFlags = settings?.Flags ?? 0,
             };
@@ -147,8 +148,10 @@ namespace VeldridGen.Example.TestApp
             _globalInfo.Dispose();
             _projection.Dispose();
             _view.Dispose();
+
             foreach (var renderer in _renderers.OfType<IDisposable>())
                 renderer.Dispose();
+
             _renderers.Clear();
             _rendererLookup.Clear();
         }

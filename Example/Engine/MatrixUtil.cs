@@ -6,13 +6,12 @@ namespace VeldridGen.Example.Engine;
 public static class MatrixUtil
 {
     public static Vector4[] Print(this Matrix4x4 m) =>
-        new[]
-            {
-                new Vector4(m.M11, m.M12, m.M13, m.M14),
-                new Vector4(m.M21, m.M22, m.M23, m.M24),
-                new Vector4(m.M31, m.M32, m.M33, m.M34),
-                new Vector4(m.M41, m.M42, m.M43, m.M44),
-            };
+    [
+        new(m.M11, m.M12, m.M13, m.M14),
+        new(m.M21, m.M22, m.M23, m.M24),
+        new(m.M31, m.M32, m.M33, m.M34),
+        new(m.M41, m.M42, m.M43, m.M44)
+    ];
 
     public static Matrix4x4 CreatePerspective(
         bool isClipSpaceYInverted,
@@ -60,7 +59,7 @@ public static class MatrixUtil
 
     static Matrix4x4 CreatePerspective(bool depthZeroToOne, float fov, float aspectRatio, float near, float far)
     {
-        if (fov <= 0.0f || fov >= MathF.PI) throw new ArgumentOutOfRangeException(nameof(fov));
+        if (fov is <= 0.0f or >= MathF.PI) throw new ArgumentOutOfRangeException(nameof(fov));
         if (near <= 0.0f) throw new ArgumentOutOfRangeException(nameof(near));
         if (far <= 0.0f) throw new ArgumentOutOfRangeException(nameof(far));
 

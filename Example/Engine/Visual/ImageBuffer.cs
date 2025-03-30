@@ -3,27 +3,16 @@
 namespace VeldridGen.Example.Engine.Visual;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "Won't be compared")]
-public readonly ref struct ImageBuffer<T> where T : unmanaged
+public readonly ref struct ImageBuffer<T>(int width, int height, int stride, Span<T> buffer)
+    where T : unmanaged
 {
-    public ImageBuffer(int width, int height, int stride, Span<T> buffer)
+    public ImageBuffer(ImageBuffer<T> existing, Span<T> buffer) : this(existing.Width, existing.Height, existing.Stride, buffer)
     {
-        Width = width;
-        Height = height;
-        Stride = stride;
-        Buffer = buffer;
     }
 
-    public ImageBuffer(ImageBuffer<T> existing, Span<T> buffer)
-    {
-        Width = existing.Width;
-        Height = existing.Height;
-        Stride = existing.Stride;
-        Buffer = buffer;
-    }
-
-    public int Width { get; }
-    public int Height { get; }
-    public int Stride { get; }
-    public Span<T> Buffer { get; }
+    public int Width { get; } = width;
+    public int Height { get; } = height;
+    public int Stride { get; } = stride;
+    public Span<T> Buffer { get; } = buffer;
     public Span<T> GetRow(int row) => Buffer.Slice(Stride * row, Width);
 }

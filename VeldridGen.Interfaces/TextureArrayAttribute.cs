@@ -11,12 +11,14 @@ public sealed class TextureArrayAttribute : Attribute
         IsReadOnly = true;
         Stages = ShaderStages.Vertex | ShaderStages.Fragment;
     }
+
     public TextureArrayAttribute(string name, ShaderStages stages = ShaderStages.Vertex | ShaderStages.Fragment)
     {
         Name = name;
         IsReadOnly = true;
         Stages = stages;
     }
+
     public TextureArrayAttribute(string name, bool isReadOnly = true, ShaderStages stages = ShaderStages.Vertex | ShaderStages.Fragment)
     {
         Name = name;

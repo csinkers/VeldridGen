@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen.Example.Engine.CodeGen;
 
-static class ShaderEnumGenerator
+internal static class ShaderEnumGenerator
 {
     public static void EmitEnums(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
     {

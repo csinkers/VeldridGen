@@ -159,7 +159,7 @@ public abstract class Component : IComponent
     /// <param name="exchange">The event exchange that this component should be attached to</param>
     public void Attach(EventExchange exchange)
     {
-        if (exchange == null) throw new ArgumentNullException(nameof(exchange));
+        ArgumentNullException.ThrowIfNull(exchange);
         if (IsSubscribed)
             return;
 
@@ -265,7 +265,7 @@ public abstract class Component : IComponent
     /// <param name="child">The child component to remove</param>
     protected void RemoveChild(IComponent child)
     {
-        if (child == null) throw new ArgumentNullException(nameof(child));
+        ArgumentNullException.ThrowIfNull(child);
         if (_children == null) return;
         int index = _children.IndexOf(child);
         if (index == -1) return;
@@ -287,7 +287,7 @@ public abstract class Component : IComponent
     /// <param name="sender">The component which generated the event</param>
     public void Receive(IEvent @event, object sender)
     {
-        if (@event == null) throw new ArgumentNullException(nameof(@event));
+        ArgumentNullException.ThrowIfNull(@event);
         if (sender == this || !IsSubscribed || Exchange == null)
             return;
 

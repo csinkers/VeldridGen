@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using VeldridGen.Example.Engine.Events;
 #if DEBUG
-
+using VeldridGen.Example.Engine.Events;
 #endif
 
 #pragma warning disable CA1030 // Use events where appropriate
@@ -18,7 +17,7 @@ namespace VeldridGen.Example.Engine;
 /// </summary>
 public sealed class EventExchange : IDisposable
 {
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly Stack<List<Handler>> _dispatchLists = new();
     readonly Queue<(IEvent, object)> _queuedEvents = new();
     readonly IDictionary<Type, object> _registrations = new Dictionary<Type, object>();
@@ -56,7 +55,7 @@ public sealed class EventExchange : IDisposable
 
     public EventExchange Attach(IComponent component)
     {
-        if (component == null) throw new ArgumentNullException(nameof(component));
+        ArgumentNullException.ThrowIfNull(component);
         Stopwatch sw = Stopwatch.StartNew();
         component.Attach(this);
         PerfTracker.StartupEvent($"Attached {component.GetType().Name} in {sw.ElapsedMilliseconds}ms");
@@ -92,7 +91,7 @@ public sealed class EventExchange : IDisposable
 
     public void Raise(IEvent e, object sender)
     {
-        if (e == null) throw new ArgumentNullException(nameof(e));
+        ArgumentNullException.ThrowIfNull(e);
         bool verbose = e is IVerboseEvent;
         if (!verbose)
         { // Nesting level helps identify which events were caused by other events when reading the console window
@@ -161,7 +160,7 @@ public sealed class EventExchange : IDisposable
 
     public void Subscribe(Handler handler)
     {
-        if (handler == null) throw new ArgumentNullException(nameof(handler));
+        ArgumentNullException.ThrowIfNull(handler);
         lock (_syncRoot)
         {
             if (_subscribers.TryGetValue(handler.Component, out var subscribedTypes))
@@ -227,10 +226,11 @@ public sealed class EventExchange : IDisposable
     {
         lock (_syncRoot)
         {
-            if (_registrations.ContainsKey(type))
+            if (_registrations.TryGetValue(type, out object registration))
             {
-                if (_registrations[type] != system)
+                if (registration != system)
                     throw new InvalidOperationException(Errors.ExchangeDoubleRegistration);
+
                 attach = false;
             }
             else
@@ -248,7 +248,7 @@ public sealed class EventExchange : IDisposable
 
     public void Unregister(object system)
     {
-        if (system == null) throw new ArgumentNullException(nameof(system));
+        ArgumentNullException.ThrowIfNull(system);
         Unregister(system.GetType(), system);
         foreach (var i in system.GetType().GetInterfaces())
             Unregister(i, system);
@@ -271,7 +271,7 @@ public sealed class EventExchange : IDisposable
 
     public IEnumerable<IComponent> EnumerateRecipients(Type eventType)
     {
-        if (eventType == null) throw new ArgumentNullException(nameof(eventType));
+        ArgumentNullException.ThrowIfNull(eventType);
         lock (_syncRoot)
         {
             var subscribers = new List<Handler>();

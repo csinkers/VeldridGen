@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using Veldrid;
 using VeldridGen.Example.Engine.Events;
 using VeldridGen.Interfaces;
 
 namespace VeldridGen.Example.Engine;
 
-public class RefreshFramebuffersEvent : IEvent { }
+public class RefreshFramebuffersEvent : IEvent;
 public abstract class FramebufferHolder : Component, IFramebufferHolder
 {
-    class TextureHolder : ITextureHolder
+    class TextureHolder(Func<Texture> getter) : ITextureHolder
     {
-        readonly Func<Texture> _getter;
-        public TextureHolder(Func<Texture> getter) => _getter = getter ?? throw new ArgumentNullException(nameof(getter));
+        readonly Func<Texture> _getter = getter ?? throw new ArgumentNullException(nameof(getter));
         public event PropertyChangedEventHandler PropertyChanged { add { } remove { } }
         public Texture DeviceTexture => _getter();
         public string Name => _getter()?.Name;
     }
 
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly List<TextureHolder> _colorHolders = new();
     Framebuffer _framebuffer;
     TextureHolder _depthHolder;
@@ -133,6 +133,7 @@ public abstract class FramebufferHolder : Component, IFramebufferHolder
         {
             _width = Framebuffer.Width;
             _height = Framebuffer.Height;
+            Framebuffer.Name = Name;
         }
 
         Off<PrepareFrameResourcesEvent>();

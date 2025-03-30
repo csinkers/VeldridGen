@@ -2,7 +2,7 @@
 
 namespace VeldridGen;
 #pragma warning disable RS1017 // DiagnosticId for analyzers must be a non-null constant
-static class Diag
+internal static class Diag
 {
     const string Prefix = "VGen"; // Error code prefix
     static string Id(int id) => $"{Prefix}{id:D3}";

@@ -13,6 +13,7 @@ public class VertexInfo
         Format = attrib.ConstructorArguments.Length > 1 && attrib.ConstructorArguments[1].Value != null
             ? attrib.ConstructorArguments[1].ToCSharpString()
             : VeldridGenUtil.VertexElementFormatForType(symbol, context.Symbols).ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+
         Flat =
             (bool?)attrib.NamedArguments
             .Where(x => x.Key == "Flat")

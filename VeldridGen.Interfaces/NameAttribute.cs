@@ -2,8 +2,7 @@
 
 namespace VeldridGen.Interfaces;
 
-public class NameAttribute : Attribute
+public class NameAttribute(string name) : Attribute
 {
-    public NameAttribute(string name) => Name = name;
-    public string Name { get; }
+    public string Name { get; } = name;
 }

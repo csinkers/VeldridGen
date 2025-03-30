@@ -27,8 +27,8 @@ public static class VeldridTexture
 
     public static unsafe Texture Create<T>(GraphicsDevice gd, TextureUsage usage, IReadOnlyTexture<T> texture) where T : unmanaged
     {
-        if (gd == null) throw new ArgumentNullException(nameof(gd));
-        if (texture == null) throw new ArgumentNullException(nameof(texture));
+        ArgumentNullException.ThrowIfNull(gd);
+        ArgumentNullException.ThrowIfNull(texture);
 
         var pixelFormat = GetFormat(typeof(T));
         bool mip = (usage & TextureUsage.GenerateMipmaps) != 0;

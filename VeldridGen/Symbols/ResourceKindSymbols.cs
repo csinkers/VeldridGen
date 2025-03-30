@@ -10,12 +10,15 @@ public class ResourceKindSymbols
         Type = VeldridGenUtil.Resolve(compilation, "Veldrid.ResourceKind");
         foreach (var member in Type.GetMembers())
         {
-            if (member.Name == "UniformBuffer") UniformBuffer = member;
-            else if (member.Name == "StructuredBufferReadOnly") StructuredBufferReadOnly = member;
-            else if (member.Name == "StructuredBufferReadWrite") StructuredBufferReadWrite = member;
-            else if (member.Name == "TextureReadOnly") TextureReadOnly = member;
-            else if (member.Name == "TextureReadWrite") TextureReadWrite = member;
-            else if (member.Name == "Sampler") Sampler = member;
+            switch (member.Name)
+            {
+                case "UniformBuffer": UniformBuffer = member; break;
+                case "StructuredBufferReadOnly": StructuredBufferReadOnly = member; break;
+                case "StructuredBufferReadWrite": StructuredBufferReadWrite = member; break;
+                case "TextureReadOnly": TextureReadOnly = member; break;
+                case "TextureReadWrite": TextureReadWrite = member; break;
+                case "Sampler": Sampler = member; break;
+            }
         }
 
         if (UniformBuffer == null) throw new TypeResolutionException("Veldrid.ResourceKind.UniformBuffer");

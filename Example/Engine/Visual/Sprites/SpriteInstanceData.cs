@@ -23,7 +23,7 @@ public partial struct SpriteInstanceData
 
     public SpriteInstanceData(Vector3 position, Vector2 size, Region region, SpriteFlags flags)
     {
-        if (region == null) throw new ArgumentNullException(nameof(region));
+        ArgumentNullException.ThrowIfNull(region);
         Position = new Vector4(position, 1);
         Size = size;
         TexPosition = region.TexOffset;

@@ -12,22 +12,19 @@ public static class PerfTracker
     // TODO: Enqueue console writes in debug mode to a queue with an output
     // task / thread, so ensure that writing to the console doesn't affect
     // the perf stats
-    class FrameTimeTracker : IDisposable
+    class FrameTimeTracker(string name) : IDisposable
     {
         readonly Stopwatch _stopwatch = Stopwatch.StartNew();
-        readonly string _name;
-
-        public FrameTimeTracker(string name) { _name = name; }
 
         public void Dispose()
         {
             lock (SyncRoot)
             {
                 long ticks = _stopwatch.ElapsedTicks;
-                if (!FrameTimes.ContainsKey(_name))
-                    FrameTimes[_name] = new Stats { Fast = ticks };
+                if (!FrameTimes.ContainsKey(name))
+                    FrameTimes[name] = new Stats { Fast = ticks };
 
-                var stats = FrameTimes[_name];
+                var stats = FrameTimes[name];
                 stats.AddTicks(ticks);
             }
         }
@@ -85,7 +82,7 @@ public static class PerfTracker
     static readonly Stopwatch StartupStopwatch = Stopwatch.StartNew();
     static readonly IDictionary<string, Stats> FrameTimes = new Dictionary<string, Stats>();
     static readonly IDictionary<string, int> FrameCounters = new Dictionary<string, int>();
-    static readonly object SyncRoot = new object();
+    static readonly Lock SyncRoot = new();
     static int _frameCount;
 
     public static void BeginFrame()

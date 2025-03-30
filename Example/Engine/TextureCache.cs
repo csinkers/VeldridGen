@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Veldrid;
 using VeldridGen.Example.Engine.Events;
 using VeldridGen.Example.Engine.Visual;
@@ -12,7 +13,7 @@ namespace VeldridGen.Example.Engine;
 class TextureCache<T> : Component, IDisposable where T : TextureHolder
 {
     record struct CacheEntry(WeakReference<T> Holder, Texture Texture, int Version);
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly Dictionary<ITexture, CacheEntry> _cache = new();
     readonly Func<ITexture, T> _holderFactory;
     readonly Func<GraphicsDevice, ITexture, Texture> _textureFactory;
@@ -24,7 +25,7 @@ class TextureCache<T> : Component, IDisposable where T : TextureHolder
 
     public TextureCache(Func<ITexture, T> factory, Func<GraphicsDevice, ITexture, Texture> textureFactory, ITexture defaultTexture)
     {
-        if (defaultTexture == null) throw new ArgumentNullException(nameof(defaultTexture));
+        ArgumentNullException.ThrowIfNull(defaultTexture);
         _holderFactory = factory ?? throw new ArgumentNullException(nameof(factory));
         _textureFactory = textureFactory ?? throw new ArgumentNullException(nameof(textureFactory));
 

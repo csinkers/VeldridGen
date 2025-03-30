@@ -1,20 +1,14 @@
 ﻿namespace VeldridGen.Example.Engine;
 
-public class FrameTimeAverager
+public class FrameTimeAverager(double averagingIntervalSeconds)
 {
     const double DecayRate = .3;
-    readonly double _averagingIntervalSeconds;
     double _accumulatedTime;
     int _frameCount;
 
     public double CurrentAverageFrameTimeSeconds { get; private set; }
     public double CurrentAverageFrameTimeMilliseconds => CurrentAverageFrameTimeSeconds * 1000.0;
     public double CurrentAverageFramesPerSecond => 1 / CurrentAverageFrameTimeSeconds;
-
-    public FrameTimeAverager(double averagingIntervalSeconds)
-    {
-        _averagingIntervalSeconds = averagingIntervalSeconds;
-    }
 
     public void Reset()
     {
@@ -26,7 +20,7 @@ public class FrameTimeAverager
     {
         _accumulatedTime += seconds;
         _frameCount++;
-        if (_accumulatedTime >= _averagingIntervalSeconds)
+        if (_accumulatedTime >= averagingIntervalSeconds)
             Average();
     }
 

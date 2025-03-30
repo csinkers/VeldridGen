@@ -2,35 +2,19 @@
 
 namespace VeldridGen.Symbols;
 
-public class InterfaceSymbols
+public class InterfaceSymbols(Compilation compilation)
 {
     // Interfaces
-    public INamedTypeSymbol BufferHolder { get; }
-    public INamedTypeSymbol FragmentShader { get; }
-    public INamedTypeSymbol FramebufferHolder { get; }
-    public INamedTypeSymbol PipelineHolder { get; }
-    public INamedTypeSymbol ResourceSetHolder { get; }
-    public INamedTypeSymbol SamplerHolder { get; }
-    public INamedTypeSymbol StructuredFormat { get; }
-    public INamedTypeSymbol TextureHolder { get; }
-    public INamedTypeSymbol TextureArrayHolder { get; }
-    public INamedTypeSymbol UniformFormat { get; }
-    public INamedTypeSymbol VertexFormat { get; }
-    public INamedTypeSymbol VertexShader { get; }
-
-    public InterfaceSymbols(Compilation compilation)
-    {
-        BufferHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IBufferHolder`1");
-        FragmentShader = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IFragmentShader");
-        FramebufferHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IFramebufferHolder");
-        PipelineHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IPipelineHolder");
-        ResourceSetHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IResourceSetHolder");
-        SamplerHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ISamplerHolder");
-        StructuredFormat = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IStructuredFormat");
-        TextureHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ITextureHolder");
-        TextureArrayHolder = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ITextureArrayHolder");
-        UniformFormat = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IUniformFormat");
-        VertexFormat = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IVertexFormat");
-        VertexShader = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IVertexShader");
-    }
+    public INamedTypeSymbol BufferHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IBufferHolder`1");
+    public INamedTypeSymbol FragmentShader { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IFragmentShader");
+    public INamedTypeSymbol FramebufferHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IFramebufferHolder");
+    public INamedTypeSymbol PipelineHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IPipelineHolder");
+    public INamedTypeSymbol ResourceSetHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IResourceSetHolder");
+    public INamedTypeSymbol SamplerHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ISamplerHolder");
+    public INamedTypeSymbol StructuredFormat { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IStructuredFormat");
+    public INamedTypeSymbol TextureHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ITextureHolder");
+    public INamedTypeSymbol TextureArrayHolder { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ITextureArrayHolder");
+    public INamedTypeSymbol UniformFormat { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IUniformFormat");
+    public INamedTypeSymbol VertexFormat { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IVertexFormat");
+    public INamedTypeSymbol VertexShader { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.IVertexShader");
 }

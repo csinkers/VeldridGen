@@ -11,8 +11,8 @@ public class ShaderStageSymbols
         {
             switch (member.Name)
             {
-                case "Compute": Compute = member; break;
-                case "Vertex": Vertex = member; break;
+                case "Compute":  Compute  = member; break;
+                case "Vertex":   Vertex   = member; break;
                 case "Fragment": Fragment = member; break;
             }
         }

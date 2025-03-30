@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using Veldrid;
 using VeldridGen.Example.Engine.Events;
 
@@ -8,7 +9,7 @@ namespace VeldridGen.Example.Engine;
 
 public class ResourceLayoutSource : ServiceComponent<IResourceLayoutSource>, IResourceLayoutSource
 {
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly Dictionary<Type, ResourceLayout> _layouts = new();
 
     public ResourceLayoutSource()
@@ -20,8 +21,8 @@ public class ResourceLayoutSource : ServiceComponent<IResourceLayoutSource>, IRe
 
     public ResourceLayout GetLayout(Type type, GraphicsDevice device)
     {
-        if (type == null) throw new ArgumentNullException(nameof(type));
-        if (device == null) throw new ArgumentNullException(nameof(device));
+        ArgumentNullException.ThrowIfNull(type);
+        ArgumentNullException.ThrowIfNull(device);
 
         lock (_syncRoot)
         {

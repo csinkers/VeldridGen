@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using VeldridGen.Example.Engine.Events;
 
 namespace VeldridGen.Example.Engine.Visual.Sprites;
@@ -7,7 +8,7 @@ namespace VeldridGen.Example.Engine.Visual.Sprites;
 public class SpriteManager : ServiceComponent<ISpriteManager>, ISpriteManager
 {
     const double CacheCheckIntervalSeconds = 12.0;
-    readonly object _syncRoot = new();
+    readonly Lock _syncRoot = new();
     readonly Dictionary<SpriteKey, SpriteBatch> _sprites = new();
     readonly List<SpriteBatch> _batches = new();
     float _lastCleanup;
@@ -59,7 +60,7 @@ public class SpriteManager : ServiceComponent<ISpriteManager>, ISpriteManager
 
     public void Collect(List<IRenderable> renderables)
     {
-        if (renderables == null) throw new ArgumentNullException(nameof(renderables));
+        ArgumentNullException.ThrowIfNull(renderables);
         lock (_syncRoot)
         {
             foreach (var kvp in _batches)

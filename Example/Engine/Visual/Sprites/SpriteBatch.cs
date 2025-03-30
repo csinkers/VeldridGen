@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace VeldridGen.Example.Engine.Visual.Sprites;
 
-public abstract class SpriteBatch : Component, IRenderable, IDisposable
+public abstract class SpriteBatch(SpriteKey key) : Component, IRenderable, IDisposable
 {
     protected const int MinSize = 4;
     protected const double GrowthFactor = 1.5;
@@ -14,16 +14,11 @@ public abstract class SpriteBatch : Component, IRenderable, IDisposable
     readonly object _syncRoot = new();
     readonly List<SpriteLease> _leases = new();
 
-    protected SpriteBatch(SpriteKey key)
-    {
-        Key = key;
-    }
-
     protected abstract ReadOnlySpan<SpriteInstanceData> ReadOnlySprites { get; }
     protected abstract Span<SpriteInstanceData> MutableSprites { get; }
     protected abstract void Resize(int instanceCount);
 
-    public SpriteKey Key { get; }
+    public SpriteKey Key { get; } = key;
     public string Name => $"Sprite:{Key.Texture.Name}";
     public uint RenderOrder => Key.RenderOrder;
     public override string ToString() => $"Multi:{Name} Flags:{Key.Flags} ({ActiveInstances}/{ReadOnlySprites.Length} instances)";

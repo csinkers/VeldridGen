@@ -2,6 +2,4 @@
 
 namespace VeldridGen.Example.Engine;
 
-public record TextureDirtyEvent(ITexture Texture) : IVerboseEvent
-{
-}
+public record TextureDirtyEvent(ITexture Texture) : IVerboseEvent;

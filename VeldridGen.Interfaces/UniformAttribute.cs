@@ -2,9 +2,8 @@
 
 namespace VeldridGen.Interfaces;
 
-public sealed class UniformAttribute : Attribute
+public sealed class UniformAttribute(string name) : Attribute
 {
-    public UniformAttribute(string name) => Name = name;
-    public string Name { get; }
+    public string Name { get; } = name;
     public string EnumPrefix { get; set; }
 }

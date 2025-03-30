@@ -2,45 +2,23 @@
 
 namespace VeldridGen.Symbols;
 
-public class AttributeSymbols
+public class AttributeSymbols(Compilation compilation)
 {
     // Attributes
-    public INamedTypeSymbol ColorAttachment { get; }
-    public INamedTypeSymbol DepthAttachment { get; }
-    public INamedTypeSymbol FragmentShader { get; }
-    public INamedTypeSymbol Input { get; }
-    public INamedTypeSymbol Name { get; }
-    public INamedTypeSymbol Output { get; }
-    public INamedTypeSymbol Texture { get; }
-    public INamedTypeSymbol TextureArray { get; }
-    public INamedTypeSymbol Sampler { get; }
-    public INamedTypeSymbol UniformBuffer { get; }
-    public INamedTypeSymbol StructuredBuffer { get; }
-    public INamedTypeSymbol ResourceSet { get; }
-    public INamedTypeSymbol Uniform { get; }
-    public INamedTypeSymbol Structured { get; }
-    public INamedTypeSymbol Vertex { get; }
-    public INamedTypeSymbol VertexShader { get; }
-
-
-    public AttributeSymbols(Compilation compilation)
-    {
-        ColorAttachment = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ColorAttachmentAttribute");
-        DepthAttachment = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.DepthAttachmentAttribute");
-        Vertex = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.VertexAttribute");
-        Texture = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.TextureAttribute");
-        TextureArray = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.TextureArrayAttribute");
-        Sampler = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.SamplerAttribute");
-        UniformBuffer = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.UniformBufferAttribute");
-        StructuredBuffer = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.StructuredBufferAttribute");
-
-        FragmentShader = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.FragmentShaderAttribute");
-        Input = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.InputAttribute");
-        Name = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.NameAttribute");
-        Output = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.OutputAttribute");
-        ResourceSet = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ResourceSetAttribute");
-        Uniform = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.UniformAttribute");
-        Structured = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.StructuredAttribute");
-        VertexShader = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.VertexShaderAttribute");
-    }
+    public INamedTypeSymbol ColorAttachment { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ColorAttachmentAttribute");
+    public INamedTypeSymbol DepthAttachment { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.DepthAttachmentAttribute");
+    public INamedTypeSymbol FragmentShader { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.FragmentShaderAttribute");
+    public INamedTypeSymbol Input { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.InputAttribute");
+    public INamedTypeSymbol Name { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.NameAttribute");
+    public INamedTypeSymbol Output { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.OutputAttribute");
+    public INamedTypeSymbol Texture { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.TextureAttribute");
+    public INamedTypeSymbol TextureArray { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.TextureArrayAttribute");
+    public INamedTypeSymbol Sampler { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.SamplerAttribute");
+    public INamedTypeSymbol UniformBuffer { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.UniformBufferAttribute");
+    public INamedTypeSymbol StructuredBuffer { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.StructuredBufferAttribute");
+    public INamedTypeSymbol ResourceSet { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.ResourceSetAttribute");
+    public INamedTypeSymbol Uniform { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.UniformAttribute");
+    public INamedTypeSymbol Structured { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.StructuredAttribute");
+    public INamedTypeSymbol Vertex { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.VertexAttribute");
+    public INamedTypeSymbol VertexShader { get; } = VeldridGenUtil.Resolve(compilation, "VeldridGen.Interfaces.VertexShaderAttribute");
 }

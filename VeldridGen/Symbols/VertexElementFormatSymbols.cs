@@ -9,12 +9,15 @@ public class VertexElementFormatSymbols
         Type = VeldridGenUtil.Resolve(compilation, "Veldrid.VertexElementFormat");
         foreach (var member in Type.GetMembers())
         {
-            if (member.Name == "Int1") Int1 = member;
-            else if (member.Name == "UInt1") UInt1 = member;
-            else if (member.Name == "Float1") Float1 = member;
-            else if (member.Name == "Float2") Float2 = member;
-            else if (member.Name == "Float3") Float3 = member;
-            else if (member.Name == "Float4") Float4 = member;
+            switch (member.Name)
+            {
+                case "Int1":   Int1   = member; break;
+                case "UInt1":  UInt1  = member; break;
+                case "Float1": Float1 = member; break;
+                case "Float2": Float2 = member; break;
+                case "Float3": Float3 = member; break;
+                case "Float4": Float4 = member; break;
+            }
         }
 
         if (Int1 == null) throw new TypeResolutionException("Veldrid.VertexElementFormat.Int1");

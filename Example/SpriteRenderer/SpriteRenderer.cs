@@ -14,12 +14,12 @@ namespace VeldridGen.Example.SpriteRenderer
         readonly SpritePipeline _pipeline;
         readonly SpritePipeline _noCullPipeline;
 
-        static readonly ushort[] Indices = { 0, 1, 2, 2, 1, 3 };
+        static readonly ushort[] Indices = [0, 1, 2, 2, 1, 3];
         static readonly Vertex2DTextured[] Vertices =
-        {
+        [
             new(-0.5f, 0.0f, 0.0f, 0.0f), new(0.5f, 0.0f, 1.0f, 0.0f),
-            new(-0.5f, 1.0f, 0.0f, 1.0f), new(0.5f, 1.0f, 1.0f, 1.0f),
-        };
+            new(-0.5f, 1.0f, 0.0f, 1.0f), new(0.5f, 1.0f, 1.0f, 1.0f)
+        ];
 
         public SpriteRenderer(IFramebufferHolder framebuffer)
         {
@@ -50,12 +50,16 @@ namespace VeldridGen.Example.SpriteRenderer
             };
         }
 
-        public void Render(IRenderable renderable, CommonSet commonSet, IFramebufferHolder framebuffer, CommandList cl,
+        public void Render(
+            IRenderable renderable,
+            CommonSet commonSet,
+            IFramebufferHolder framebuffer,
+            CommandList cl,
             GraphicsDevice device)
         {
-            if (cl == null) throw new ArgumentNullException(nameof(cl));
-            if (commonSet == null) throw new ArgumentNullException(nameof(commonSet));
-            if (framebuffer == null) throw new ArgumentNullException(nameof(framebuffer));
+            ArgumentNullException.ThrowIfNull(cl);
+            ArgumentNullException.ThrowIfNull(commonSet);
+            ArgumentNullException.ThrowIfNull(framebuffer);
             if (renderable is not VeldridSpriteBatch batch)
                 throw new ArgumentException($"{GetType().Name} was passed renderable of unexpected type {renderable?.GetType().Name ?? "null"}", nameof(renderable));
 

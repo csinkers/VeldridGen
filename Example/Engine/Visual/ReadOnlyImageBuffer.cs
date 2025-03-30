@@ -5,27 +5,15 @@ namespace VeldridGen.Example.Engine.Visual;
 public delegate ReadOnlyImageBuffer<T> GetFrameDelegate<T>(int frame);
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "Never compared")]
-public readonly ref struct ReadOnlyImageBuffer<T>
+public readonly ref struct ReadOnlyImageBuffer<T>(int width, int height, int stride, ReadOnlySpan<T> buffer)
 {
-    public ReadOnlyImageBuffer(int width, int height, int stride, ReadOnlySpan<T> buffer)
+    public ReadOnlyImageBuffer(ReadOnlyImageBuffer<T> existing, ReadOnlySpan<T> buffer) : this(existing.Width, existing.Height, existing.Stride, buffer)
     {
-        Width = width;
-        Height = height;
-        Stride = stride;
-        Buffer = buffer;
     }
 
-    public ReadOnlyImageBuffer(ReadOnlyImageBuffer<T> existing, ReadOnlySpan<T> buffer)
-    {
-        Width = existing.Width;
-        Height = existing.Height;
-        Stride = existing.Stride;
-        Buffer = buffer;
-    }
-
-    public int Width { get; }
-    public int Height { get; }
-    public int Stride { get; }
-    public ReadOnlySpan<T> Buffer { get; }
+    public int Width { get; } = width;
+    public int Height { get; } = height;
+    public int Stride { get; } = stride;
+    public ReadOnlySpan<T> Buffer { get; } = buffer;
     public ReadOnlySpan<T> GetRow(int row) => Buffer.Slice(Stride * row, Width);
 }

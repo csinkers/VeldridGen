@@ -3,14 +3,11 @@ using Veldrid;
 
 namespace VeldridGen.Interfaces;
 
-public sealed class UniformBufferAttribute : Attribute
+public sealed class UniformBufferAttribute(
+    string name,
+    ShaderStages stages = ShaderStages.Fragment | ShaderStages.Vertex)
+    : Attribute
 {
-    public UniformBufferAttribute(string name, ShaderStages stages = ShaderStages.Fragment | ShaderStages.Vertex)
-    {
-        Name = name;
-        Stages = stages;
-    }
-
-    public string Name { get; }
-    public ShaderStages Stages { get; }
+    public string Name { get; } = name;
+    public ShaderStages Stages { get; } = stages;
 }

@@ -4,9 +4,8 @@ using VeldridGen.Interfaces;
 
 namespace VeldridGen.Example.Engine;
 
-public sealed class Texture2DHolder : TextureHolder, ITextureHolder
+public sealed class Texture2DHolder(string name) : TextureHolder(name), ITextureHolder
 {
-    public Texture2DHolder(string name) : base(name) { }
     protected override void Validate(Texture texture)
     {
         if (texture == null)

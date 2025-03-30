@@ -27,7 +27,7 @@ public sealed class SingleBuffer<T> : Component, IBufferHolder<T> where T : unma
     public delegate void ModifierFunc(ref T data);
     public void Modify(ModifierFunc func)
     {
-        if (func == null) throw new ArgumentNullException(nameof(func));
+        ArgumentNullException.ThrowIfNull(func);
         func(ref _instance);
         Dirty();
     }

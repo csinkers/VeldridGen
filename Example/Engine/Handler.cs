@@ -2,15 +2,10 @@
 
 namespace VeldridGen.Example.Engine;
 
-public abstract class Handler
+public abstract class Handler(Type type, IComponent component)
 {
-    public Type Type { get; }
-    public IComponent Component { get; }
-    protected Handler(Type type, IComponent component)
-    {
-        Type = type ?? throw new ArgumentNullException(nameof(type));
-        Component = component ?? throw new ArgumentNullException(nameof(component));
-    }
+    public Type Type { get; } = type ?? throw new ArgumentNullException(nameof(type));
+    public IComponent Component { get; } = component ?? throw new ArgumentNullException(nameof(component));
 
     /// <summary>
     /// 
@@ -21,9 +16,9 @@ public abstract class Handler
     public override string ToString() => $"H<{Component.GetType().Name}, {Type.Name}>";
 }
 
-public class Handler<TEvent> : Handler
+public class Handler<TEvent>(Action<TEvent> callback, IComponent component)
+    : Handler(typeof(TEvent), component)
 {
-    public Action<TEvent> Callback { get; }
-    public Handler(Action<TEvent> callback, IComponent component) : base(typeof(TEvent), component) => Callback = callback;
+    public Action<TEvent> Callback { get; } = callback;
     public override bool Invoke(IEvent e) { Callback((TEvent)e); return false; }
 }

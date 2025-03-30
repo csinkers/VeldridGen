@@ -3,7 +3,7 @@ using System.Text;
 
 namespace VeldridGen.Example.Engine.CodeGen;
 
-static class VertexFormatGenerator
+internal static class VertexFormatGenerator
 {
     public static void Generate(StringBuilder sb, VeldridTypeInfo type)
     {

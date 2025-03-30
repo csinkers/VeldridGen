@@ -1,8 +1,7 @@
 ﻿namespace VeldridGen.Example.Engine.Events;
 
-class WindowResizedEvent : IEvent
+class WindowResizedEvent(int width, int height) : IEvent
 {
-    public int Width { get; }
-    public int Height { get; }
-    public WindowResizedEvent(int width, int height) { Width = width; Height = height; }
+    public int Width { get; } = width;
+    public int Height { get; } = height;
 }

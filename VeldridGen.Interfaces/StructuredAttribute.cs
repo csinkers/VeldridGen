@@ -2,9 +2,8 @@
 
 namespace VeldridGen.Interfaces;
 
-public sealed class StructuredAttribute : Attribute
+public sealed class StructuredAttribute(string name) : Attribute
 {
-    public StructuredAttribute(string name) => Name = name;
-    public string Name { get; }
+    public string Name { get; } = name;
     public string EnumPrefix { get; set; }
 }

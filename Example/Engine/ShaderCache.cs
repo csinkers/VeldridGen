@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Veldrid;
 using Veldrid.SPIRV;
 using VeldridGen.Example.Engine.Events;
@@ -14,29 +15,18 @@ namespace VeldridGen.Example.Engine;
 
 public sealed class ShaderCache : Component, IShaderCache, IDisposable
 {
-    readonly object _syncRoot = new();
-    readonly IDictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
-    readonly List<string> _shaderPaths = new();
-    readonly List<FileSystemWatcher> _watchers = new();
+    readonly Lock _syncRoot = new();
+    readonly Dictionary<string, CacheEntry> _cache = new();
+    readonly List<string> _shaderPaths = [];
+    readonly List<FileSystemWatcher> _watchers = [];
     readonly string _shaderCachePath;
     IFileSystem _disk;
 
-    class CacheEntry
-    {
-        public CacheEntry(string vertexPath, string fragmentPath, ShaderDescription vertexShader,
-            ShaderDescription fragmentShader)
-        {
-            VertexPath = vertexPath;
-            FragmentPath = fragmentPath;
-            VertexShader = vertexShader;
-            FragmentShader = fragmentShader;
-        }
-
-        public string VertexPath { get; }
-        public string FragmentPath { get; }
-        public ShaderDescription VertexShader { get; }
-        public ShaderDescription FragmentShader { get; }
-    }
+    record CacheEntry(
+        string VertexPath,
+        string FragmentPath,
+        ShaderDescription VertexShader,
+        ShaderDescription FragmentShader);
 
     public ShaderCache(string shaderCachePath)
     {
@@ -64,7 +54,7 @@ public sealed class ShaderCache : Component, IShaderCache, IDisposable
         var watcher = new FileSystemWatcher(path);
         //_watcher.Filters.Add("*.frag");
         //_watcher.Filters.Add("*.vert");
-        watcher.Changed += (sender, e) => ShadersUpdated?.Invoke(sender, new EventArgs());
+        watcher.Changed += (sender, _) => ShadersUpdated?.Invoke(sender, EventArgs.Empty);
         watcher.EnableRaisingEvents = true;
         _watchers.Add(watcher);
         return this;
@@ -195,7 +185,7 @@ public sealed class ShaderCache : Component, IShaderCache, IDisposable
         string vertexName, string fragmentName,
         string vertexContent = null, string fragmentContent = null)
     {
-        if (factory == null) throw new ArgumentNullException(nameof(factory));
+        ArgumentNullException.ThrowIfNull(factory);
         if (string.IsNullOrEmpty(vertexName)) throw new ArgumentNullException(nameof(vertexName));
         if (string.IsNullOrEmpty(fragmentName)) throw new ArgumentNullException(nameof(fragmentName));
 
@@ -239,7 +229,7 @@ public sealed class ShaderCache : Component, IShaderCache, IDisposable
             var fragmentShader = factory.CreateShader(entry.FragmentShader);
             vertexShader.Name = "S_" + vertexName;
             fragmentShader.Name = "S_" + fragmentName;
-            return new[] { vertexShader, fragmentShader };
+            return [vertexShader, fragmentShader];
         }
     }
 

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 
 namespace VeldridGen.Example.Engine.CodeGen;
 
-static class ShaderGenerator
+internal static class ShaderGenerator
 {
     public static void Generate(StringBuilder sb, VeldridTypeInfo shaderType, GenerationContext context)
     {

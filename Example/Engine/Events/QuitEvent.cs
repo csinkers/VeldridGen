@@ -1,3 +1,3 @@
 ﻿namespace VeldridGen.Example.Engine.Events;
 
-public class QuitEvent : IEvent { }
+public class QuitEvent : IEvent;

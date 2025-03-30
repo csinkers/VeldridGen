@@ -75,7 +75,7 @@ public class SimpleTexture<T> : IMutableTexture<T> where T : unmanaged
 
     public ReadOnlyImageBuffer<T> GetRegionBuffer(Region region)
     {
-        if (region == null) throw new ArgumentNullException(nameof(region));
+        ArgumentNullException.ThrowIfNull(region);
         ReadOnlySpan<T> fromSlice = _pixelData.AsSpan(region.PixelOffset, region.PixelLength);
         return new ReadOnlyImageBuffer<T>(region.Width, region.Height, Width, fromSlice);
     }
@@ -96,7 +96,7 @@ public class SimpleTexture<T> : IMutableTexture<T> where T : unmanaged
 
     public ImageBuffer<T> GetMutableRegionBuffer(Region region)
     {
-        if (region == null) throw new ArgumentNullException(nameof(region));
+        ArgumentNullException.ThrowIfNull(region);
         Version++;
         Span<T> fromSlice = _pixelData.AsSpan(region.PixelOffset, region.PixelLength);
         return new ImageBuffer<T>(region.Width, region.Height, Width, fromSlice);

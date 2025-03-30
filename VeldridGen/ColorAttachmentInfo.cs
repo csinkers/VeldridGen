@@ -3,12 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace VeldridGen;
 
-public class ColorAttachmentInfo
+public class ColorAttachmentInfo(AttributeData attrib)
 {
-    public ColorAttachmentInfo(AttributeData attrib)
-    {
-        Format = attrib.ConstructorArguments[0].ToCSharpString();
-    }
-
-    public string Format { get; }
+    public string Format { get; } = attrib.ConstructorArguments[0].ToCSharpString();
 }

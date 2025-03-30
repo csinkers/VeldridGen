@@ -10,18 +10,8 @@ using VeldridGen.Example.SpriteRenderer;
 
 namespace VeldridGen.Example.TestApp
 {
-    static class Program
+    internal static class Program
     {
-        static string FindRoot(string binDir)
-        {
-            var curDir = new DirectoryInfo(binDir);
-
-            while (curDir != null && !Directory.Exists(Path.Combine(curDir.FullName, "Engine")))
-                curDir = curDir.Parent;
-
-            return curDir?.FullName;
-        }
-
         static int Main(string[] args)
         {
             if (args.Length == 1)
@@ -29,21 +19,24 @@ namespace VeldridGen.Example.TestApp
 
             if (args.Length != 0)
             {
-                Console.WriteLine("Unexpected arguments encountered. Valid arguments are: 0 to run normally, 1 argument (shader path) to emit shader headers");
+                Console.WriteLine("Unexpected arguments encountered. Supply no arguments to run normally, supply one argument (shader path) to emit shader headers");
                 return 1;
             }
 
-            var binDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var binDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+            if (binDir == null)
+                throw new InvalidOperationException("Could not find bin directory");
+
             var rootDir = FindRoot(binDir);
             if (rootDir == null)
                 throw new InvalidOperationException("Could not find root directory");
 
-            var exchange = new EventExchange();
-            var fileSystem = new FileSystem();
+            var exchange = new EventExchange(); // Event bus & service locator
+            var fileSystem = new FileSystem(); // Abstracts file access
             var shaderCache = new ShaderCache(Path.Combine(binDir, "Shaders"));
-            var layoutSource = new ResourceLayoutSource();
-            var samplerSource = new SpriteSamplerSource();
-            var textureSource = new TextureSource();
+            var layoutSource = new ResourceLayoutSource(); // Manager for resource layouts
+            var samplerSource = new SpriteSamplerSource(); // Manager for samplers
+            var textureSource = new TextureSource(); // Manager for textures
             var framebuffer = new MainFramebuffer("FB_Main");
             var spriteManager = new SpriteManager();
             var spriteFactory = new SpriteFactory();
@@ -55,8 +48,9 @@ namespace VeldridGen.Example.TestApp
                 .AddSource(spriteManager)
                 ;
 
+            const bool useRenderDoc = false;
             var camera = new PerspectiveCamera();
-            var engine = new VeldridEngine(GraphicsBackend.Direct3D11, false, scene);
+            var engine = new VeldridEngine(GraphicsBackend.Direct3D11, useRenderDoc, scene);
 
             shaderCache.AddShaderPath(Path.Combine(rootDir, @"SpriteRenderer\Shaders"));
 
@@ -87,6 +81,16 @@ namespace VeldridGen.Example.TestApp
 
             engine.Run();
             return 0;
+        }
+
+        static string FindRoot(string binDir) // Checks parent directories until it finds an 'Engine' subdirectory - i.e. it reaches the root dir of the project
+        {
+            var curDir = new DirectoryInfo(binDir);
+
+            while (curDir != null && !Directory.Exists(Path.Combine(curDir.FullName, "Engine")))
+                curDir = curDir.Parent;
+
+            return curDir?.FullName;
         }
 
         static void Set(int x, int y, int width, int height, SpriteLease lease, ITexture texture)

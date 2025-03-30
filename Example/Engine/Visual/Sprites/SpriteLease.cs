@@ -92,7 +92,7 @@ public sealed class SpriteLease : IComparable<SpriteLease>
     /// <param name="context">The context for the mutator function</param>
     public void Access<T>(LeaseAccessDelegate<T> mutatorFunc, T context)
     {
-        if (mutatorFunc == null) throw new ArgumentNullException(nameof(mutatorFunc));
+        ArgumentNullException.ThrowIfNull(mutatorFunc);
         bool lockWasTaken = false;
         var instances = Lock(ref lockWasTaken);
         try { mutatorFunc(instances, context); }
