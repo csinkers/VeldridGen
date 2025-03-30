@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Cam Sinclair</Authors>
-		<Company />
 		<Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
 		<Copyright>2021 Cam Sinclair</Copyright>
-		<PackageId>VeldridGen.Interfaces</PackageId>
+		<PackageId>Sinkers.VeldridGen.Interfaces</PackageId>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,7 +18,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Veldrid" Version="4.9.0" />
+		<PackageReference Include="Sinkers.Veldrid" Version="0.4.15" />
 	</ItemGroup>
 
 	<ItemGroup>

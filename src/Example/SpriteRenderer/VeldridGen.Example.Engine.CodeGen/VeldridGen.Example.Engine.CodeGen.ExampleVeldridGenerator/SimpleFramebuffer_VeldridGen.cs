@@ -23,7 +23,7 @@ namespace VeldridGen.Example.SpriteRenderer
             Color.DeviceTexture.Name = Color.Name;
 
             var description = new FramebufferDescription(Depth.DeviceTexture, Color.DeviceTexture);
-            var framebuffer = device.ResourceFactory.CreateFramebuffer(ref description);
+            var framebuffer = device.ResourceFactory.CreateFramebuffer(in description);
             framebuffer.Name = Name;
             return framebuffer;
         }

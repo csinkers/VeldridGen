@@ -15,11 +15,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Veldrid" Version="4.9.0" />
-    <PackageReference Include="Veldrid.RenderDoc" Version="1.0.1" />
-    <PackageReference Include="Veldrid.SDL2" Version="4.9.0" />
-    <PackageReference Include="Veldrid.StartupUtilities" Version="4.9.0" />
-    <PackageReference Include="Veldrid.SPIRV" Version="1.0.14" />
   </ItemGroup>
 
   <ItemGroup>
