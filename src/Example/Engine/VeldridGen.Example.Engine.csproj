@@ -16,12 +16,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Veldrid" Version="4.9.0" />
-    <PackageReference Include="Veldrid.ImageSharp" Version="4.9.0" />
-    <PackageReference Include="Veldrid.ImGui" Version="5.72.0-gac88c7210e" />
     <PackageReference Include="Veldrid.RenderDoc" Version="1.0.1" />
     <PackageReference Include="Veldrid.SDL2" Version="4.9.0" />
     <PackageReference Include="Veldrid.StartupUtilities" Version="4.9.0" />
-    <PackageReference Include="Veldrid.Utilities" Version="4.9.0" />
     <PackageReference Include="Veldrid.SPIRV" Version="1.0.14" />
   </ItemGroup>
 
@@ -29,15 +26,6 @@
     <ProjectReference Include="..\..\VeldridGen.Interfaces\VeldridGen.Interfaces.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-  </ItemGroup>
-  <ItemGroup Condition="!Exists('..\..\deps\Newtonsoft.Json\')">
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-  <ItemGroup Condition="Exists('..\..\deps\Newtonsoft.Json\')">
-    <ProjectReference Include="..\..\deps\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Update="Errors.Designer.cs">
       <DesignTime>True</DesignTime>

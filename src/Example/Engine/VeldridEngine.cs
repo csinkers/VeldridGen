@@ -1,5 +1,4 @@
 ﻿using System;
-using ImGuiNET;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
@@ -76,15 +75,6 @@ public sealed class VeldridEngine : ServiceComponent<IEngine>, IEngine, IDisposa
     {
         PerfTracker.StartupEvent("Set up backend");
         Sdl2Native.SDL_Init(SDLInitFlags.GameController);
-
-        if (ImGui.GetCurrentContext() != IntPtr.Zero)
-        {
-            ImGui.StyleColorsClassic();
-
-            // Turn on ImGui docking if it's supported
-            if (Enum.TryParse(typeof(ImGuiConfigFlags), "DockingEnable", out var dockingFlag) && dockingFlag != null)
-                ImGui.GetIO().ConfigFlags |= (ImGuiConfigFlags)dockingFlag;
-        }
 
         while (!_done)
         {
