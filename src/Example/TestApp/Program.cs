@@ -52,7 +52,7 @@ namespace VeldridGen.Example.TestApp
             var camera = new PerspectiveCamera();
             var engine = new VeldridEngine(GraphicsBackend.Direct3D11, useRenderDoc, scene);
 
-            shaderCache.AddShaderPath(Path.Combine(rootDir, @"SpriteRenderer\Shaders"));
+            shaderCache.AddShaderPath(Path.Combine(rootDir, @"src\Example\SpriteRenderer\Shaders"));
 
             exchange
                 .Register<IFileSystem>(fileSystem)
@@ -83,11 +83,11 @@ namespace VeldridGen.Example.TestApp
             return 0;
         }
 
-        static string FindRoot(string binDir) // Checks parent directories until it finds an 'Engine' subdirectory - i.e. it reaches the root dir of the project
+        static string FindRoot(string binDir) // Checks parent directories until it finds a 'src' subdirectory - i.e. it reaches the root dir of the project
         {
             var curDir = new DirectoryInfo(binDir);
 
-            while (curDir != null && !Directory.Exists(Path.Combine(curDir.FullName, "Engine")))
+            while (curDir != null && !Directory.Exists(Path.Combine(curDir.FullName, "src")))
                 curDir = curDir.Parent;
 
             return curDir?.FullName;

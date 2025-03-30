@@ -1,9 +1,7 @@
 .vs/
 .vscode/
 /BenchmarkDotNet.Artifacts
-Debug/
-bin/
-obj/
+/build/
 packages/
 nuget/
 

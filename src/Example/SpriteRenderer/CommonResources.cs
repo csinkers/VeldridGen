@@ -10,9 +10,9 @@ namespace VeldridGen.Example.SpriteRenderer
 {
     public sealed partial class CommonSet : ResourceSetHolder
     {
-        [UniformBuffer("_Shared")]                          SingleBuffer<GlobalInfo>       _globalInfo; 
-        [UniformBuffer("_Projection", ShaderStages.Vertex)] SingleBuffer<ProjectionMatrix> _projection; 
-        [UniformBuffer("_View",       ShaderStages.Vertex)] SingleBuffer<ViewMatrix>       _view; 
+        [UniformBuffer("_Shared")]                          SingleBuffer<GlobalInfo>       _globalInfo;
+        [UniformBuffer("_Projection", ShaderStages.Vertex)] SingleBuffer<ProjectionMatrix> _projection;
+        [UniformBuffer("_View",       ShaderStages.Vertex)] SingleBuffer<ViewMatrix>       _view;
         [Texture("uPalette",          ShaderStages.Fragment)] ITextureHolder               _palette;
     }
 

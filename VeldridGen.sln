@@ -1,26 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen", "VeldridGen\VeldridGen.csproj", "{500386F7-3DEE-4689-8834-6A1D7F94A275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen", "src\VeldridGen\VeldridGen.csproj", "{500386F7-3DEE-4689-8834-6A1D7F94A275}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Interfaces", "VeldridGen.Interfaces\VeldridGen.Interfaces.csproj", "{C63F0FBE-A742-4CFA-B2BD-2C319D88CB46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Interfaces", "src\VeldridGen.Interfaces\VeldridGen.Interfaces.csproj", "{C63F0FBE-A742-4CFA-B2BD-2C319D88CB46}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.Engine", "Example\Engine\VeldridGen.Example.Engine.csproj", "{4D7BDA45-C044-46B8-AC78-8428490775FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Tests", "src\VeldridGen.Tests\VeldridGen.Tests.csproj", "{0F5F60D4-1256-442B-8DEA-C9D4048D7744}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.TestApp", "Example\TestApp\VeldridGen.Example.TestApp.csproj", "{55F86488-E938-4165-AC8B-B42661EE41E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.Engine", "src\Example\Engine\VeldridGen.Example.Engine.csproj", "{4D7BDA45-C044-46B8-AC78-8428490775FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.SpriteRenderer", "Example\SpriteRenderer\VeldridGen.Example.SpriteRenderer.csproj", "{62178BA9-482F-4317-B6E8-EA1EEF84FA46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.Engine.CodeGen", "src\Example\Engine.CodeGen\VeldridGen.Example.Engine.CodeGen.csproj", "{6DE7F8B1-81E6-4EC0-9492-5A54848330E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Tests", "VeldridGen.Tests\VeldridGen.Tests.csproj", "{0F5F60D4-1256-442B-8DEA-C9D4048D7744}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.SpriteRenderer", "src\Example\SpriteRenderer\VeldridGen.Example.SpriteRenderer.csproj", "{62178BA9-482F-4317-B6E8-EA1EEF84FA46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.TestApp", "src\Example\TestApp\VeldridGen.Example.TestApp.csproj", "{55F86488-E938-4165-AC8B-B42661EE41E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeldridGen.Example.Engine.CodeGen", "Example\Engine.CodeGen\VeldridGen.Example.Engine.CodeGen.csproj", "{6DE7F8B1-81E6-4EC0-9492-5A54848330E3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
 		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
 	EndProjectSection
 EndProject
@@ -38,35 +39,35 @@ Global
 		{C63F0FBE-A742-4CFA-B2BD-2C319D88CB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C63F0FBE-A742-4CFA-B2BD-2C319D88CB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C63F0FBE-A742-4CFA-B2BD-2C319D88CB46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55F86488-E938-4165-AC8B-B42661EE41E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55F86488-E938-4165-AC8B-B42661EE41E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55F86488-E938-4165-AC8B-B42661EE41E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55F86488-E938-4165-AC8B-B42661EE41E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F5F60D4-1256-442B-8DEA-C9D4048D7744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D7BDA45-C044-46B8-AC78-8428490775FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DE7F8B1-81E6-4EC0-9492-5A54848330E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DE7F8B1-81E6-4EC0-9492-5A54848330E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DE7F8B1-81E6-4EC0-9492-5A54848330E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DE7F8B1-81E6-4EC0-9492-5A54848330E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62178BA9-482F-4317-B6E8-EA1EEF84FA46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F86488-E938-4165-AC8B-B42661EE41E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F86488-E938-4165-AC8B-B42661EE41E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F86488-E938-4165-AC8B-B42661EE41E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F86488-E938-4165-AC8B-B42661EE41E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4D7BDA45-C044-46B8-AC78-8428490775FF} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
-		{55F86488-E938-4165-AC8B-B42661EE41E7} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
-		{62178BA9-482F-4317-B6E8-EA1EEF84FA46} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
 		{6DE7F8B1-81E6-4EC0-9492-5A54848330E3} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{62178BA9-482F-4317-B6E8-EA1EEF84FA46} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
+		{55F86488-E938-4165-AC8B-B42661EE41E7} = {C197AFDC-BA1B-4B0D-9FF7-5C899F2349FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5EBD6E79-2548-40E6-A405-6382E973E16D}

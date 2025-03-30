@@ -4,7 +4,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Cam Sinclair</Authors>
-    <Company />
     <Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
     <Copyright>2021 Cam Sinclair</Copyright>
     <PackageId>VeldridGen</PackageId>
@@ -18,6 +17,7 @@
     <LangVersion>12.0</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +29,6 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 </Project>

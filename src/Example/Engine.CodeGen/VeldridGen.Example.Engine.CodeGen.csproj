@@ -25,7 +25,7 @@
 
   <Target Name="GetDependencyTargetPaths">
     <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="..\..\VeldridGen\bin\Debug\netstandard2.0\VeldridGen.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="..\..\..\build\VeldridGen\bin\$(Configuration)\netstandard2.0\VeldridGen.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
 

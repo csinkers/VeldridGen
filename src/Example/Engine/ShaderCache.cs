@@ -128,10 +128,14 @@ public sealed class ShaderCache : Component, IShaderCache, IDisposable
 " + content;
             }
 
-            var options = GlslCompileOptions.Default;
+            const bool debug =
 #if DEBUG
-            options.Debug = true;
+             true;
+#else
+             false;
 #endif
+            var options = new GlslCompileOptions(debug, []);
+
             var glslCompileResult = SpirvCompilation.CompileGlslToSpirv(content, name, stage, options);
             _disk.WriteAllBytes(cachePath, glslCompileResult.SpirvBytes);
             return (cachePath, glslCompileResult.SpirvBytes);
@@ -264,6 +268,7 @@ public sealed class ShaderCache : Component, IShaderCache, IDisposable
     {
         foreach (var watcher in _watchers)
             watcher.Dispose();
+
         _watchers.Clear();
         DestroyAllDeviceObjects();
     }
