@@ -30,9 +30,9 @@ namespace VeldridGen.Example.TestApp
 
             On<RenderEvent>(_ => UpdatePerFrameResources());
 
-            _projection = new SingleBuffer<ProjectionMatrix>(BufferUsage.UniformBuffer | BufferUsage.Dynamic, "M_Projection");
-            _view = new SingleBuffer<ViewMatrix>(BufferUsage.UniformBuffer | BufferUsage.Dynamic, "M_View");
-            _globalInfo = new SingleBuffer<GlobalInfo>(BufferUsage.UniformBuffer | BufferUsage.Dynamic, "B_GlobalInfo");
+            _projection = new SingleBuffer<ProjectionMatrix>(BufferUsage.UniformBuffer | BufferUsage.DynamicWrite, "M_Projection");
+            _view = new SingleBuffer<ViewMatrix>(BufferUsage.UniformBuffer | BufferUsage.DynamicWrite, "M_View");
+            _globalInfo = new SingleBuffer<GlobalInfo>(BufferUsage.UniformBuffer | BufferUsage.DynamicWrite, "B_GlobalInfo");
             _commonSet = new CommonSet
             {
                 Name = "RS_Common",
