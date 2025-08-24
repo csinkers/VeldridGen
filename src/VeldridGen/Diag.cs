@@ -16,15 +16,15 @@ internal static class Diag
             "The symbol \"{0}\" could not be found in the current compilation. Veldrid and VeldridGen.Interfaces must be referenced by all assemblies invoking VeldridGen.",
             "Dependencies", DiagnosticSeverity.Error, true);
 
-    static void Common(GeneratorExecutionContext context, DiagnosticDescriptor descriptor, string message)
+    static void Common(SourceProductionContext context, DiagnosticDescriptor descriptor, string message)
     {
         message = message.Replace("\r\n", "\\n");
         var diag = Diagnostic.Create(ErrorDef, null, descriptor.DefaultSeverity, message);
         context.ReportDiagnostic(diag);
     }
 
-    public static void Error(this GeneratorExecutionContext context, string message) => Common(context,ErrorDef, message);
-    public static void Warn(this GeneratorExecutionContext context, string message) => Common(context,WarnDef, message);
-    public static void Info(this GeneratorExecutionContext context, string message) => Common(context,InfoDef, message);
+    public static void Error(this SourceProductionContext context, string message) => Common(context,ErrorDef, message);
+    public static void Warn(this SourceProductionContext context, string message) => Common(context,WarnDef, message);
+    public static void Info(this SourceProductionContext context, string message) => Common(context,InfoDef, message);
 }
 #pragma warning restore RS1017 // DiagnosticId for analyzers must be a non-null constant

@@ -1,36 +1,82 @@
 ﻿using System;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
+using VeldridGen.Symbols;
 
 namespace VeldridGen;
 
-public abstract class VeldridGenerator : ISourceGenerator
+public abstract class VeldridGenerator : IIncrementalGenerator
 {
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterForSyntaxNotifications(() => new VeldridSyntaxReceiver());
+        IncrementalValuesProvider<TypeDeclarationSyntax> types = context.SyntaxProvider.CreateSyntaxProvider(
+            predicate: static (node, token) => IsSyntaxNodeInteresting(node),
+            transform: static (ctx, token) => GetSemanticTarget(ctx)
+        ).Where(static m => m is not null);
+
+        IncrementalValueProvider<(Compilation, ImmutableArray<TypeDeclarationSyntax>)> compilationAndTypes
+            = context.CompilationProvider.Combine(types.Collect());
+
+        context.RegisterSourceOutput(compilationAndTypes, (spc, source) => Execute(source.Item1, source.Item2, spc));
     }
 
-    public void Execute(GeneratorExecutionContext context)
-    {
-        var receiver = (VeldridSyntaxReceiver)context.SyntaxContextReceiver;
-        if (receiver == null)
+    static bool IsSyntaxNodeInteresting(SyntaxNode node) =>
+        node switch
         {
-            context.Error("Could not retrieve syntax receiver for VeldridGenerator");
-            return;
+            TypeDeclarationSyntax { AttributeLists.Count: > 0 } => true,
+            FieldDeclarationSyntax { AttributeLists.Count: > 0 } => true,
+            PropertyDeclarationSyntax { AttributeLists.Count: > 0 } => true,
+            _ => false
+        };
+
+    static TypeDeclarationSyntax GetSemanticTarget(GeneratorSyntaxContext context)
+    {
+        (TypeDeclarationSyntax typeSyntax, SyntaxList<AttributeListSyntax> attributeLists) =
+            context.Node switch
+            {
+                TypeDeclarationSyntax tds => (tds, tds.AttributeLists),
+                FieldDeclarationSyntax fds => (fds.Parent as TypeDeclarationSyntax, fds.AttributeLists),
+                PropertyDeclarationSyntax pds => (pds.Parent as TypeDeclarationSyntax, pds.AttributeLists),
+                _ => throw new InvalidOperationException("Unexpected node type")
+            };
+
+        foreach (AttributeListSyntax attributeListSyntax in attributeLists)
+        {
+            foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes)
+            {
+                ISymbol attributeSymbol = context.SemanticModel.GetSymbolInfo(attributeSyntax).Symbol;
+                if (attributeSymbol == null)
+                    continue;
+
+                INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
+                string fullName = attributeContainingTypeSymbol.ToDisplayString();
+
+                if (AttributeSymbols.AttributeNames.Contains(fullName))
+                    return typeSyntax;
+            }
         }
 
+        return null;
+    }
+
+    void Execute(Compilation compilation, ImmutableArray<TypeDeclarationSyntax> types, SourceProductionContext context)
+    {
         try
         {
             // if (!Debugger.IsAttached) // Uncomment to prompt for debugger during build
             //     Debugger.Launch();
 
-            var genContext = new GenerationContext(context, receiver);
+            var genContext = new GenerationContext(compilation, types, context);
+
             foreach (var type in genContext.Types.Values)
             {
                 string source = GenerateType(type, genContext);
                 if (source != null)
-                    context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", source);
+                    context.AddSource($"{type.Symbol.Name}_VeldridGen.cs", SourceText.From(source, Encoding.UTF8));
             }
         }
         catch (Exception e)

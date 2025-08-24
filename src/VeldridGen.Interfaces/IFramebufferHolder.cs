@@ -4,6 +4,9 @@ using Veldrid;
 
 namespace VeldridGen.Interfaces;
 
+/// <summary>
+/// The interface for objects that hold a <see cref="Framebuffer"/> and manage its lifetime.
+/// </summary>
 public interface IFramebufferHolder : IDisposable, INotifyPropertyChanged
 {
     string Name { get; }

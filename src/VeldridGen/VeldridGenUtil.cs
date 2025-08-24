@@ -62,15 +62,13 @@ public static class VeldridGenUtil
         return result;
     }
     */
-    public static INamedTypeSymbol GetFieldOrPropertyType(ISymbol member)
-    {
-        return member switch
+    public static INamedTypeSymbol GetFieldOrPropertyType(ISymbol member) =>
+        member switch
         {
             IFieldSymbol field => (INamedTypeSymbol)field.Type,
             IPropertySymbol property => (INamedTypeSymbol)property.Type,
-            _ => throw new ArgumentOutOfRangeException(nameof(member), "Member with a ResourceAttribute was neither a field nor a property")
+            _ => throw new ArgumentOutOfRangeException(nameof(member), $"Expected member to be a field or property, but it was {member.GetType().Name}")
         };
-    }
 
     public static ISymbol VertexElementFormatForType(ISymbol member, AllSymbols symbols)
     {
@@ -109,7 +107,7 @@ public static class VeldridGenUtil
         if (type.Equals(symbols.BuiltIn.Vector2, SymbolEqualityComparer.Default)) return "vec2";
         if (type.Equals(symbols.BuiltIn.Vector3, SymbolEqualityComparer.Default)) return "vec3";
         if (type.Equals(symbols.BuiltIn.Vector4, SymbolEqualityComparer.Default)) return "vec4";
-        if (type.Equals(symbols.BuiltIn.Matrix4x4, SymbolEqualityComparer.Default)) return "mat4";
+        if (type.Equals(symbols.BuiltIn.Matrix4X4, SymbolEqualityComparer.Default)) return "mat4";
         throw new ArgumentOutOfRangeException(nameof(type), $"Type {type.ToDisplayString()} cannot be converted to a GLSL type");
     }
 

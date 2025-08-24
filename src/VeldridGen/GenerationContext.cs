@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,21 +8,20 @@ namespace VeldridGen;
 
 public class GenerationContext
 {
-    readonly GeneratorExecutionContext _gec;
+    readonly SourceProductionContext _context;
     public AllSymbols Symbols { get; }
     public Dictionary<INamedTypeSymbol, VeldridTypeInfo> Types { get; }
 
-    public GenerationContext(GeneratorExecutionContext gec, VeldridSyntaxReceiver receiver)
+    public GenerationContext(Compilation compilation, ImmutableArray<TypeDeclarationSyntax> types, SourceProductionContext context)
     {
-        _gec = gec;
-        var compilation = gec.Compilation;
+        _context = context;
         try
         {
             Symbols = new AllSymbols(compilation);
         }
         catch (TypeResolutionException e)
         {
-            gec.ReportDiagnostic(Diagnostic.Create(Diag.TypeResolution, null, e.TypeName));
+            context.ReportDiagnostic(Diagnostic.Create(Diag.TypeResolution, null, e.TypeName));
             return;
         }
 
@@ -29,13 +29,7 @@ public class GenerationContext
         Types = new Dictionary<INamedTypeSymbol, VeldridTypeInfo>(SymbolEqualityComparer.Default);
 #pragma warning restore RS1024 // Compare symbols correctly
 
-        foreach (var field in receiver.Fields)
-            PopulateMember(compilation, field);
-
-        foreach (var property in receiver.Properties)
-            PopulateMember(compilation, property);
-
-        foreach (var type in receiver.Types)
+        foreach (var type in types)
         {
             var sym = (INamedTypeSymbol)GetSymbol(compilation, type);
             if (sym == null)
@@ -45,6 +39,18 @@ public class GenerationContext
                 continue;
 
             Types[sym] = new VeldridTypeInfo(sym, this);
+
+            foreach (var member in type.Members)
+                if (member is FieldDeclarationSyntax or PropertyDeclarationSyntax)
+                    PopulateMember(compilation, member);
+
+            /*
+            foreach (var field in receiver.Fields)
+                PopulateMember(compilation, field);
+
+            foreach (var property in receiver.Properties)
+                PopulateMember(compilation, property);
+            */
         }
     }
 
@@ -76,6 +82,6 @@ public class GenerationContext
         typeInfo.AddMember(sym, this);
     }
 
-    public void Error(string message) => _gec.Error(message);
-    public void Warn(string message) => _gec.Warn(message);
+    public void Error(string message) => _context.Error(message);
+    public void Warn(string message) => _context.Warn(message);
 }

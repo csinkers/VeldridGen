@@ -3,6 +3,9 @@ using Veldrid;
 
 namespace VeldridGen.Interfaces;
 
+/// <summary>
+/// The interface for classes that hold a <see cref="Texture"/> representing a texture array and manage its lifetime.
+/// </summary>
 public interface ITextureArrayHolder : INotifyPropertyChanged
 {
     Texture DeviceTexture { get; }

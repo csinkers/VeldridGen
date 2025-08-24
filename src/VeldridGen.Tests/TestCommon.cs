@@ -24,12 +24,14 @@ namespace VeldridGen.Tests
                 ],
                 new CSharpCompilationOptions(outputKind));
 
-        static GeneratorDriver CreateDriver(Compilation c, params ISourceGenerator[] generators)
-            => CSharpGeneratorDriver.Create(generators, parseOptions: (CSharpParseOptions)c.SyntaxTrees.First().Options);
+        static GeneratorDriver CreateDriver(Compilation c, params IIncrementalGenerator[] generators)
+            => CSharpGeneratorDriver.Create(generators)
+                .WithUpdatedParseOptions(c.SyntaxTrees.First().Options);
 
-        public static Compilation RunGenerators(Compilation c, out ImmutableArray<Diagnostic> diagnostics, params ISourceGenerator[] generators)
+        public static Compilation RunGenerators(Compilation c, out ImmutableArray<Diagnostic> diagnostics, params IIncrementalGenerator[] generators)
         {
-            CreateDriver(c, generators).RunGeneratorsAndUpdateCompilation(c, out var d, out diagnostics);
+            var driver = CreateDriver(c, generators);
+            driver.RunGeneratorsAndUpdateCompilation(c, out var d, out diagnostics);
             return d;
         }
     }

@@ -22,7 +22,7 @@ namespace VeldridGenTests
                 BaseClasses.ResourceSetHolderSource +
                 BaseClasses.SingleBufferSource +
                 BaseClasses.Texture2DHolderSource + @"
-    public struct GlobalInfo: IUniformFormat
+    public struct GlobalInfo : IUniformFormat
     {
         public Vector3 CameraPosition;
         public float Time;
@@ -36,7 +36,8 @@ namespace VeldridGenTests
 }
 ";
             Compilation comp = TestCommon.CreateCompilation(source);
-            Compilation newComp = TestCommon.RunGenerators(comp, out var generatorDiags, new ResourceSetGenerator());
+            var generator = new ResourceSetGenerator();
+            Compilation newComp = TestCommon.RunGenerators(comp, out var generatorDiags, generator);
             var generatedTrees = newComp.RemoveSyntaxTrees(comp.SyntaxTrees).SyntaxTrees.ToList();
 
             Assert.Single(generatedTrees);

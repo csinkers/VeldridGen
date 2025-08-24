@@ -15,6 +15,6 @@ public class BuiltInSymbols(Compilation compilation)
     public INamedTypeSymbol Vector2 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector2).FullName!);
     public INamedTypeSymbol Vector3 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector3).FullName!);
     public INamedTypeSymbol Vector4 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Vector4).FullName!);
-    public INamedTypeSymbol Matrix4x4 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
+    public INamedTypeSymbol Matrix4X4 { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.Numerics.Matrix4x4).FullName!);
     public INamedTypeSymbol NotifyPropertyChanged { get; } = VeldridGenUtil.Resolve(compilation, typeof(System.ComponentModel.INotifyPropertyChanged).FullName!);
 }
