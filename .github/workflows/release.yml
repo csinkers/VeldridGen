@@ -21,7 +21,7 @@ jobs:
     - name: Build with dotnet
       env:
         MINVER_VERSION: ${{ vars.MINVER_VERSION }}
-      run: dotnet build --configuration Release src/VeldridGen/VeldridGen.csproj
+      run: dotnet build --configuration Release ./VeldridGen.sln
 
     - name: Push to NuGet
       env:
