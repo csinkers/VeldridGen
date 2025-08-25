@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>12.0</LangVersion>
+
+    <Title>Sinkers.VeldridGen.Interfaces</Title>
+    <Authors>Cam Sinclair</Authors>
+    <Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
+    <Copyright>2021 Cam Sinclair</Copyright>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Sinkers.VeldridGen.Interfaces</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>code-generator veldrid graphics-programming</PackageTags>
+    <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\VeldridGen.Interfaces\ColorAttachmentAttribute.cs" Link="ColorAttachmentAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\DepthAttachmentAttribute.cs" Link="DepthAttachmentAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\FragmentShaderAttribute.cs" Link="FragmentShaderAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IBufferHolder.cs" Link="IBufferHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IFenceHolder.cs" Link="IFenceHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IFragmentShader.cs" Link="IFragmentShader.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IFramebufferHolder.cs" Link="IFramebufferHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\InputAttribute.cs" Link="InputAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IPipelineHolder.cs" Link="IPipelineHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IResourceSetHolder.cs" Link="IResourceSetHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\ISamplerHolder.cs" Link="ISamplerHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IStructuredFormat.cs" Link="IStructuredFormat.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\ITextureArrayHolder.cs" Link="ITextureArrayHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\ITextureHolder.cs" Link="ITextureHolder.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IUniformFormat.cs" Link="IUniformFormat.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IVertexFormat.cs" Link="IVertexFormat.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\IVertexShader.cs" Link="IVertexShader.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\NameAttribute.cs" Link="NameAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\OutputAttribute.cs" Link="OutputAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\ResourceSetAttribute.cs" Link="ResourceSetAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\SamplerAttribute.cs" Link="SamplerAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\StructuredAttribute.cs" Link="StructuredAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\StructuredBufferAttribute.cs" Link="StructuredBufferAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\TextureArrayAttribute.cs" Link="TextureArrayAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\TextureAttribute.cs" Link="TextureAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\UniformAttribute.cs" Link="UniformAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\UniformBufferAttribute.cs" Link="UniformBufferAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\VertexAttribute.cs" Link="VertexAttribute.cs" />
+    <Compile Include="..\VeldridGen.Interfaces\VertexShaderAttribute.cs" Link="VertexShaderAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sinkers.Veldrid" Version="0.4.15" />
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../VeldridGen.Interfaces/README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <Target Name="ApplyGitHubRunNumberToVersion" AfterTargets="MinVer">
+    <PropertyGroup>
+      <GITHUB_RUN_NUMBER Condition="'$(GITHUB_RUN_NUMBER)' == ''">0</GITHUB_RUN_NUMBER>
+      <FileVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(GITHUB_RUN_NUMBER)</FileVersion>
+    </PropertyGroup>
+  </Target>
+</Project>

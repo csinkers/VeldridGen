@@ -1,28 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Authors>Cam Sinclair</Authors>
-		<Company />
-		<Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
-		<Copyright>2021 Cam Sinclair</Copyright>
-		<PackageId>VeldridGen.Interfaces</PackageId>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>code-generator veldrid graphics-programming</PackageTags>
-		<RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<Version>0.2.4</Version>
-		<LangVersion>12.0</LangVersion>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>12.0</LangVersion>
 
-	<ItemGroup>
-		<PackageReference Include="Veldrid" Version="4.9.0" />
-	</ItemGroup>
+    <Authors>Cam Sinclair</Authors>
+    <Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
+    <Copyright>2021 Cam Sinclair</Copyright>
 
-	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>VeldridGen.Interfaces</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>code-generator veldrid graphics-programming</PackageTags>
+    <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Veldrid" Version="4.9.0" />
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>

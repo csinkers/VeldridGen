@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <Title>VeldridGen</Title>
     <Authors>Cam Sinclair</Authors>
     <Description>Source Generator library to help reduce boilerplate when developing using the Veldrid graphics library.</Description>
     <Copyright>2021 Cam Sinclair</Copyright>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>VeldridGen</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/CSinkers/VeldridGen</PackageProjectUrl>
@@ -13,22 +19,29 @@
     <PackageTags>code-generator veldrid graphics-programming</PackageTags>
     <RepositoryUrl>https://github.com/CSinkers/VeldridGen</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>0.1.12</Version>
-    <LangVersion>12.0</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <Target Name="ApplyGitHubRunNumberToVersion" AfterTargets="MinVer">
+    <PropertyGroup>
+      <GITHUB_RUN_NUMBER Condition="'$(GITHUB_RUN_NUMBER)' == ''">0</GITHUB_RUN_NUMBER>
+      <FileVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(GITHUB_RUN_NUMBER)</FileVersion>
+    </PropertyGroup>
+  </Target>
 </Project>
