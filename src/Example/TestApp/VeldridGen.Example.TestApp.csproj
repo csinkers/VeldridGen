@@ -10,6 +10,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet &quot;$(TargetPath)&quot; &quot;$(SolutionDir)src\Example\SpriteRenderer\Shaders&quot;" />
+    <Exec Command="dotnet &quot;$(TargetPath)&quot; &quot;$(SolutionDir)src/Example/SpriteRenderer/Shaders&quot;" />
   </Target>
 </Project>
